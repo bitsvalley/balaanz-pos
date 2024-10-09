@@ -30,6 +30,9 @@ export class GlobalService {
 
   constructor(private _user: UserService, private _toast: ToastrService) { }
 
+  public cartList: any = [];
+  public cartData: any = {};
+
   // getToken() {
   //   return new Promise((resolve, reject) => {
   //     if (this.token) {
@@ -94,5 +97,40 @@ export class GlobalService {
     })
     
   };
+
+  storeCart(userId) {
+    localStorage.setItem('cart', JSON.stringify(this.cartData));
+    this.retriveCart(userId);
+  }
+
+  retriveCart(userId) {
+    this.cartList = [];
+    this.cartData = JSON.parse(localStorage.getItem('cart'));
+    if (this.cartData[userId]) {
+      Object.keys(this.cartData[userId]).forEach((key: any) => {
+        this.cartList.push(this.cartData[userId][key]);
+      });
+    }
+    return {list: this.cartList, data: this.cartData};
+  }
+
+  addToCart(product, userId) {
+    console.log(product);
+    if (!this.cartData[userId][product.code]) {
+      this.cartData[userId][product.code] = {...product, quantity: 1}
+    } else {
+      this.cartData[userId][product.code].quantity += 1;
+    }
+    this.storeCart(userId);
+    return {list: this.cartList, data: this.cartData};
+  }
+
+  initCart(userId) {
+    this.retriveCart(userId);
+    if (!this.cartData[userId]) {
+      this.cartData[userId] = {};
+      this.storeCart(userId);
+    }
+  }
 
 }

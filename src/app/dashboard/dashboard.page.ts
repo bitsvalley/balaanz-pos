@@ -31,7 +31,6 @@ export class DashboardPage implements OnDestroy {
   public productList: any = [];
   public categoryList: any = [];
   public cartList: any = [];
-  public cartData: any = {};
   public isAllProducts: boolean = false;
   public selelctedCategory: any = null;
   public searchProductField: any = "";
@@ -56,11 +55,13 @@ export class DashboardPage implements OnDestroy {
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
       console.log(this.userDetails);
-      this.retriveCart();
-      if (!this.cartData[this.userDetails.id]) {
-        this.cartData[this.userDetails.id] = {};
-        this.storeCart();
-      }
+      this._global.initCart(this.userDetails.id);
+      this.cartList = this._global.retriveCart(this.userDetails.id).list;
+      // this.retriveCart(this.userDetails.id);
+      // if (!this.cartData[this.userDetails.id]) {
+      //   this.cartData[this.userDetails.id] = {};
+      //   // this._global.storeCart(this.userDetails.id);
+      // }
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -187,29 +188,30 @@ export class DashboardPage implements OnDestroy {
 
   }
 
-  storeCart() {
-    localStorage.setItem('cart', JSON.stringify(this.cartData));
-    this.retriveCart();
-  }
+  // storeCart() {
+  //   localStorage.setItem('cart', JSON.stringify(this.cartData));
+  //   this.retriveCart();
+  // }
 
-  retriveCart() {
-    this.cartList = [];
-    this.cartData = JSON.parse(localStorage.getItem('cart'));
-    if (this.cartData[this.userDetails.id]) {
-      Object.keys(this.cartData[this.userDetails.id]).forEach((key: any) => {
-        this.cartList.push(this.cartData[this.userDetails.id][key]);
-      })
-    }
-  }
+  // retriveCart() {
+  //   this.cartList = [];
+  //   this.cartData = JSON.parse(localStorage.getItem('cart'));
+  //   if (this.cartData[this.userDetails.id]) {
+  //     Object.keys(this.cartData[this.userDetails.id]).forEach((key: any) => {
+  //       this.cartList.push(this.cartData[this.userDetails.id][key]);
+  //     })
+  //   }
+  // }
 
   addToCart(product) {
-    console.log(product);
-    if (!this.cartData[this.userDetails.id][product.code]) {
-      this.cartData[this.userDetails.id][product.code] = {...product, quantity: 1}
-    } else {
-      this.cartData[this.userDetails.id][product.code].quantity += 1;
-    }
-    this.storeCart();
+    this.cartList = this._global.addToCart(product, this.userDetails.id).list;
+    // console.log(product);
+    // if (!this.cartData[this.userDetails.id][product.code]) {
+    //   this.cartData[this.userDetails.id][product.code] = {...product, quantity: 1}
+    // } else {
+    //   this.cartData[this.userDetails.id][product.code].quantity += 1;
+    // }
+    // this.storeCart();
   }
 
   ngOnDestroy(): void {
