@@ -1,0 +1,7 @@
+{
+  "name": "UNICS PLC Agent",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

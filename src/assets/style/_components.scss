@@ -1,0 +1,149 @@
+@import "config";
+
+.product-search {
+    width: 100%;
+    margin-bottom: 20px;
+    .product-search-form {
+        position: relative;
+        width: 100%;
+
+        .form-field {
+            padding: 0 50px;
+            border: none;
+        }
+        .seach-icon {
+            position: absolute;
+            color: $color-gray;
+            font-size: 28px;
+            left: 20px;
+            top: 13px;
+        }
+        .product-filter {
+            cursor: pointer;
+            position: absolute;
+            color: $color-gray;
+            font-size: 28px;
+            right: 20px;
+            top: 13px;
+        }
+    }
+}
+
+
+/*===================== Nav ==============*/
+
+.nav-container {
+    position: fixed;
+    width: 100%;
+    background: $color-bg-light-gray;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    left: -100%;
+    z-index: 9;
+    transition: all ease-in-out 0.5s;
+
+    &.nav-open, &.isAccountOpen {
+        left: 0;
+    }
+
+    .nav-sub-section {
+        flex-grow: 2;
+        .nav-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: $color-dark-gray;
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+
+            &:before {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 25px;
+                height: 4px;
+                background: $color-primary;
+                bottom: 0px;
+            } 
+        }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            li {
+                margin-bottom:2px;
+                padding: 7px 10px;
+                background-color: $color-white;
+                font-size: 14px;
+                font-weight: 500;
+                color: $color-dark-gray;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                cursor: pointer;
+
+                .record-count {
+                    background: $color-gray;
+                    color: $color-white;
+                    padding: 3px 5px;
+                    @include border-radius(3px);
+                    display: flex;
+                    font-size: 10px;
+                    margin-left: auto;
+                }
+                
+                .material-symbols-outlined {
+                    color: $color-gray;
+                }
+
+                &.active {
+                    color: $color-primary;
+
+                    .record-count {
+                        background: $color-primary;
+                    }
+                }
+            }
+        }
+    } 
+
+    .nav-bottom {
+        padding-top: 30px;
+    }
+    
+}
+
+
+/*================ App Header ===============*/
+
+
+.app-header {
+    background-color:$color-bg-light-gray;
+    padding:20px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba($color-black, 0.2);
+    border-bottom: 1px solid $color-border-gray;
+    align-items: center;
+    justify-content: center;
+    display: flex; 
+    position: sticky;
+    top: 0;
+
+    .back-page { 
+        margin-right: auto;
+        cursor: pointer;
+
+        span {
+            color: $color-black;
+            font-size: 30px;
+        }
+    }
+
+    .app-page-title {
+        margin-right: auto;
+        font-weight: 500;
+        font-size: 20px;
+    }
+}

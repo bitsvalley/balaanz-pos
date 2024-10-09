@@ -1,0 +1,22 @@
+<ion-content [fullscreen]="true" ref="Content">
+    <div class="login-screen">
+      <div class="login-container"> 
+        <div class="login-content"> 
+          <div class="login-logo">
+            <img src="/assets/images/logo.png" />
+          </div>
+          <div class="swipe-machine-img">
+            <img src="/assets/images/swipe-machine.png" />
+          </div>
+          <h4>Shopping with finger tips on</h4>
+          <h2> Balaanz POS</h2> 
+        </div>
+        <form class="login-form" [formGroup]="loginFrm" novalidate (ngSubmit)="login()">
+          <input class="form-field" [ngClass]="{'invalid-field': loginError}" formControlName="username" type="text" placeholder="Username"  />
+          <input class="form-field" type="password"  placeholder="Password" (focus)="onFocus('password')" [ngClass]="{'invalid-field': loginError}" formControlName="password"  />
+          <button class="btn btn-primary btn-full" #loginButton [disabled]="loginFrm.invalid">Sign In</button> 
+        </form>
+      </div>
+    </div>
+  </ion-content>
+  

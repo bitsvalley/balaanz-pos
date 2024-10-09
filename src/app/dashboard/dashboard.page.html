@@ -1,0 +1,259 @@
+<div class="products-screen">
+  <div class="products-container">
+    <div class="product-header-container">
+      <div class="product-search">
+        <div class="product-search-form">
+          <form>
+            <input type="text"  (input)="changeSearch()" [(ngModel)]="searchProductField" class="form-field" />
+            <div class="seach-icon">
+              <span class="material-symbols-outlined">
+                search
+              </span>
+            </div>
+          </form> 
+          <div class="product-filter">
+            <span class="material-symbols-outlined">
+              tune
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="category-title">
+        <h2 *ngIf="selelctedCategory">{{selelctedCategory?.name}} </h2>
+        <span *ngIf="selelctedCategory">{{selelctedCategory?.totalProducts}} Result </span>
+        <h2 *ngIf="!selelctedCategory">All Products </h2>
+        <span *ngIf="!selelctedCategory">{{productList?.length}} Result </span>
+      </div>
+    </div> 
+    <div class="products-list-container">
+      <div class="products-list">
+
+        <div class="products-item" *ngFor="let product of productList" (click)="addToCart(product)">
+          <div class="product-img">
+            <img [src]="product.image1 || 'assets/images/default-product.png'" alt="{{ product.name }}">
+          </div>
+          <h4>{{ product?.name }}</h4>
+          <div class="price">
+            <strong>{{ product?.unitPrice }}</strong> frs
+          </div>
+        </div>
+
+
+        <!-- <div class="products-item" *ngFor="let item of productList">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div>
+        <div class="products-item">
+          <div class="product-img">
+            <img src="assets/images/product-img-1.png" alt="">
+          </div>
+          <h4>Grocery Product 1</h4>
+          <div class="price">
+            <strong>20</strong>frs
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="app-navigation">
+      <div class="app-nav-bar" (click)="toggleNav()">
+        <img src="assets/images/menu-icon.png" alt=""> 
+      </div>
+      <div class="app-nav-cart">
+        <span class="material-symbols-outlined">
+          shopping_cart
+        </span>
+        <div class="app-nav-cart-count">{{cartList.length}}</div>
+      </div>
+      <div class="app-nav-user" (click)="toggleAccount()">
+        <img src="assets/images/user-icon.png" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="nav-container" [class.nav-open]="isNavOpen">
+    <div class="nav-sub-section"> 
+        <div class="nav-title">
+          Category
+        </div> 
+        <ul>
+          <li *ngFor="let category of categoryList" [ngClass]="{'active': category.id === selelctedCategory?.id}" (click)="selectCategory(category)">
+            {{ category.name }} 
+            <span class="record-count"  *ngIf="category.totalProducts">{{ category.totalProducts }}</span>
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li>
+          <!-- <li>
+            Cloths
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li>
+          <li>
+            Foods
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li>
+          <li>
+            Furnitures
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li>
+          <li>
+            Electronics
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li> -->
+        </ul>
+    </div>
+    <div class="nav-bottom">
+      <button class="btn btn-primary btn-full" (click)="closeNav()">CLOSE</button>
+    </div>
+  </div>
+
+  <div class="nav-container" [class.isAccountOpen]="isAccountOpen">
+    <div class="nav-sub-section"> 
+        <div class="nav-title">
+          Account 
+        </div> 
+        <ul>
+          <li>
+            My Account
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li>
+          <li>
+            Update Password
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li>
+          <li (click)="logout()">
+            Logout
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li> 
+        </ul>
+    </div>
+    <div class="nav-bottom">
+      <button class="btn btn-primary btn-full" (click)="closeAccount()">CLOSE</button>
+    </div>
+  </div>
+</div>

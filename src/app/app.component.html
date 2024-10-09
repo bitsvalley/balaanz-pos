@@ -1,0 +1,18 @@
+
+<ion-app>
+  <ion-content> 
+    <ion-router-outlet></ion-router-outlet>
+  </ion-content>
+</ion-app>
+
+<div class="page-loader" *ngIf="pageLoader">
+  <span class="loader"></span>
+</div>
+
+<div class="page-error" *ngIf="serverErr">
+  <span>Error Connecting Server!</span>
+</div>
+
+<div class="page-error" *ngIf="!internetConnected">
+  <span>Internet Disconnected!</span>
+</div>

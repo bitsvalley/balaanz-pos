@@ -1,0 +1,29 @@
+@mixin border-radius($value) {
+    border-radius: $value;
+    -moz-border-radius: $value;
+    -webkit-border-radius: $value;    
+}
+
+@mixin box-sizing($value) {
+    box-sizing: $value;
+    -moz-box-sizing: $value;
+    -webkit-box-sizing: $value;    
+}
+
+@mixin box-shadow($value) {
+    box-shadow: $value;
+    -moz-box-shadow: $value;
+    -webkit-box-shadow: $value;    
+}
+
+@mixin transition($value) {
+    transition: $value;
+    -moz-transition: $value;
+    -webkit-transition: $value;    
+}
+
+@mixin transform($value) {
+    transform: $value;
+    -moz-transform: $value;
+    -webkit-transform: $value;    
+}

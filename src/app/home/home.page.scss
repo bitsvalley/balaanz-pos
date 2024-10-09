@@ -1,0 +1,66 @@
+@import "./../../assets/style/config";
+
+.login-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%; 
+    width: 100%;
+}
+
+.login-container {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 100%; 
+    .login-content {
+        padding: 30px 20px;
+        background: $color-bg-light-gray ;
+        width: 100%;
+        position: relative;
+        h4 {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 0;
+            margin: 0;
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        &::before {
+            content: "";
+            display: inline-block;
+            background: url(../../assets/images/login-pattern.png) no-repeat center;
+            position: absolute;
+            right: 40%;
+            width: 100%; 
+            top: 0;
+            height: 100%;
+            left: 40px;
+        }
+        
+        .swipe-machine-img {
+            padding: 40px 0;
+        }
+    } 
+    .login-form {
+        flex-grow: 2;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        flex-direction: column;
+        width: 100%;
+        .btn.btn-primary.btn-full {
+            margin-top: 10px;
+        }
+    }
+}
