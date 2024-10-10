@@ -1,0 +1,53 @@
+@import "config";
+
+/*====== Button Style Start Here ========*/
+
+.btn {
+    height: 50px;
+    @include border-radius(25px);
+    font-size: 18px; 
+    background: $color-white; 
+    padding: 10px 20px;
+    color: $color-dark-gray;
+
+    &:hover,&:focus {
+        background: $color-bg-light-gray;
+    }
+
+    &.btn-primary {
+        background: $color-primary;
+        border-color: $color-primary;
+        color: $color-white; 
+        &:hover,&:focus {
+            background: $color-black; 
+        }
+        &.btn-full {
+            width: 100%;
+            text-align: center;
+        }
+    }  
+    
+}
+
+
+/*======== Form Field Style Start Here =======*/
+
+.form-field {
+    height: 50px;
+    @include border-radius(40px);
+    border:2px solid $color-border-gray;
+    font-size: 16px;
+    @include roboto(normal);
+    background-color: $color-white;
+    padding: 10px 20px;
+    width: 100%;
+
+    &:focus, &:focus-visible {
+        border-color: $color-primary;
+        outline: none;
+    }
+
+    &~.form-field {
+        margin-top: 10px;
+    }
+}

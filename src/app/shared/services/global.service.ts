@@ -32,6 +32,7 @@ export class GlobalService {
 
   public cartList: any = [];
   public cartData: any = {};
+  public productData: any = null;
 
   // getToken() {
   //   return new Promise((resolve, reject) => {
@@ -98,12 +99,12 @@ export class GlobalService {
     
   };
 
-  storeCart(userId) {
+  storeCart(userId: any) {
     localStorage.setItem('cart', JSON.stringify(this.cartData));
     this.retriveCart(userId);
   }
 
-  retriveCart(userId) {
+  retriveCart(userId: any) {
     this.cartList = [];
     this.cartData = JSON.parse(localStorage.getItem('cart'));
     if (this.cartData[userId]) {
@@ -114,7 +115,7 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
-  addToCart(product, userId) {
+  addToCart(product: any, userId: any) {
     console.log(product);
     if (!this.cartData[userId][product.code]) {
       this.cartData[userId][product.code] = {...product, quantity: 1}
@@ -123,6 +124,37 @@ export class GlobalService {
     }
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
+  }
+
+  addQuantity(product: any, userId: any) {
+    this.cartData[userId][product.code].quantity += 1;
+    this.storeCart(userId);
+    return {list: this.cartList, data: this.cartData};
+  }
+
+  removeQuantity(product: any, userId: any) {
+    if (this.cartData[userId][product.code].quantity > 1) {
+      this.cartData[userId][product.code].quantity -= 1;
+    } else {
+      delete this.cartData[userId][product.code];
+    }
+    this.storeCart(userId);
+    return {list: this.cartList, data: this.cartData};
+  }
+
+  getCartSummary(cartList: any = this.cartList) {
+    const summary = {
+      totalQty: this.cartList.length,
+      totalAmount: 0,
+      totalItem: 0
+    }
+
+    cartList.forEach((product: any) => {
+      summary.totalItem += product.quantity;
+      summary.totalAmount += product.quantity * product.unitPrice;
+    });
+
+    return summary;
   }
 
   initCart(userId) {

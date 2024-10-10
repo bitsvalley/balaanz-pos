@@ -5,7 +5,6 @@ import { Network } from '@capacitor/network';
 import { NgZone  } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { AgentService } from 'src/app/shared/services/agent.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

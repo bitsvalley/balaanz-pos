@@ -2,7 +2,7 @@
   <div class="cart-screen">
     <div class="cart-container">
       <div class="app-header">
-        <div class="back-page">
+        <div class="back-page" (click)="back()">
           <span class="material-symbols-outlined">
             arrow_back
           </span>
@@ -13,7 +13,36 @@
       </div> 
       <div class="cart-body">
         <div class="cart-product-list">
-          <div class="cart-product-item">
+          <div class="no-item" *ngIf="!cartList?.length">
+            No Products in Cart
+          </div>
+          <div class="cart-product-item" *ngFor="let product of cartList">
+            <div class="cart-product-img">
+              <img [src]="product.image1 || 'assets/images/default-product.png'" alt="{{ product.name }}">
+            </div>
+            <div class="cart-product-content">
+              <h6>{{ product?.name }}</h6>
+              <div class="price">
+                <strong>{{ product?.unitPrice }}</strong>frs
+              </div>
+            </div>
+            <div class="cart-product-right">
+              <div class="cart-product-minus" (click)="remove(product)">
+                <span class="material-symbols-outlined">
+                  remove
+                </span>
+              </div>
+              <div class="cart-product-qty">
+                {{product?.quantity}}
+              </div>
+              <div class="cart-product-plus" (click)="add(product)">
+                <span class="material-symbols-outlined">
+                  add
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="cart-product-item">
             <div class="cart-product-img">
               <img src="assets/images/product-img-1.png" alt="">
             </div>
@@ -116,33 +145,7 @@
                 </span>
               </div>
             </div>
-          </div>
-          <div class="cart-product-item">
-            <div class="cart-product-img">
-              <img src="assets/images/product-img-1.png" alt="">
-            </div>
-            <div class="cart-product-content">
-              <h6>Grocery Product 1</h6>
-              <div class="price">
-                <strong>20</strong>frs
-              </div>
-            </div>
-            <div class="cart-product-right">
-              <div class="cart-product-minus">
-                <span class="material-symbols-outlined">
-                  remove
-                </span>
-              </div>
-              <div class="cart-product-qty">
-                1
-              </div>
-              <div class="cart-product-plus">
-                <span class="material-symbols-outlined">
-                  add
-                </span>
-              </div>
-            </div>
-          </div>
+          </div> -->
         </div>
       </div> 
       <div class="cart-checkout">
@@ -150,10 +153,10 @@
           <label>Checkout</label>
           <div class="cart-checkout-btn-right">
             <div class="cart-product-total-count">
-              5 Items
+              {{cartSummary.totalQty}} Items
             </div>
             <div class="cart-product-total-price">
-              <strong>2,000</strong>
+              <strong>{{cartSummary.totalAmount}}</strong>
               frs  
             </div>
             <span class="material-symbols-outlined">

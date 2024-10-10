@@ -109,13 +109,6 @@ export class HomePage implements OnDestroy {
     }, 100);
   }
 
-  // scrollToLoginButton() {
-  //   // Use scrollIntoView if the button element is available
-  //   if (this.loginButton) {
-  //     this.loginButton.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //   }
-  // }
-
   scrollToLoginButton() {
     this.content.scrollToBottom(300); // 300ms smooth scroll duration
   }

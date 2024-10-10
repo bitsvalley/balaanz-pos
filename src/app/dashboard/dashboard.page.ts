@@ -3,7 +3,7 @@ import { NavController } from '@ionic/angular';
 import { UserService } from 'src/app/shared/services/user.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ToastrService } from 'ngx-toastr';
-import { subscribeOn, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { IonRouterOutlet, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
@@ -57,11 +57,6 @@ export class DashboardPage implements OnDestroy {
       console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      // this.retriveCart(this.userDetails.id);
-      // if (!this.cartData[this.userDetails.id]) {
-      //   this.cartData[this.userDetails.id] = {};
-      //   // this._global.storeCart(this.userDetails.id);
-      // }
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -123,11 +118,10 @@ export class DashboardPage implements OnDestroy {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
     this.isAllProducts = true;
-    this.getProductList();
-
     this.isNavOpen = false;
     this.isAccountOpen = false;
     this.selelctedCategory = null;
+    this.getProductList();
   }
 
   ionViewWillLeave() {
@@ -143,27 +137,46 @@ export class DashboardPage implements OnDestroy {
   }
 
   handleRefresh(event: any) {
-    
+    this.isAllProducts = true;
+    this.selelctedCategory = null;
+    this.isNavOpen = false;
+    this.isAccountOpen = false;
+    this.fetchProducts(event);
   }
-
 
   getProductList() {
     this.productList = [];
     this.categoryList = [];
+    if (this._global.productData) {
+      this.processProducts(this._global.productData);
+    } else {
+      this.fetchProducts();
+    }
+  }
+
+  fetchProducts(event?: any) {
     this._user.productList().subscribe((response: any) => {
       console.log(response);
+      this._global.productData = response;
       this.productData = response;
-      if (this.isAllProducts && !this.selelctedCategory) {
-        Object.keys(response.products).forEach((key: any) => {
-          this.productList = [...this.productList, ...response.products[key]];
-        });
-      } else {
-        this.productList = response.products[this.selelctedCategory.id];
+      this.processProducts(response);
+      if (event) {
+        event.target.complete();
       }
+    });
+  }
 
-      Object.keys(response.categories).forEach((key: any) => {
-        this.categoryList.push({...response.categories[key], totalProducts: response.products[key]?.length });
+  processProducts(response) {
+    if (this.isAllProducts && !this.selelctedCategory) {
+      Object.keys(response.products).forEach((key: any) => {
+        this.productList = [...this.productList, ...response.products[key]];
       });
+    } else {
+      this.productList = response.products[this.selelctedCategory.id];
+    }
+
+    Object.keys(response.categories).forEach((key: any) => {
+      this.categoryList.push({...response.categories[key], totalProducts: response.products[key]?.length });
     });
   }
 
@@ -188,30 +201,12 @@ export class DashboardPage implements OnDestroy {
 
   }
 
-  // storeCart() {
-  //   localStorage.setItem('cart', JSON.stringify(this.cartData));
-  //   this.retriveCart();
-  // }
-
-  // retriveCart() {
-  //   this.cartList = [];
-  //   this.cartData = JSON.parse(localStorage.getItem('cart'));
-  //   if (this.cartData[this.userDetails.id]) {
-  //     Object.keys(this.cartData[this.userDetails.id]).forEach((key: any) => {
-  //       this.cartList.push(this.cartData[this.userDetails.id][key]);
-  //     })
-  //   }
-  // }
-
   addToCart(product) {
     this.cartList = this._global.addToCart(product, this.userDetails.id).list;
-    // console.log(product);
-    // if (!this.cartData[this.userDetails.id][product.code]) {
-    //   this.cartData[this.userDetails.id][product.code] = {...product, quantity: 1}
-    // } else {
-    //   this.cartData[this.userDetails.id][product.code].quantity += 1;
-    // }
-    // this.storeCart();
+  }
+
+  openCart() {
+    this._nav.navigateForward("cart");
   }
 
   ngOnDestroy(): void {

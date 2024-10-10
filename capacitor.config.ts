@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.unicsagent',
-  appName: 'UNICS PLC Agent',
+  appId: 'io.ionic.balaanzpos',
+  appName: 'Balaanz POS',
   webDir: 'www',
   server: {
     androidScheme: 'https'

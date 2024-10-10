@@ -1,3 +1,5 @@
+<ion-content> 
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)"></ion-refresher>
 <div class="products-screen">
   <div class="products-container">
     <div class="product-header-container">
@@ -26,8 +28,10 @@
       </div>
     </div> 
     <div class="products-list-container">
+      <div class="no-item" *ngIf="!productList?.length">
+        No Products in Cart
+      </div>
       <div class="products-list">
-
         <div class="products-item" *ngFor="let product of productList" (click)="addToCart(product)">
           <div class="product-img">
             <img [src]="product.image1 || 'assets/images/default-product.png'" alt="{{ product.name }}">
@@ -43,7 +47,7 @@
       <div class="app-nav-bar" (click)="toggleNav()">
         <img src="assets/images/menu-icon.png" alt=""> 
       </div>
-      <div class="app-nav-cart">
+      <div class="app-nav-cart" (click)="openCart()">
         <span class="material-symbols-outlined">
           shopping_cart
         </span>
@@ -105,3 +109,4 @@
     </div>
   </div>
 </div>
+</ion-content>
