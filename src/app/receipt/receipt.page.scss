@@ -1,0 +1,42 @@
+@import "./../../assets/style/config";
+
+
+.receipt-screen {
+    background-color: $color-bg-light-gray;
+    min-height: 100%;
+}
+
+.receipt-body {
+    padding: 20px 20px 70px;
+    width: 100%; 
+}
+
+.receipt-bottom {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    .receipt-btn {
+        background: $color-primary;
+        border-radius: 50px;
+        color: $color-white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        font-size: 18px;
+
+        .receipt-btn-right {
+            display: flex;
+            align-items: center;
+        }
+
+        &.disabled {
+            background: $color-gray;
+            cursor: not-allowed;
+        }
+    }
+}

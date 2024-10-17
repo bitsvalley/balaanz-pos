@@ -11,11 +11,11 @@ import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.page.html',
-  styleUrls: ['./checkout.page.scss'],
+  selector: 'app-receipt',
+  templateUrl: './receipt.page.html',
+  styleUrls: ['./receipt.page.scss'],
 })
-export class CheckoutPage implements OnInit {
+export class ReceiptPage implements OnInit {
 
   public userDetails: any = null;
   public cartList: any = [];
@@ -23,34 +23,7 @@ export class CheckoutPage implements OnInit {
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public paymentSelected: boolean = false;
-  
-  public paymentMethods: any = [
-    {
-      title: "CASH",
-      id: 1,
-      value: null,
-      userInput: false,
-      isSelected: false,
-      placeholder: null
-    }, 
-    {
-      title: "MOMO",
-      id: 2,
-      value: null,
-      userInput: true,
-      isSelected: false,
-      placeholder: "Enter MOMO Number"
-    },
-    {
-      title: "BALAANZ ACCOUNT",
-      id: 3,
-      value: null,
-      userInput: true,
-      isSelected: false,
-      placeholder: "Enter Account Number"
-    }
-  ]
-  
+
   constructor(
     private _nav: NavController,
     private _user: UserService,
@@ -95,21 +68,6 @@ export class CheckoutPage implements OnInit {
   back() {
     this._global.setServerErr(false);
     this._nav.back();
-  }
-
-  selectMethod(method)  {
-    this.paymentMethods.forEach((item: any)  => {
-      item.isSelected = false;
-    });
-    this.paymentSelected = true;
-    method.isSelected = true;
-  }
-
-  processPayment() {
-    console.log("HItt");
-    if (this.paymentSelected) {
-      this._nav.navigateForward('receipt');
-    }
   }
 
 }

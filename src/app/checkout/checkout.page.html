@@ -1,7 +1,7 @@
 <div class="checkout-screen">
   <div class="checkout-container">
     <div class="app-header">
-      <div class="back-page">
+      <div class="back-page" (click)="back()">
         <span class="material-symbols-outlined">
           arrow_back
         </span>
@@ -14,51 +14,36 @@
       <div class="checkout-summery">
         <div class="checkout-summery-item">
           <span>Subtotal</span>
-          <span>$100</span>
+          <span>{{cartSummary.totalAmount}} frs</span>
         </div>
         <div class="checkout-summery-item">
           <span>Tax</span>
-          <span>$10</span>
+          <span>0 frs</span>
         </div>
         <div class="checkout-summery-item">
           <strong>Grand Total</strong>
-          <strong>$100</strong>
+          <strong>{{cartSummary.totalAmount}} frs</strong>
         </div>
       </div>
       <div class="payment-method-block">
         <h4>Payment Method</h4>
         <ul>
-          <li (click)="selectPaymentMethod('cash')">
-            <strong>CASH
-              <span class="material-symbols-outlined">
-                chevron_right
+          <li *ngFor="let method of paymentMethods" (click)="selectMethod(method)" [ngClass]="{'active':  method.isSelected}">
+            <strong>{{method.title}}
+              <span class="radio-symbol">
+                <span class="radio-symbol-inner"></span>
               </span>
             </strong>
-          </li>
-          <li (click)="selectPaymentMethod('momo')">
-            <strong>MOMO 
-              <span class="material-symbols-outlined">
-                chevron_right
-              </span>
-            </strong>
-            <input *ngIf="selectedPaymentMethod === 'momo'" type="text" class="form-field" placeholder="Enter MOMO details">
-          </li>
-          <li (click)="selectPaymentMethod('balaanz')">
-            <strong>BALAANZ ACCOUNT
-              <span class="material-symbols-outlined">
-                chevron_right
-              </span>
-            </strong>
-            <input *ngIf="selectedPaymentMethod === 'balaanz'" type="text" class="form-field" placeholder="Enter Balaanz Account details">
+            <input *ngIf="method.userInput && method.isSelected" type="text" class="form-field" [(ngModel)]="method.value" placeholder="{{method.placeholder}}">
           </li>
         </ul>
       </div> 
     </div> 
     <div class="checkout-bottom">
-      <div class="checkout-btn">
+      <div class="checkout-btn" [ngClass]="{'disabled': !paymentSelected}" (click)="processPayment()">
         <label>Pay</label>
         <div class="checkout-btn-right"> 
-          $180.00
+          {{cartSummary.totalAmount}} frs
           <span class="material-symbols-outlined">
             chevron_right
           </span>

@@ -30,11 +30,15 @@ const routes: Routes = [
     loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
   },
   {
+    path: 'receipt',
+    canActivate: [AuthGuardService],
+    loadChildren: () => import('./receipt/receipt.module').then( m => m.ReceiptPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
-  }, 
-
+  }
 ];
 
 @NgModule({
