@@ -11,7 +11,41 @@
       </div>
     </div> 
     <div class="receipt-body"> 
-      
+      <div class="receipt-page">
+        <div class="receipt-title">
+          <h2>Balaanz POS</h2>
+          <p>A-101, Address 1, New York, USA</p>
+          <p>9727040159</p>
+        </div>
+        <div class="receipt-header">
+          <p>Order #: <span>0123245660</span></p>
+          <p>Type: <span>SALE</span></p>
+          <p>Order Date: <span>{{currentDate}}</span></p>
+        </div>
+        <div class="receipt-products" *ngIf="cartList.length">
+          <ul>
+            <li *ngFor="let cart of cartList">
+              <label>
+                {{cart.name}}
+              </label>
+              <span>
+                X {{cart.quantity}}
+              </span>
+              <b>
+                {{cart.unitPrice}} frs
+              </b>
+            </li>
+          </ul>
+          <div class="receipt-product-summary">
+            <p><label>Sub Total:</label><b>{{cartSummary.totalAmount}} frs</b></p>
+            <p><label>Tax:</label><b>0 frs</b></p>
+            <h4><label>Total:</label><b>{{cartSummary.totalAmount}} frs</b></h4>
+          </div>
+        </div>
+        <div class="receipt-footer">
+          <p>Thank you for shopping with us</p>
+        </div>
+      </div>
     </div> 
     <div class="receipt-bottom">
       <div class="receipt-btn">

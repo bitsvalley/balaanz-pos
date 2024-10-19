@@ -3,12 +3,12 @@ import { NavController } from '@ionic/angular';
 import { UserService } from 'src/app/shared/services/user.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { ToastrService } from 'ngx-toastr';
-import { IonRouterOutlet, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { Router } from '@angular/router'; 
 import { App } from '@capacitor/app';
-import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-receipt',
@@ -23,6 +23,7 @@ export class ReceiptPage implements OnInit {
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public paymentSelected: boolean = false;
+  public currentDate: any = moment().format('DD/MMM/YYYY');
 
   constructor(
     private _nav: NavController,
