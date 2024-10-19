@@ -72,10 +72,7 @@ export class SunmiPrinterService implements OnDestroy {
 // us! 
 // `;
 
-      const thankNote = 
-`Thank you for using agent   
-banking!                     
-                             `
+      const thankNote = `Thank you for shopping with us`;
 
         // Default Settings
         await Sunmi.start();
@@ -83,65 +80,35 @@ banking!
         await Sunmi.fontSize({size: 1});
 
         // Title and Address
-        await Sunmi.text({text: this.formatLines("====== UNICS PLC AGENT ======")});
+        await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
         await Sunmi.text({text: this.dashedBorder()});
 
         // Show Customer Name
         await Sunmi.text({text: this.formatLines("Date")});
-        await Sunmi.text({text: this.formatLines(`${data.date}`)})
+        await Sunmi.text({text: this.formatLines(`${data.currentData}`)})
         await Sunmi.text({text: this.dashedBorder()});
 
         // Show Customer Name
-        await Sunmi.text({text: this.formatLines("Transaction Type")});
-        await Sunmi.text({text: this.formatLines(`${data.transaction.transactionType}`)})
+        await Sunmi.text({text: this.formatLines("Product List")});
         await Sunmi.text({text: this.dashedBorder()});
 
         // Show Customer Name
-        await Sunmi.text({text: this.formatLines("Customer Name")});
-        await Sunmi.text({text: this.formatLines(`${data.customer.customer?.firstName} ${data.customer.customer?.lastName}`)})
+        data.cartList.forEach(async(itm) => {
+          await Sunmi.text({text: this.formatLines(`${itm.name}`)});
+          await Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
+          await Sunmi.text({text: this.formatLines(`${itm.unitPrice} frs`)})
+        });
+
         await Sunmi.text({text: this.dashedBorder()});
 
-        // Show Agent Name
-        await Sunmi.text({text: this.formatLines("Agent Name")});
-        await Sunmi.text({text: this.formatLines(`${data.user?.first_name} ${data.user?.last_name}`)})
-        await Sunmi.text({text: this.dashedBorder()});
+        await Sunmi.text({text: this.formatLines(`Subtotal: ${data.cartSummary.totalAmount}`)});
+        await Sunmi.text({text: this.formatLines(`Tax: 0`)});
+        await Sunmi.text({text: this.formatLines(`Total: ${data.cartSummary.totalAmount}`)});
 
-        // Show Account Number
-        await Sunmi.text({text: this.formatLines("Account Number")});
-        await Sunmi.text({text: this.formatLines(`${data.customer?.selectedAccount?.accountNumber}`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        // Show Account Number
-        await Sunmi.text({text: this.formatLines("Amount")});
-        await Sunmi.text({text: this.formatLines(`${data.transaction?.savingAmount} frs`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        // Show Account Balance
-        await Sunmi.text({text: this.formatLines("Account Balance")});
-        await Sunmi.text({text: this.formatLines(`${data.transResp?.savingBilanzList?.totalSaving} frs`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        await Sunmi.text({text: thankNote})
+        await Sunmi.text({text: this.formatLines(`${thankNote}`)});
 
         // Print 
         await Sunmi.print();
-        
-        // console.log(await SunmiPrinter.getDeviceName());
-        
-        // console.log(await SunmiPrinter.getPrinterModel());
-        // console.log(await SunmiPrinter.printerInit());
-        // console.log(await SunmiPrinter.bindService());
-        
-        // try {
-        //   const result = await SunmiPrinter.printText({
-        //     text: text
-        //   });
-        //   console.log('Print successful', result);
-        //   return true;
-        // } catch (error) {
-        //   console.error('Error printing:', error);
-        //   return false;
-        // }
       }
 
     ngOnDestroy(): void {

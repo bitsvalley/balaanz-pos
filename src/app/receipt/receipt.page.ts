@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
+import { SunmiPrinterService } from 'src/app/shared/services/sunmi.printer';
 
 @Component({
   selector: 'app-receipt',
@@ -22,7 +23,6 @@ export class ReceiptPage implements OnInit {
   public runTimeProps: any = null;
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
-  public paymentSelected: boolean = false;
   public currentDate: any = moment().format('DD/MMM/YYYY');
 
   constructor(
@@ -32,7 +32,8 @@ export class ReceiptPage implements OnInit {
     private _global: GlobalService,
     private _platform: Platform,
     private _route: Router,
-    private _account: AccountService
+    private _account: AccountService,
+    private _sunmi: SunmiPrinterService
   ) { 
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
@@ -42,7 +43,6 @@ export class ReceiptPage implements OnInit {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
@@ -69,6 +69,10 @@ export class ReceiptPage implements OnInit {
   back() {
     this._global.setServerErr(false);
     this._nav.back();
+  }
+
+  printReceipt() {
+    this._sunmi.print({cartList: this.cartList, cartSummary: this.cartSummary, currentData: this.currentDate, userDetails: this.userDetails});
   }
 
 }
