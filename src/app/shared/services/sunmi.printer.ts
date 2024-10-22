@@ -36,6 +36,10 @@ export class SunmiPrinterService implements OnDestroy {
       }
     }
 
+    addEmptyLine() {
+      return `                             `;
+    }
+
     formatColumn2(colText1, colText2) {
       const colL1 = colText1.length;
       const colL2 = colText2.length;
@@ -56,7 +60,8 @@ export class SunmiPrinterService implements OnDestroy {
     }
 
     async print(data: any) {
-      const thankNote = `Thank you for shopping with us`;
+      const thankNote = `Thank you for shopping with`;
+      const thankNote2 = `us`;
 
         // Default Settings
         await Sunmi.start();
@@ -65,14 +70,16 @@ export class SunmiPrinterService implements OnDestroy {
 
         // Title and Address
         await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
-        await Sunmi.text({text: this.dashedBorder()});
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.addEmptyLine()});
 
         // Show Customer Name
-        await Sunmi.text({text: this.formatLines("Date")});
-        await Sunmi.text({text: this.formatLines(`${data.currentData}`)})
-        await Sunmi.text({text: this.dashedBorder()});
+        await Sunmi.text({text: this.formatLines(`Order Date: ${data.currentData}`)});
+        await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
+        await Sunmi.text({text: this.formatLines("Order Type: SELL")});
 
         // Show Customer Name
+        await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.formatLines("Product List")});
         await Sunmi.text({text: this.dashedBorder()});
 
@@ -81,8 +88,13 @@ export class SunmiPrinterService implements OnDestroy {
 
         await Sunmi.text({text: this.dashedBorder()});
         await Sunmi.text({text: this.formatLines(`Total: ${data.cartSummary.totalAmount}`)});
-        await Sunmi.text({text: this.dashedBorder()});
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.formatLines(`${thankNote}`)});
+        await Sunmi.text({text: this.formatLines(`${thankNote2}`)});
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.addEmptyLine()});
 
         // Print 
         await Sunmi.print();

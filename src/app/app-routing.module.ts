@@ -30,7 +30,7 @@ const routes: Routes = [
     loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
   },
   {
-    path: 'receipt',
+    path: 'receipt/:requestId',
     canActivate: [AuthGuardService],
     loadChildren: () => import('./receipt/receipt.module').then( m => m.ReceiptPageModule)
   },

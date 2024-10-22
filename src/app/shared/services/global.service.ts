@@ -115,12 +115,21 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
+  emptyCart(userId) {
+    this.cartData =  JSON.parse(localStorage.getItem('cart'));
+    if (this.cartData[userId]) {
+      this.cartData[userId] = {};
+      this.storeCart(userId);
+    }
+    return {list: this.cartList, data: this.cartData};
+  }
+
   addToCart(product: any, userId: any) {
     console.log(product);
-    if (!this.cartData[userId][product.code]) {
-      this.cartData[userId][product.code] = {...product, quantity: 1}
-    } else {
+    if (this.cartData[userId][product.code]) {
       this.cartData[userId][product.code].quantity += 1;
+    } else {
+      this.cartData[userId][product.code] = {...product, quantity: 1}
     }
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};

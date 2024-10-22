@@ -58,10 +58,17 @@ export class CartPage implements OnInit {
   ionViewWillEnter() {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
+    if (this.userDetails.id) {
+      this.cartList = this._global.retriveCart(this.userDetails.id).list;
+      this.cartSummary =  this._global.getCartSummary();
+    }
+    
   }
 
   openCheckout(){
-    this._nav.navigateForward("checkout");
+    if (this.cartList.length) {
+      this._nav.navigateForward("checkout");
+    }
   }
 
   ionViewWillLeave() {

@@ -85,12 +85,24 @@ export class CheckoutPage implements OnInit {
 
   ngOnInit() {
     this.generateForm();
+    this.checkCart();
+  }
+
+  checkCart() {
+    if (!this.cartList.length) {
+      this._nav.navigateBack('dashboard');
+    }
   }
 
   ionViewWillEnter() {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
     this.generateForm();
+    if (this.userDetails.id) {
+      this.cartList = this._global.retriveCart(this.userDetails.id).list;
+      this.cartSummary =  this._global.getCartSummary();
+    }
+    this.checkCart();
   }
 
   ionViewWillLeave() {
@@ -127,7 +139,7 @@ export class CheckoutPage implements OnInit {
       this.paymentForm.get('value').setValue("");
     }
     if (this.paymentForm.get('method').value === 'MOMO' || this.paymentForm.get('method').value === 'ACCOUNT') {
-      this.paymentForm.get('value').setValidators([Validators.required]);
+      this.paymentForm.get('value').setValidators([Validators.required, Validators.pattern(/^\d{9}$/)]);
       this.paymentForm.get('value').updateValueAndValidity();
     } else if (this.paymentForm.get('method').value === 'CASH') {
       this.paymentForm.get('value').setValidators(null);
@@ -147,7 +159,7 @@ export class CheckoutPage implements OnInit {
       "cartContent": {}
     };
     this.cartList.forEach((itm) => {
-      payload.cartContent[itm.id] = {
+      payload.cartContent[itm.category] = {
           "productId": itm.id,
           "productName": itm.name,
           "quantity": itm.quantity,
@@ -158,18 +170,12 @@ export class CheckoutPage implements OnInit {
     this._global.setLoader(true);
     setTimeout(() => {
       this._user.pay(payload).subscribe((res: any) => {
-        console.log(res);
-  
-        this._user.payStatus(res.id).subscribe((status: any) => {
-          console.log(status)
+        this._user.payStatus(res.requestId).subscribe((status: any) => {
+          this._nav.navigateForward('receipt/' + status.requestId);
           this._global.setLoader(false);
         }, (err: any) => {
           this._global.setLoader(false);
-        })
-  
-        if (this.paymentSelected) {
-          this._nav.navigateForward('receipt');
-        }
+        });
       }, (error: any) => {
         this._global.setLoader(false);
       })

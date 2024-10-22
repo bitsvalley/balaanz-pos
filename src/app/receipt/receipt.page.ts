@@ -5,7 +5,7 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { ToastrService } from 'ngx-toastr';
 import { Platform } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { Router } from '@angular/router'; 
+import { Router, ActivatedRoute } from '@angular/router'; 
 import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -24,6 +24,9 @@ export class ReceiptPage implements OnInit {
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public currentDate: any = moment().format('DD/MMM/YYYY');
+  public receiptCartList: any = [];
+  public receiptCartSummary: any = [];
+  public requestId: any = null;
 
   constructor(
     private _nav: NavController,
@@ -33,13 +36,15 @@ export class ReceiptPage implements OnInit {
     private _platform: Platform,
     private _route: Router,
     private _account: AccountService,
-    private _sunmi: SunmiPrinterService
+    private _sunmi: SunmiPrinterService,
+    private _actRoute: ActivatedRoute
   ) { 
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
         App.exitApp();
       }
     });
+    this.requestId = this._actRoute.snapshot.params['requestId'];
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
@@ -54,11 +59,24 @@ export class ReceiptPage implements OnInit {
   }
 
   ngOnInit() {
+    
+  }
+
+  clearCart() {
+    if (this.cartList.length) {
+      this._toastr.success("Payment has been successfully done.", "Payment Successful");
+      this.receiptCartList = [...this.cartList];
+      this.receiptCartSummary = {...this.cartSummary};
+      this._global.emptyCart(this.userDetails.id);
+    } else {
+      this._nav.navigateBack('dashboard');
+    }
   }
 
   ionViewWillEnter() {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
+    this.clearCart();
   }
 
   ionViewWillLeave() {
@@ -72,7 +90,7 @@ export class ReceiptPage implements OnInit {
   }
 
   printReceipt() {
-    this._sunmi.print({cartList: this.cartList, cartSummary: this.cartSummary, currentData: this.currentDate, userDetails: this.userDetails});
+    this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentData: this.currentDate, userDetails: this.userDetails});
   }
 
 }

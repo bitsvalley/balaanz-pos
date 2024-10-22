@@ -140,5 +140,10 @@
                 padding-left: 5px;
             }
         }
+
+        &.disabled {
+            background: $color-gray;
+            cursor: not-allowed;
+        }
     }
 }
