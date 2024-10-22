@@ -44,34 +44,18 @@ export class SunmiPrinterService implements OnDestroy {
       return colL1 + spaces + colL2;
     }
 
-    async print(data: any) {
-        // console.log(await SunmiPrinter.printerInit());
-        // const testArray = [
-        //   {name: "Product 1", qty: 2, price: 20, total: 40},
-        //   {name: "Product 2", qty: 2, price: 30, total: 60},
-        //   {name: "Product 3", qty: 2, price: 40, total: 80}
-        // ]
-//         const receiptContent = `
-// Balaanz Food Shop            
-// Address: 123 Main St, City,  
-// Country                      
-// Date: 10/12/2024             
-                             
-// -----------------------------
-// Item        Qty  Price  Total
-// -----------------------------
-// Product A   1    $10   $10.00
-// Product B   2    $10   $30.00
-// ${testArray.map((item) => {
-//   return `${item.name}   ${item.qty}    ${item.price}   ${item.total}`
-// })}
-// -----------------------------
-// Total:                 $40.00
-// -----------------------------
-// Thank you for shopping with  
-// us! 
-// `;
+    printProducts(data) {
+      return new Promise((resolve, reject) => {
+        data.cartList.forEach((itm) => {
+          Sunmi.text({text: this.formatLines(`${itm.name}`)});
+          Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
+          Sunmi.text({text: this.formatLines(`${itm.unitPrice} frs`)})
+        });
+        resolve(true);
+      });
+    }
 
+    async print(data: any) {
       const thankNote = `Thank you for shopping with us`;
 
         // Default Settings
@@ -93,18 +77,11 @@ export class SunmiPrinterService implements OnDestroy {
         await Sunmi.text({text: this.dashedBorder()});
 
         // Show Customer Name
-        data.cartList.forEach(async(itm) => {
-          await Sunmi.text({text: this.formatLines(`${itm.name}`)});
-          await Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
-          await Sunmi.text({text: this.formatLines(`${itm.unitPrice} frs`)})
-        });
+        await this.printProducts(data);
 
         await Sunmi.text({text: this.dashedBorder()});
-
-        await Sunmi.text({text: this.formatLines(`Subtotal: ${data.cartSummary.totalAmount}`)});
-        await Sunmi.text({text: this.formatLines(`Tax: 0`)});
         await Sunmi.text({text: this.formatLines(`Total: ${data.cartSummary.totalAmount}`)});
-
+        await Sunmi.text({text: this.dashedBorder()});
         await Sunmi.text({text: this.formatLines(`${thankNote}`)});
 
         // Print 

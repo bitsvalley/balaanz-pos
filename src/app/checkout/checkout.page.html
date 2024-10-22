@@ -27,20 +27,22 @@
       </div>
       <div class="payment-method-block">
         <h4>Payment Method</h4>
-        <ul>
-          <li *ngFor="let method of paymentMethods" (click)="selectMethod(method)" [ngClass]="{'active':  method.isSelected}">
-            <strong>{{method.title}}
-              <span class="radio-symbol">
-                <span class="radio-symbol-inner"></span>
-              </span>
-            </strong>
-            <input *ngIf="method.userInput && method.isSelected" type="text" class="form-field" [(ngModel)]="method.value" placeholder="{{method.placeholder}}">
-          </li>
-        </ul>
+        <form [formGroup]="paymentForm">
+          <ul>
+            <li *ngFor="let method of paymentMethods" (click)="selectMethod(method)" [ngClass]="{'active':  method.isSelected}">
+              <strong>{{method.title}}
+                <span class="radio-symbol">
+                  <span class="radio-symbol-inner"></span>
+                </span>
+              </strong>
+              <input *ngIf="method.userInput && method.isSelected" type="text" class="form-field" formControlName="value" placeholder="{{method.placeholder}}">
+            </li>
+          </ul>
+        </form>
       </div> 
     </div> 
     <div class="checkout-bottom">
-      <div class="checkout-btn" [ngClass]="{'disabled': !paymentSelected}" (click)="processPayment()">
+      <div class="checkout-btn" [ngClass]="{'disabled': paymentForm.invalid || !cartList.length}" (click)="processPayment()">
         <label>Pay</label>
         <div class="checkout-btn-right"> 
           {{cartSummary.totalAmount}} frs

@@ -25,5 +25,7 @@ export const endpoints = {
     getAgentStat: "api/v1/dailySavingAccount/stats?userId=",
     createDailySavingAccount: "api/v1/dailySavingAccount/registerDailySavingAccountForm",
     userInfo: 'api/v1/user/',
-    productList: 'api/v1/pos/products'
+    productList: 'api/v1/pos/products',
+    payment: "api/v1/payment/pay",
+    paymentStatus: "api/v1/payment/status/"
 }
