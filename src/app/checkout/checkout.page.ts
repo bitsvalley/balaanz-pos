@@ -76,6 +76,7 @@ export class CheckoutPage implements OnInit {
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
+      this.checkCart();
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -85,13 +86,15 @@ export class CheckoutPage implements OnInit {
 
   ngOnInit() {
     this.generateForm();
-    this.checkCart();
   }
 
   checkCart() {
-    if (!this.cartList.length) {
-      this._nav.navigateBack('dashboard');
-    }
+    setTimeout(() => {
+      if (!this.cartList.length) {
+        this._nav.navigateBack('dashboard');
+      }
+    }, 1000);
+    
   }
 
   ionViewWillEnter() {
@@ -101,8 +104,8 @@ export class CheckoutPage implements OnInit {
     if (this.userDetails.id) {
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
+      this.checkCart();
     }
-    this.checkCart();
   }
 
   ionViewWillLeave() {

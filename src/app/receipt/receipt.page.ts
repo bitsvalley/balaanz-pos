@@ -23,7 +23,7 @@ export class ReceiptPage implements OnInit {
   public runTimeProps: any = null;
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
-  public currentDate: any = moment().format('DD/MMM/YYYY');
+  public currentDate: any = moment().format('DD/MMM/YYYY HH:mm:ss');
   public receiptCartList: any = [];
   public receiptCartSummary: any = [];
   public requestId: any = null;
@@ -90,7 +90,7 @@ export class ReceiptPage implements OnInit {
   }
 
   printReceipt() {
-    this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentData: this.currentDate, userDetails: this.userDetails});
+    this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails});
   }
 
 }

@@ -33,12 +33,12 @@
                 X {{cart.quantity}}
               </span>
               <b>
-                {{cart.unitPrice}} frs
+                {{cart.unitPrice | number}} frs
               </b>
             </li>
           </ul>
           <div class="receipt-product-summary">
-            <h4><label>Total:</label><b>{{receiptCartSummary.totalAmount}} frs</b></h4>
+            <h4><label>Total:</label><b>{{receiptCartSummary.totalAmount | number}} frs</b></h4>
           </div>
         </div>
         <div class="receipt-footer">

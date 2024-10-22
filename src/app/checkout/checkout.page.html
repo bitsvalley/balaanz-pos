@@ -22,7 +22,7 @@
         </div> -->
         <div class="checkout-summery-item">
           <strong>Grand Total</strong>
-          <strong>{{cartSummary.totalAmount}} frs</strong>
+          <strong>{{cartSummary.totalAmount | number}} frs</strong>
         </div>
       </div>
       <div class="payment-method-block">
@@ -30,7 +30,13 @@
         <form [formGroup]="paymentForm">
           <ul>
             <li *ngFor="let method of paymentMethods" (click)="selectMethod(method)" [ngClass]="{'active':  method.isSelected}">
-              <strong>{{method.title}}
+              <strong>
+                <label>
+                  <i *ngIf="method.title === 'CASH'"><img src="/assets/images/coin.png" /></i>
+                  <i *ngIf="method.title === 'MOMO'"><img src="/assets/images/mtn.png" /></i>
+                  <i *ngIf="method.title === 'BALAANZ ACCOUNT'"><img src="/assets/images/account.png" /></i>
+                  {{method.title}}
+                </label>
                 <span class="radio-symbol">
                   <span class="radio-symbol-inner"></span>
                 </span>
@@ -45,7 +51,7 @@
       <div class="checkout-btn" [ngClass]="{'disabled': paymentForm.invalid || !cartList.length}" (click)="processPayment()">
         <label>Pay</label>
         <div class="checkout-btn-right"> 
-          {{cartSummary.totalAmount}} frs
+          {{cartSummary.totalAmount | number}} frs
           <span class="material-symbols-outlined">
             chevron_right
           </span>

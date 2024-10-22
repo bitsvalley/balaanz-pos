@@ -23,7 +23,7 @@
             <div class="cart-product-content">
               <h6>{{ product?.name }}</h6>
               <div class="price">
-                <strong>{{ product?.unitPrice }}</strong>frs
+                <strong>{{ product?.unitPrice | number }}</strong>frs
               </div>
             </div>
             <div class="cart-product-right">
@@ -52,7 +52,7 @@
               {{cartSummary.totalQty}} Items
             </div>
             <div class="cart-product-total-price">
-              <strong>{{cartSummary.totalAmount}}</strong>
+              <strong>{{cartSummary.totalAmount | number}}</strong>
               frs  
             </div>
             <span class="material-symbols-outlined">
