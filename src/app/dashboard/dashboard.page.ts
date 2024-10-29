@@ -122,6 +122,11 @@ export class DashboardPage implements OnDestroy {
     this.isAccountOpen = false;
     this.selelctedCategory = null;
     this.getProductList();
+
+    if (this.userDetails.id) {
+      this._global.initCart(this.userDetails.id);
+      this.cartList = this._global.retriveCart(this.userDetails.id).list;
+    }
   }
 
   ionViewWillLeave() {
@@ -155,6 +160,7 @@ export class DashboardPage implements OnDestroy {
   }
 
   fetchProducts(event?: any) {
+    this.productList = [];
     this._user.productList().subscribe((response: any) => {
       console.log(response);
       this._global.productData = response;
