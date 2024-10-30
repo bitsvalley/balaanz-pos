@@ -27,6 +27,7 @@ export class ReceiptPage implements OnInit {
   public receiptCartList: any = [];
   public receiptCartSummary: any = [];
   public requestId: any = null;
+  public paymentData: any = this._global.getPaymentData();
 
   constructor(
     private _nav: NavController,
@@ -90,7 +91,7 @@ export class ReceiptPage implements OnInit {
   }
 
   printReceipt() {
-    this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails});
+    this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
   }
 
 }

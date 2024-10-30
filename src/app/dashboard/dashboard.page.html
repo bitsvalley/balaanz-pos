@@ -33,12 +33,16 @@
       </div>
       <div class="products-list">
         <div class="products-item" *ngFor="let product of productList" (click)="addToCart(product)">
-          <div class="product-img">
-            <img [src]="product.image1 || 'assets/images/default-product.png'" alt="{{ product.name }}">
+          <div class="product-image">
+            <div class="product-img">
+              <img [src]="product.image1 || 'assets/images/default-product.png'" alt="{{ product.name }}">
+            </div>
           </div>
-          <h4>{{ product?.name }}</h4>
-          <div class="price">
-            <strong>{{ product?.unitPrice | number }}</strong> frs
+          <div class="product-content">
+            <h4>{{ product?.name }}</h4>
+            <div class="price">
+              <strong>{{ product?.unitPrice | number }}</strong> frs
+            </div>
           </div>
         </div>
       </div>

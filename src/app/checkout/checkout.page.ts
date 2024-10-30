@@ -174,6 +174,7 @@ export class CheckoutPage implements OnInit {
     setTimeout(() => {
       this._user.pay(payload).subscribe((res: any) => {
         this._user.payStatus(res.requestId).subscribe((status: any) => {
+          this._global.setPaymentData(this.paymentForm.value);
           this._nav.navigateForward('receipt/' + status.requestId);
           this._global.setLoader(false);
         }, (err: any) => {

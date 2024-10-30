@@ -21,6 +21,7 @@
           <p></p>
           <p>Agent: <span>{{userDetails.first_name}} {{userDetails.last_name}}</span></p>
           <p>Type: <span>SELL</span></p>
+          <p>Payment Method: <span>{{paymentData.method}} ({{paymentData.value}})</span></p>
           <p>Order Date: <span>{{currentDate}}</span></p>
         </div>
         <div class="receipt-products" *ngIf="receiptCartList.length">

@@ -30,9 +30,10 @@ export class GlobalService {
 
   constructor(private _user: UserService, private _toast: ToastrService) { }
 
-  public cartList: any = [];
-  public cartData: any = {};
+  private cartList: any = [];
+  private cartData: any = {};
   public productData: any = null;
+  private paymentData: any = null;
 
   // getToken() {
   //   return new Promise((resolve, reject) => {
@@ -166,12 +167,20 @@ export class GlobalService {
     return summary;
   }
 
-  initCart(userId) {
+  initCart(userId: any) {
     this.retriveCart(userId);
     if (!this.cartData[userId]) {
       this.cartData[userId] = {};
       this.storeCart(userId);
     }
+  }
+
+  setPaymentData(data:  any) {
+    this.paymentData = data;
+  }
+
+  getPaymentData() {
+    return this.paymentData;
   }
 
 }

@@ -77,6 +77,8 @@ export class SunmiPrinterService implements OnDestroy {
         // Show Customer Name
         await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
         await Sunmi.text({text: this.formatLines("Order Type: SELL")});
+        await Sunmi.text({text: this.formatLines(`Payment Method:`)});
+        await Sunmi.text({text: this.formatLines(`${data.paymentData.method} ${data.paymentData.value}`)});
         await Sunmi.text({text: this.formatLines(`Order Date:`)});
         await Sunmi.text({text: this.formatLines(`${data.currentDate}`)});    
 
