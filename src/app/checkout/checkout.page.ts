@@ -162,7 +162,7 @@ export class CheckoutPage implements OnInit {
       "cartContent": {}
     };
     this.cartList.forEach((itm) => {
-      payload.cartContent[itm.category] = {
+      payload.cartContent[itm.id] = {
           "productId": itm.id,
           "productName": itm.name,
           "quantity": itm.quantity,
@@ -173,13 +173,19 @@ export class CheckoutPage implements OnInit {
     this._global.setLoader(true);
     setTimeout(() => {
       this._user.pay(payload).subscribe((res: any) => {
-        this._user.payStatus(res.requestId).subscribe((status: any) => {
+        if (this.paymentForm.value.method !== 'CASH') {
+          this._user.payStatus(res.requestId).subscribe((status: any) => {
+            this._global.setPaymentData(this.paymentForm.value);
+            this._nav.navigateForward('receipt/' + status.requestId);
+            this._global.setLoader(false);
+          }, (err: any) => {
+            this._global.setLoader(false);
+          });
+        } else {
           this._global.setPaymentData(this.paymentForm.value);
-          this._nav.navigateForward('receipt/' + status.requestId);
+          this._nav.navigateForward('receipt/0');
           this._global.setLoader(false);
-        }, (err: any) => {
-          this._global.setLoader(false);
-        });
+        }
       }, (error: any) => {
         this._global.setLoader(false);
       })
