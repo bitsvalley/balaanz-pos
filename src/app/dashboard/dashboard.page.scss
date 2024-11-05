@@ -94,6 +94,14 @@
                 width: 100%;
                 display: flex;
                 flex-direction: column;
+                .product-content-bottom {
+                    display: flex;
+                    justify-content: space-between; 
+                    align-items: center;
+                    .product-qty {
+                        font-size: 14px;
+                    }
+                }
             }
 
             h4 {

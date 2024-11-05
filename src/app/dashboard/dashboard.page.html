@@ -40,8 +40,13 @@
           </div>
           <div class="product-content">
             <h4>{{ product?.name }}</h4>
-            <div class="price">
-              <strong>{{ product?.unitPrice | number }}</strong> frs
+            <div class="product-content-bottom">
+              <div class="price">
+                <strong>{{ product?.unitPrice | number }}</strong> frs
+              </div>
+              <div class="product-qty">
+                Qty <strong>{{ product?.stockAmount | number }}</strong>
+              </div>
             </div>
           </div>
         </div>
