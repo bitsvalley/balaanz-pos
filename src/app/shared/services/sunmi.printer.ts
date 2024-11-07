@@ -12,15 +12,19 @@ export class SunmiPrinterService implements OnDestroy {
       console.log(this.decimalPipe.transform(1000));
     }
 
-    fillSpace(text) {
+    fillSpace(text, align) {
       const spacesNeeded = 29 - text.length;
       const spaces = ' '.repeat(spacesNeeded)
-      return text + spaces;
+      if (align === 'right') {
+        return spaces + text;
+      } else {
+        return text + spaces;
+      }
     }
     
-    breakWords(text) {
+    breakWords(text, align) {
       const breakString = text.match(/.{1,29}/g);
-      const breakSpaceString = breakString.map(item => item.length < 29? this.fillSpace(item) : item);
+      const breakSpaceString = breakString.map(item => item.length < 29? this.fillSpace(item, align) : item);
       return breakSpaceString.join("");
     }
 
@@ -28,12 +32,12 @@ export class SunmiPrinterService implements OnDestroy {
       return `-----------------------------`;
     }
 
-    formatLines(text: any) {
+    formatLines(text: any, align: any = 'left') {
       const isSingleString = text.length > 29? false : true;
       if (isSingleString) {
-        return this.fillSpace(text);
+        return this.fillSpace(text,  align);
       } else {
-        return this.breakWords(text);
+        return this.breakWords(text, align);
       }
     }
 
@@ -52,9 +56,9 @@ export class SunmiPrinterService implements OnDestroy {
     printProducts(data) {
       return new Promise((resolve, reject) => {
         data.cartList.forEach((itm) => {
-          Sunmi.text({text: this.formatLines(`${itm.name}`)});
-          Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
-          Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)} frs`)})
+          Sunmi.text({text: this.formatLines(`${itm.name} X ${itm.quantity}`)});
+          // Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
+          Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)} frs`, 'right')});
         });
         resolve(true);
       });
