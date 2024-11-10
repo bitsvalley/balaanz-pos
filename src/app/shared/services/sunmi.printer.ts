@@ -58,7 +58,7 @@ export class SunmiPrinterService implements OnDestroy {
         data.cartList.forEach((itm) => {
           Sunmi.text({text: this.formatLines(`${itm.name} X ${itm.quantity}`)});
           // Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
-          Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)} frs`, 'right')});
+          Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)}`, 'right')});
         });
         resolve(true);
       });
@@ -76,15 +76,14 @@ export class SunmiPrinterService implements OnDestroy {
         // Title and Address
         await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
         await Sunmi.text({text: this.addEmptyLine()});
-        await Sunmi.text({text: this.addEmptyLine()});
 
         // Show Customer Name
         await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
-        await Sunmi.text({text: this.formatLines("Order Type: SELL")});
-        await Sunmi.text({text: this.formatLines(`Payment Method:`)});
-        await Sunmi.text({text: this.formatLines(`${data.paymentData.method} ${data.paymentData.value}`)});
-        await Sunmi.text({text: this.formatLines(`Order Date:`)});
-        await Sunmi.text({text: this.formatLines(`${data.currentDate}`)});    
+        await Sunmi.text({text: this.formatLines("Order Type: SALE")});
+        await Sunmi.text({text: this.formatLines(`Payment Method: ${data.paymentData.method}`)});
+        if (data.paymentData.method !== 'CASH') {
+          await Sunmi.text({text: this.formatLines(`Account: ${data.paymentData.value}`)});
+        }
 
         // Show Customer Name
         await Sunmi.text({text: this.addEmptyLine()});
@@ -95,8 +94,7 @@ export class SunmiPrinterService implements OnDestroy {
         await this.printProducts(data);
 
         await Sunmi.text({text: this.dashedBorder()});
-        await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.cartSummary.totalAmount)}`)});
-        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.cartSummary.totalAmount)}`, 'right')});
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.formatLines(`${thankNote}`)});
         await Sunmi.text({text: this.formatLines(`${thankNote2}`)});

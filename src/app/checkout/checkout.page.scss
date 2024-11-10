@@ -4,11 +4,23 @@
 .checkout-screen {
     background-color: $color-bg-light-gray;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
 }
 
 .checkout-body {
     padding: 20px 20px 70px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+
     .checkout-summery {
         padding: 15px;
         font-size: 18px;
