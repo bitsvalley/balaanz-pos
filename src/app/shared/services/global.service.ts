@@ -127,26 +127,26 @@ export class GlobalService {
 
   addToCart(product: any, userId: any) {
     console.log(product);
-    if (this.cartData[userId][product.code]) {
-      this.cartData[userId][product.code].quantity += 1;
+    if (this.cartData[userId][product.id]) {
+      this.cartData[userId][product.id].quantity += 1;
     } else {
-      this.cartData[userId][product.code] = {...product, quantity: 1}
+      this.cartData[userId][product.id] = {...product, quantity: 1}
     }
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
   }
 
   addQuantity(product: any, userId: any) {
-    this.cartData[userId][product.code].quantity += 1;
+    this.cartData[userId][product.id].quantity += 1;
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
   }
 
   removeQuantity(product: any, userId: any) {
-    if (this.cartData[userId][product.code].quantity > 1) {
-      this.cartData[userId][product.code].quantity -= 1;
+    if (this.cartData[userId][product.id].quantity > 1) {
+      this.cartData[userId][product.id].quantity -= 1;
     } else {
-      delete this.cartData[userId][product.code];
+      delete this.cartData[userId][product.id];
     }
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
