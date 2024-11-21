@@ -54,7 +54,7 @@ export class DashboardPage implements OnDestroy {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
+      // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
     });
@@ -162,7 +162,7 @@ export class DashboardPage implements OnDestroy {
   fetchProducts(event?: any) {
     this.productList = [];
     this._user.productList().subscribe((response: any) => {
-      console.log(response);
+      // console.log(response);
       this._global.productData = response;
       this.productData = response;
       this.processProducts(response);

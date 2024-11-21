@@ -60,3 +60,15 @@
     </div> 
   </div>
 </div>
+
+<div class="dialog" *ngIf="isPaymentTimeout">
+  <div class="dialog-overlay"></div>
+  <div class="retry-payment">
+    <h2>Payment Timeout!</h2>
+    <p>Payment has been timeout.</p>
+    <div class="dialog-action">
+      <button class="btn btn-primary" (click)="retryPayment()">Retry</button>
+      <button class="btn btn-secondary" (click)="closePayment()">Close</button>
+    </div>
+  </div>
+</div>

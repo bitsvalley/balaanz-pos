@@ -24,7 +24,12 @@ export class CheckoutPage implements OnInit {
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public paymentSelected: any = null;
-  
+
+  public statusMaxCycle: any = 3;
+  public statusCycle: any = 0;
+  public isPaymentTimeout: boolean =  false;
+  public paymentRequest: any = null;
+
   public paymentMethods: any = [
     {
       title: "CASH",
@@ -72,7 +77,7 @@ export class CheckoutPage implements OnInit {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
+      // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
@@ -174,13 +179,7 @@ export class CheckoutPage implements OnInit {
     setTimeout(() => {
       this._user.pay(payload).subscribe((res: any) => {
         if (this.paymentForm.value.method !== 'CASH') {
-          this._user.payStatus(res.requestId).subscribe((status: any) => {
-            this._global.setPaymentData(this.paymentForm.value);
-            this._nav.navigateForward('receipt/' + status.requestId);
-            this._global.setLoader(false);
-          }, (err: any) => {
-            this._global.setLoader(false);
-          });
+          this.checkStatus(res);
         } else {
           this._global.setPaymentData(this.paymentForm.value);
           this._nav.navigateForward('receipt/0');
@@ -192,6 +191,47 @@ export class CheckoutPage implements OnInit {
     }, 1000);
     
     
+  }
+
+  checkStatus(res) {
+    if (this.statusCycle === this.statusMaxCycle) {
+      this.paymentRequest = res;
+      this.isPaymentTimeout = true;
+      this._global.setLoader(false);
+      return;
+    }
+    this._user.payStatus(res.requestId).subscribe((statusRes: any) => {
+      this.statusCycle += 1;
+      if (statusRes.status === 'success') {
+        this.statusCycle = 0;
+        this._global.setPaymentData(this.paymentForm.value);
+        this._nav.navigateForward('receipt/' + statusRes.requestId);
+        this._global.setLoader(false);
+        return;
+      } else if (statusRes.status === 'pending') {
+        setTimeout(() => {
+          this.checkStatus(res);
+        }, 10000);
+      } else {
+        this._toastr.error("Payment has been failed.", "Payment Failed!");
+      }
+    }, (err: any) => {
+      this._global.setLoader(false);
+    });
+  }
+
+  retryPayment() {
+    this.isPaymentTimeout = false;
+    this.statusCycle = 0;
+    this._global.setLoader(true);
+    this.checkStatus(this.paymentRequest);
+    this.paymentRequest = null;
+  }
+
+  closePayment() {
+    this.isPaymentTimeout = false;
+    this.statusCycle = 0;
+    this.paymentRequest = null;
   }
 
 }

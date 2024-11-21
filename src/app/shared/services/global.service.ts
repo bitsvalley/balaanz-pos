@@ -83,10 +83,10 @@ export class GlobalService {
   async getCurrentLocation () {
     return new Promise(async(resolve, reject) => {
       let permission = await Geolocation.checkPermissions();
-      console.log(permission);
+      // console.log(permission);
       if (permission?.location === "denied") {
         permission = await Geolocation.requestPermissions();
-        console.log(permission);
+        // console.log(permission);
         if (permission?.location === "denied") {
           this._toast.error("App required location access to perform transactions.", "Location Permission Denied!");
           resolve({});
@@ -94,7 +94,7 @@ export class GlobalService {
         }
       }
       const location = await Geolocation.getCurrentPosition();
-      console.log(location);
+      // console.log(location);
       resolve(JSON.parse(JSON.stringify(location.coords)));
     })
     
@@ -126,7 +126,7 @@ export class GlobalService {
   }
 
   addToCart(product: any, userId: any) {
-    console.log(product);
+    // console.log(product);
     if (this.cartData[userId][product.id]) {
       this.cartData[userId][product.id].quantity += 1;
     } else {
