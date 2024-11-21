@@ -103,7 +103,7 @@ export class HomePage implements OnDestroy {
   }
 
   onFocus(fieldName: any) {
-    console.log(fieldName);
+    // console.log(fieldName);
     setTimeout(() => {
       this.scrollToLoginButton();
     }, 100);

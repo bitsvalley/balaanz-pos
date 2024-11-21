@@ -9,7 +9,7 @@ import { DecimalPipe } from '@angular/common';
 export class SunmiPrinterService implements OnDestroy {
 
     constructor(private decimalPipe: DecimalPipe) {
-      console.log(this.decimalPipe.transform(1000));
+      // console.log(this.decimalPipe.transform(1000));
     }
 
     fillSpace(text, align) {

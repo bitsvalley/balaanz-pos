@@ -1,6 +1,63 @@
 @import "./../../assets/style/config";
 
 
+.dialog {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+}
+.retry-payment  {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    background: $color-white;
+    @include border-radius(10px);
+    @include box-shadow(0 0 30px rgba(0,0,0,0.4));
+    transform: translate(0%, -50%);
+    z-index: 1001;
+    
+    h2 {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 24px;
+        color: #333333;
+        font-weight: 500;
+        border-bottom: 1px solid #cdcdcd;
+        margin: 0px;
+    }
+
+    p {
+        font-size: 16px;
+        color: #333333;
+        line-height: 20px;
+        margin: 0px;
+        width: 100%;
+        padding: 15px 20px;
+    }
+
+    .dialog-action {
+        padding: 20px;
+    }
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    content: "";
+    display: flex;
+}
+
+
 .checkout-screen {
     background-color: $color-bg-light-gray;
     min-height: 100%;

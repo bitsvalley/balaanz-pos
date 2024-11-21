@@ -41,7 +41,7 @@ export class CartPage implements OnInit {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
+      // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();

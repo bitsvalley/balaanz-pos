@@ -24,7 +24,10 @@ export class CheckoutPage implements OnInit {
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public paymentSelected: any = null;
-  
+
+  // public statusMaxCycle: any = 10;
+  // public statusCycle: any = 0;
+
   public paymentMethods: any = [
     {
       title: "CASH",
@@ -72,7 +75,7 @@ export class CheckoutPage implements OnInit {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
+      // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
@@ -174,13 +177,7 @@ export class CheckoutPage implements OnInit {
     setTimeout(() => {
       this._user.pay(payload).subscribe((res: any) => {
         if (this.paymentForm.value.method !== 'CASH') {
-          this._user.payStatus(res.requestId).subscribe((status: any) => {
-            this._global.setPaymentData(this.paymentForm.value);
-            this._nav.navigateForward('receipt/' + status.requestId);
-            this._global.setLoader(false);
-          }, (err: any) => {
-            this._global.setLoader(false);
-          });
+          this.checkStatus(res);
         } else {
           this._global.setPaymentData(this.paymentForm.value);
           this._nav.navigateForward('receipt/0');
@@ -192,6 +189,25 @@ export class CheckoutPage implements OnInit {
     }, 1000);
     
     
+  }
+
+  checkStatus(res) {
+    this._user.payStatus(res.requestId).subscribe((statusRes: any) => {
+      if (statusRes.status === 'success') {
+        this._global.setPaymentData(this.paymentForm.value);
+        this._nav.navigateForward('receipt/' + statusRes.requestId);
+        this._global.setLoader(false);
+        return;
+      } else if (statusRes.status === 'pending') {
+        setTimeout(() => {
+          this.checkStatus(res);
+        }, 5000);
+      } else {
+        this._toastr.error("Payment has been failed.", "Payment Failed!");
+      }
+    }, (err: any) => {
+      this._global.setLoader(false);
+    });
   }
 
 }
