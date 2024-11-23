@@ -9,14 +9,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
-import { SunmiPrinterService } from 'src/app/shared/services/sunmi.printer';
 
 @Component({
-  selector: 'app-receipt',
-  templateUrl: './receipt.page.html',
-  styleUrls: ['./receipt.page.scss'],
+  selector: 'app-payment-status',
+  templateUrl: './payment-status.page.html',
+  styleUrls: ['./payment-status.page.scss'],
 })
-export class ReceiptPage implements OnInit {
+export class PaymentStatusPage implements OnInit {
 
   public userDetails: any = null;
   public cartList: any = [];
@@ -29,6 +28,8 @@ export class ReceiptPage implements OnInit {
   public requestId: any = null;
   public paymentData: any = this._global.getPaymentData();
 
+  public tranStatus: any = null;
+
   constructor(
     private _nav: NavController,
     private _user: UserService,
@@ -37,7 +38,6 @@ export class ReceiptPage implements OnInit {
     private _platform: Platform,
     private _route: Router,
     private _account: AccountService,
-    private _sunmi: SunmiPrinterService,
     private _actRoute: ActivatedRoute
   ) { 
     this._platform.backButton.subscribeWithPriority(-1, () => {
@@ -60,24 +60,12 @@ export class ReceiptPage implements OnInit {
   }
 
   ngOnInit() {
-    
-  }
-
-  clearCart() {
-    if (this.cartList.length) {
-      this._toastr.success("Payment has been successfully done.", "Payment Successful");
-      this.receiptCartList = [...this.cartList];
-      this.receiptCartSummary = {...this.cartSummary};
-      this._global.emptyCart(this.userDetails.id);
-    } else {
-      this._nav.navigateBack('dashboard');
-    }
   }
 
   ionViewWillEnter() {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
-    this.clearCart();
+    this.checkStatus();
   }
 
   ionViewWillLeave() {
@@ -87,11 +75,37 @@ export class ReceiptPage implements OnInit {
 
   back() {
     this._global.setServerErr(false);
-    this._nav.navigateBack('dashboard');
+    this._nav.back();
   }
 
-  printReceipt() {
-    this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
+  checkStatus() {
+    this._global.setLoader(true);
+    if (!this.tranStatus) {
+      this.tranStatus = 'PENDING';
+    }
+    const statusApi = this._user.payStatus(this.requestId).subscribe((statusRes: any) => {
+      if (statusRes.status === 'success') {
+        this.tranStatus = 'SUCCESS';
+        this._global.setLoader(false);
+        this._nav.navigateForward('receipt/' + statusRes.requestId);
+      } else if (statusRes.status === 'pending') {
+        this.tranStatus = 'PENDING';
+        this._global.setLoader(false);
+      } else {
+        this.tranStatus = 'FAILED';
+        this._global.setLoader(false);
+        this._toastr.error("Payment has been failed.", "Payment Failed!");
+      }
+    }, (err: any) => {
+      this._global.setLoader(false);
+      this._nav.navigateBack('dashboard');
+    });
+
+    this.apiSubscription.add(statusApi);
+  }
+
+  verifyPayment() {
+    this.checkStatus();
   }
 
 }

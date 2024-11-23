@@ -176,62 +176,37 @@ export class CheckoutPage implements OnInit {
     });
 
     this._global.setLoader(true);
-    setTimeout(() => {
-      this._user.pay(payload).subscribe((res: any) => {
-        if (this.paymentForm.value.method !== 'CASH') {
-          this.checkStatus(res);
-        } else {
-          this._global.setPaymentData(this.paymentForm.value);
-          this._nav.navigateForward('receipt/0');
-          this._global.setLoader(false);
-        }
-      }, (error: any) => {
+    this._user.pay(payload).subscribe((res: any) => {
+      if (this.paymentForm.value.method !== 'CASH') {
         this._global.setLoader(false);
-      })
-    }, 1000);
-    
-    
-  }
-
-  checkStatus(res) {
-    if (this.statusCycle === this.statusMaxCycle) {
-      this.paymentRequest = res;
-      this.isPaymentTimeout = true;
-      this._global.setLoader(false);
-      return;
-    }
-    this._user.payStatus(res.requestId).subscribe((statusRes: any) => {
-      this.statusCycle += 1;
-      if (statusRes.status === 'success') {
-        this.statusCycle = 0;
         this._global.setPaymentData(this.paymentForm.value);
-        this._nav.navigateForward('receipt/' + statusRes.requestId);
-        this._global.setLoader(false);
-        return;
-      } else if (statusRes.status === 'pending') {
-        setTimeout(() => {
-          this.checkStatus(res);
-        }, 10000);
+        this._nav.navigateForward('paymentStatus/' + res.requestId);
       } else {
-        this._toastr.error("Payment has been failed.", "Payment Failed!");
+        this._global.setLoader(false);
+        this._global.setPaymentData(this.paymentForm.value);
+        this._nav.navigateForward('receipt/0');
       }
-    }, (err: any) => {
+    }, (error: any) => {
       this._global.setLoader(false);
-    });
+    })
+    
+    
   }
 
-  retryPayment() {
-    this.isPaymentTimeout = false;
-    this.statusCycle = 0;
-    this._global.setLoader(true);
-    this.checkStatus(this.paymentRequest);
-    this.paymentRequest = null;
-  }
+  
 
-  closePayment() {
-    this.isPaymentTimeout = false;
-    this.statusCycle = 0;
-    this.paymentRequest = null;
-  }
+  // retryPayment() {
+  //   this.isPaymentTimeout = false;
+  //   this.statusCycle = 0;
+  //   this._global.setLoader(true);
+  //   this.checkStatus(this.paymentRequest);
+  //   this.paymentRequest = null;
+  // }
+
+  // closePayment() {
+  //   this.isPaymentTimeout = false;
+  //   this.statusCycle = 0;
+  //   this.paymentRequest = null;
+  // }
 
 }
