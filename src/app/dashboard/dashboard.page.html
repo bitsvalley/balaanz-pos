@@ -70,7 +70,7 @@
   <div class="nav-container" [class.nav-open]="isNavOpen">
     <div class="nav-sub-section"> 
         <div class="nav-title">
-          Category
+          Category <button class="btn btn-small btn-primary" (click)="showAllProducts()">View All</button>
         </div> 
         <ul>
           <li *ngFor="let category of categoryList" [ngClass]="{'active': category.id === selelctedCategory?.id}" (click)="selectCategory(category)">
