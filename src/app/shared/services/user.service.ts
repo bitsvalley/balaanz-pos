@@ -124,7 +124,7 @@ export class UserService {
   }
 
   payStatus(resId) {
-    const url = `${environment.restApiHost}${endpoints.paymentStatus}/${resId}`; 
+    const url = `${environment.restApiHost}${endpoints.paymentStatus}${resId}`; 
     return this._http.get(url);
   }
 

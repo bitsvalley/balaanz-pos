@@ -24,7 +24,12 @@ export class CheckoutPage implements OnInit {
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public paymentSelected: any = null;
-  
+
+  public statusMaxCycle: any = 3;
+  public statusCycle: any = 0;
+  public isPaymentTimeout: boolean =  false;
+  public paymentRequest: any = null;
+
   public paymentMethods: any = [
     {
       title: "CASH",
@@ -171,27 +176,37 @@ export class CheckoutPage implements OnInit {
     });
 
     this._global.setLoader(true);
-    setTimeout(() => {
-      this._user.pay(payload).subscribe((res: any) => {
-        if (this.paymentForm.value.method !== 'CASH') {
-          this._user.payStatus(res.requestId).subscribe((status: any) => {
-            this._global.setPaymentData(this.paymentForm.value);
-            this._nav.navigateForward('receipt/' + status.requestId);
-            this._global.setLoader(false);
-          }, (err: any) => {
-            this._global.setLoader(false);
-          });
-        } else {
-          this._global.setPaymentData(this.paymentForm.value);
-          this._nav.navigateForward('receipt/0');
-          this._global.setLoader(false);
-        }
-      }, (error: any) => {
+    this._user.pay(payload).subscribe((res: any) => {
+      if (this.paymentForm.value.method !== 'CASH') {
         this._global.setLoader(false);
-      })
-    }, 1000);
+        this._global.setPaymentData(this.paymentForm.value);
+        this._nav.navigateForward('paymentStatus/' + res.requestId);
+      } else {
+        this._global.setLoader(false);
+        this._global.setPaymentData(this.paymentForm.value);
+        this._nav.navigateForward('receipt/0');
+      }
+    }, (error: any) => {
+      this._global.setLoader(false);
+    })
     
     
   }
+
+  
+
+  // retryPayment() {
+  //   this.isPaymentTimeout = false;
+  //   this.statusCycle = 0;
+  //   this._global.setLoader(true);
+  //   this.checkStatus(this.paymentRequest);
+  //   this.paymentRequest = null;
+  // }
+
+  // closePayment() {
+  //   this.isPaymentTimeout = false;
+  //   this.statusCycle = 0;
+  //   this.paymentRequest = null;
+  // }
 
 }

@@ -54,7 +54,7 @@ export class DashboardPage implements OnDestroy {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
+      // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
     });
@@ -142,8 +142,8 @@ export class DashboardPage implements OnDestroy {
   }
 
   handleRefresh(event: any) {
-    this.isAllProducts = true;
-    this.selelctedCategory = null;
+    // this.isAllProducts = true;
+    // this.selelctedCategory = null;
     this.isNavOpen = false;
     this.isAccountOpen = false;
     this.fetchProducts(event);
@@ -160,9 +160,8 @@ export class DashboardPage implements OnDestroy {
   }
 
   fetchProducts(event?: any) {
-    this.productList = [];
     this._user.productList().subscribe((response: any) => {
-      console.log(response);
+      // console.log(response);
       this._global.productData = response;
       this.productData = response;
       this.processProducts(response);
@@ -173,6 +172,8 @@ export class DashboardPage implements OnDestroy {
   }
 
   processProducts(response) {
+    this.productList = [];
+    this.categoryList = [];
     if (this.isAllProducts && !this.selelctedCategory) {
       Object.keys(response.products).forEach((key: any) => {
         this.productList = [...this.productList, ...response.products[key]];
@@ -193,9 +194,18 @@ export class DashboardPage implements OnDestroy {
     this.filterProducts();
   }
 
+  showAllProducts() {
+    this.isAllProducts = true;
+    this.selelctedCategory = null;
+    this.isNavOpen = false;
+    this.filterProducts();
+  }
+
   filterProducts() {
     if (!this.isAllProducts && this.selelctedCategory) { 
       this.productList = this.productData.products[this.selelctedCategory.id];
+    } else {
+      this.processProducts(this.productData);
     }
   }
 
