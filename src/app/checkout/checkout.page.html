@@ -12,23 +12,22 @@
     </div> 
     <div class="checkout-body"> 
       <div class="checkout-summery">
-        <div class="checkout-summery-item">
+        <div class="checkout-summery-item half-width">
           <label>Subtotal:</label>
-          <span>{{cartSummary.totalAmount}} frs</span>
+          <span>{{cartSummary.totalAmount}}</span>
         </div>
-        <div class="checkout-summery-item">
+        <div class="checkout-summery-item half-width">
           <label>Discount (-) :</label>
-          <span>{{discount}} frs</span>
+          <div class="checkout-discount">
+            <input type="number" [ngClass]="{'error-field': discount > cartSummary.totalAmount}" [(ngModel)]="discount" class="form-field" placeholder="Enter Discount" />
+            <span *ngIf="discount > cartSummary.totalAmount" class="error-highlight">Discount can not be more then amount</span>
+          </div>
         </div>
-        <div class="checkout-discount">
-          <input type="number" [ngClass]="{'error-field': discount > cartSummary.totalAmount}" [(ngModel)]="discount" class="form-field" placeholder="Enter Discount" />
-          <span *ngIf="discount > cartSummary.totalAmount" class="error-highlight">Discount can not be more then amount</span>
-        </div>
-        <div class="checkout-summery-item" *ngIf="discount <= cartSummary.totalAmount">
+        <div class="checkout-summery-item align-center" *ngIf="discount <= cartSummary.totalAmount">
           <label>Total</label>
           <h2>{{cartSummary.totalAmount - discount | number}} <span>frs</span></h2>
         </div>
-        <div class="checkout-summery-item" *ngIf="discount > cartSummary.totalAmount">
+        <div class="checkout-summery-item align-center" *ngIf="discount > cartSummary.totalAmount">
           <label>Total</label>
           <h2>{{0 | number}} <span>frs</span></h2>
         </div>
