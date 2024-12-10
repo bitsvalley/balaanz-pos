@@ -24,6 +24,7 @@ export class CheckoutPage implements OnInit {
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public paymentSelected: any = null;
+  public discount: any = 0;
 
   public statusMaxCycle: any = 3;
   public statusCycle: any = 0;
@@ -159,6 +160,9 @@ export class CheckoutPage implements OnInit {
   }
 
   processPayment() {
+    if (this.discount > this.cartSummary.totalAmount)  {
+      return;
+    }
     const payload = {
       "mode": {
           "type": this.paymentForm.value.method,
@@ -188,6 +192,7 @@ export class CheckoutPage implements OnInit {
       }
     }, (error: any) => {
       this._global.setLoader(false);
+      this._toastr.error("Error While Processing the Payment Reqest", "Payment Error!");
     })
     
     
