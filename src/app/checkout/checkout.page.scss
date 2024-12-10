@@ -87,11 +87,17 @@
         background: $color-white;
         @include border-radius(10px);
         @include box-shadow(0 0 15px 2px rgb(125 125 125 / 20%));
+        display: flex;
+        flex-wrap: wrap;
 
         .checkout-summery-item {
             display: flex;
             margin-bottom: 20px;
             flex-direction: column;
+
+            &.half-width {
+                width: 49%;
+            }
 
             label {
                 font-size: 14px;
@@ -125,6 +131,20 @@
                 margin-bottom: 0;
                 // border-top: 1px dashed #cdcdcd;
                 // padding-top: 15px;
+            }
+
+            &.align-center  {
+                width: 100%;
+                border-top: 2px dashed #cdcdcd;
+                padding-top: 15px;
+                
+                h2 {
+                    text-align: center;
+                }
+
+                label {
+                    text-align: center;
+                }
             }
         }
     } 
@@ -231,9 +251,14 @@
 
 .checkout-discount {
     width: 100%;
-    border-bottom: 2px dashed #cdcdcd;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    // border-bottom: 2px dashed #cdcdcd;
+    // padding-bottom: 15px;
+    
+    input {
+        height: 40px;
+        @include border-radius(5px);
+        border-width: 1px;
+    }
 }
 
 .error-highlight {
@@ -245,4 +270,5 @@
     width: 100%;
     display: flex;
     margin-top: 5px;
+
 }
