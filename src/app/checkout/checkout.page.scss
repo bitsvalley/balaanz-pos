@@ -98,8 +98,14 @@
                 font-weight: 400;
                 margin: 0px;
                 width: 100%;
-                text-align: center;
+                // text-align: center;
                 padding-bottom: 5px;
+                color: #666666;
+            }
+
+            & > span  {
+                color: #333333;
+                font-weight: 600;
             }
 
             h2 {
@@ -107,7 +113,7 @@
                 font-weight: 500;
                 margin: 0px;
                 width: 100%;
-                text-align: center;
+                // text-align: center;
 
                 span {
                     font-size: 18px;
@@ -220,4 +226,23 @@
             }
         }
     }
+}
+
+
+.checkout-discount {
+    width: 100%;
+    border-bottom: 2px dashed #cdcdcd;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.error-highlight {
+    background: $color-red;
+    padding: 3px 10px;
+    @include border-radius(3px);
+    color: $color-white;
+    font-size: 14px;
+    width: 100%;
+    display: flex;
+    margin-top: 5px;
 }
