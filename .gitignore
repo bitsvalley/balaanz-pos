@@ -6,6 +6,8 @@
 # Node artifact files
 node_modules/
 dist/
+android-fombutu/
+android/
 .angular/
 
 # Compiled Java class files

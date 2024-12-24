@@ -34,6 +34,7 @@ export class DashboardPage implements OnDestroy {
   public isAllProducts: boolean = false;
   public selelctedCategory: any = null;
   public searchProductField: any = "";
+  public cartAnimation: boolean = false;
 
   constructor( 
     private _nav: NavController, 
@@ -121,6 +122,7 @@ export class DashboardPage implements OnDestroy {
     this.isNavOpen = false;
     this.isAccountOpen = false;
     this.selelctedCategory = null;
+    this.cartAnimation = false;
     this.getProductList();
 
     if (this.userDetails.id) {
@@ -218,7 +220,11 @@ export class DashboardPage implements OnDestroy {
   }
 
   addToCart(product) {
-    this.cartList = this._global.addToCart(product, this.userDetails.id).list;
+    this.cartAnimation = false;
+    setTimeout(() => {
+      this.cartList = this._global.addToCart(product, this.userDetails.id).list;
+      this.cartAnimation = true;
+    }, 0);
   }
 
   openCart() {
