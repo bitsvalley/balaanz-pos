@@ -56,7 +56,7 @@
       <div class="app-nav-bar" (click)="toggleNav()">
         <img src="assets/images/menu-icon.png" alt=""> 
       </div>
-      <div class="app-nav-cart" (click)="openCart()">
+      <div class="app-nav-cart"  [ngClass]="{'gelatine': cartAnimation}" (click)="openCart()">
         <span class="material-symbols-outlined">
           shopping_cart
         </span>
