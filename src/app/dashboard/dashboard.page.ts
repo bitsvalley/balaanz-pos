@@ -103,6 +103,7 @@ export class DashboardPage implements OnDestroy {
               timeOut: 5000,
             });
             this._global.setServerErr(true);
+            this._account.logout();
           }
         });
       } else {
@@ -170,6 +171,8 @@ export class DashboardPage implements OnDestroy {
       if (event) {
         event.target.complete();
       }
+    }, (error: any) => {
+      this._account.logout();
     });
   }
 
