@@ -4,15 +4,16 @@ import {
   HttpHandler,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { mergeMap, catchError } from 'rxjs/operators';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { UserService } from 'src/app/shared/services/user.service';
+import { AccountService } from 'src/app/shared/services/account.service';
 
 @Injectable()
 export class HttpInterceptorClass implements HttpInterceptor {
 
-  constructor(private _global: GlobalService, private _user: UserService) {}
+  constructor(private _global: GlobalService, private _user: UserService, private _account: AccountService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
     if(request.url.search('getAccessToken') == -1 && request.url.search('login') == -1 && request.url.search('logout') == -1 && request.url.search('token') == -1 && request.url.search('client') == -1 && request.url.search('api') == -1) {
@@ -42,6 +43,10 @@ export class HttpInterceptorClass implements HttpInterceptor {
                     }
                 });
                 return next.handle(requstApi);
+              }), catchError(() => {
+                this._global.setLoader(false);
+                this._account.logout();
+                return throwError(() => new Error('Failed to retrieve token. Please try again.'));
               }));
             } else {
               requstApi = request.clone({

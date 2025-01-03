@@ -102,14 +102,15 @@ export class DashboardPage implements OnDestroy {
             this.toaster.error('Error while processing your request.', 'Error While Processing',{
               timeOut: 5000,
             });
-            this._global.setServerErr(true);
             this._account.logout();
+            this._global.setServerErr(true);
           }
         });
       } else {
         this.toaster.error('Error while processing your request.', 'Error While Processing',{
           timeOut: 5000,
         });
+        this._account.logout();
         this._global.setServerErr(true);
       }
     });
@@ -171,8 +172,6 @@ export class DashboardPage implements OnDestroy {
       if (event) {
         event.target.complete();
       }
-    }, (error: any) => {
-      this._account.logout();
     });
   }
 
