@@ -10,6 +10,9 @@ export const environment = {
   paymentUser: "bitsvalley",
   paymentPass: "b@lanz4lifE202!",
   org: 13,
+  // org: 20,
+  // org: 13,
+  // org: 15,
   currency: 'FRS',
   momoCurrency: 'XAF'
 };

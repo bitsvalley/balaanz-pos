@@ -102,6 +102,7 @@ export class DashboardPage implements OnDestroy {
             this.toaster.error('Error while processing your request.', 'Error While Processing',{
               timeOut: 5000,
             });
+            this._account.logout();
             this._global.setServerErr(true);
           }
         });
@@ -109,6 +110,7 @@ export class DashboardPage implements OnDestroy {
         this.toaster.error('Error while processing your request.', 'Error While Processing',{
           timeOut: 5000,
         });
+        this._account.logout();
         this._global.setServerErr(true);
       }
     });
