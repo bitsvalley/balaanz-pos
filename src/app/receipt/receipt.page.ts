@@ -87,7 +87,7 @@ export class ReceiptPage implements OnInit {
 
   back() {
     this._global.setServerErr(false);
-    this._nav.back();
+    this._nav.navigateBack('dashboard');
   }
 
   printReceipt() {

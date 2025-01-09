@@ -57,6 +57,8 @@
             position: relative;
             padding-bottom: 10px;
             margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
 
             &:before {
                 content: "";
@@ -65,7 +67,7 @@
                 width: 25px;
                 height: 4px;
                 background: $color-primary;
-                bottom: 0px;
+                bottom: 10px;
             } 
         }
         ul {

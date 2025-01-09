@@ -1,0 +1,45 @@
+<div class="payment-screen">
+  <div class="payment-container">
+    <div class="app-header">
+      <div class="back-page" (click)="back()">
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </div>
+      <div class="app-page-title">
+        Transaction Status
+      </div>
+    </div> 
+    <div class="payment-status-body">
+      <div class="payment-status-container">
+        <div class="payment-status">
+          <div class="payment-status-icon green-icon" *ngIf="tranStatus === 'SUCCESS'">
+            <span class="material-symbols-outlined">
+              check
+            </span>
+          </div>
+          <div class="payment-status-icon red-icon" *ngIf="tranStatus === 'FAILED'">
+            <span class="material-symbols-outlined">
+              check
+            </span>
+          </div>
+          <div class="payment-status-icon orange-icon" *ngIf="tranStatus === 'PENDING'">
+            <span class="material-symbols-outlined">
+              more_horiz
+            </span>
+          </div>
+          <label *ngIf="tranStatus === 'PENDING'">PENDING</label>
+          <label *ngIf="tranStatus === 'FAILED'">FAILED</label>
+          <label *ngIf="tranStatus === 'SUCCESS'">SUCCESSFUL</label>
+        </div>
+        <div class="payment-total">
+          <label>Total</label>
+          <h2>{{cartSummary.totalAmount | number}} <span>frs</span></h2>
+        </div>
+      </div> 
+      <button class="btn btn-primary" (click)="verifyPayment()">
+        Verify Transaction Status
+      </button>
+    </div> 
+  </div>
+</div>
