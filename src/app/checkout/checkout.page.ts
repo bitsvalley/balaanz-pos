@@ -192,7 +192,8 @@ export class CheckoutPage implements OnInit {
       }
     }, (error: any) => {
       this._global.setLoader(false);
-      this._toastr.error("Error While Processing the Payment Reqest", "Payment Error!");
+      this._toastr.error("Invalid Session", "Authorization!");
+      this._account.logout();
     })
     
     
