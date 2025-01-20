@@ -9,7 +9,7 @@ export const environment = {
   captchKey: "6LeNMmYpAAAAAAPdFoxZ-A0hFuhdJOHJENo6N0uP",
   paymentUser: "bitsvalley",
   paymentPass: "b@lanz4lifE202!",
-  org: 100,
+  org: 15,
   currency: 'FRS',
   momoCurrency: 'XAF'
 };
