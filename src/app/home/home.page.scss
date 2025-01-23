@@ -46,7 +46,11 @@
         }
         
         .swipe-machine-img {
-            padding: 40px 0;
+            padding: 20px 0;
+        }
+
+        h2 {
+            margin-top: 10px;
         }
     } 
     .login-form {
@@ -62,4 +66,11 @@
             margin-top: 10px;
         }
     }
+}
+
+.form-field, .btn {
+    height: 60px;
+    font-size: 20px;
+    padding: 10px 25px;
+    border-radius: 30px;
 }
