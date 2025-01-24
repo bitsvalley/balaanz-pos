@@ -114,13 +114,18 @@ export class UserService {
 
 
   productList(payload?: any)  {
-    // const headers = new HttpHeaders({
-    //   'Content-Type': 'application/json',
-    //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjo1MzQwLCJpYXQiOjE3MjM5NTUyODQsImV4cCI6MTcyOTk1NzA4NCwidHlwZSI6ImFjY2VzcyJ9.e0A-qTtAT1hOmf0LCV-DYS-LI5rTyhU6Vay7gHn1VCE', // Your token
-       
-    // });
     const url = `${environment.restApiHost}${endpoints.productList}`; 
     return this._http.get(url, payload);
+  }
+
+  pay(payload) {
+    const url = `${environment.restApiHost}${endpoints.payment}`; 
+    return this._http.post(url, payload);
+  }
+
+  payStatus(resId) {
+    const url = `${environment.restApiHost}${endpoints.paymentStatus}${resId}`; 
+    return this._http.get(url);
   }
 
 }

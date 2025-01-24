@@ -23,7 +23,7 @@
             <div class="cart-product-content">
               <h6>{{ product?.name }}</h6>
               <div class="price">
-                <strong>{{ product?.unitPrice }}</strong>frs
+                <strong>{{ product?.unitPrice | number }}</strong>frs
               </div>
             </div>
             <div class="cart-product-right">
@@ -42,121 +42,17 @@
               </div>
             </div>
           </div>
-          <!-- <div class="cart-product-item">
-            <div class="cart-product-img">
-              <img src="assets/images/product-img-1.png" alt="">
-            </div>
-            <div class="cart-product-content">
-              <h6>Grocery Product 1</h6>
-              <div class="price">
-                <strong>20</strong>frs
-              </div>
-            </div>
-            <div class="cart-product-right">
-              <div class="cart-product-minus">
-                <span class="material-symbols-outlined">
-                  remove
-                </span>
-              </div>
-              <div class="cart-product-qty">
-                1
-              </div>
-              <div class="cart-product-plus">
-                <span class="material-symbols-outlined">
-                  add
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="cart-product-item">
-            <div class="cart-product-img">
-              <img src="assets/images/product-img-1.png" alt="">
-            </div>
-            <div class="cart-product-content">
-              <h6>Grocery Product 1</h6>
-              <div class="price">
-                <strong>20</strong>frs
-              </div>
-            </div>
-            <div class="cart-product-right">
-              <div class="cart-product-minus">
-                <span class="material-symbols-outlined">
-                  remove
-                </span>
-              </div>
-              <div class="cart-product-qty">
-                1
-              </div>
-              <div class="cart-product-plus">
-                <span class="material-symbols-outlined">
-                  add
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="cart-product-item">
-            <div class="cart-product-img">
-              <img src="assets/images/product-img-1.png" alt="">
-            </div>
-            <div class="cart-product-content">
-              <h6>Grocery Product 1</h6>
-              <div class="price">
-                <strong>20</strong>frs
-              </div>
-            </div>
-            <div class="cart-product-right">
-              <div class="cart-product-minus">
-                <span class="material-symbols-outlined">
-                  remove
-                </span>
-              </div>
-              <div class="cart-product-qty">
-                1
-              </div>
-              <div class="cart-product-plus">
-                <span class="material-symbols-outlined">
-                  add
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="cart-product-item">
-            <div class="cart-product-img">
-              <img src="assets/images/product-img-1.png" alt="">
-            </div>
-            <div class="cart-product-content">
-              <h6>Grocery Product 1</h6>
-              <div class="price">
-                <strong>20</strong>frs
-              </div>
-            </div>
-            <div class="cart-product-right">
-              <div class="cart-product-minus">
-                <span class="material-symbols-outlined">
-                  remove
-                </span>
-              </div>
-              <div class="cart-product-qty">
-                1
-              </div>
-              <div class="cart-product-plus">
-                <span class="material-symbols-outlined">
-                  add
-                </span>
-              </div>
-            </div>
-          </div> -->
         </div>
       </div> 
       <div class="cart-checkout">
-        <div class="cart-checkout-btn">
+        <div class="cart-checkout-btn" [ngClass]="{'disabled': !cartList.length}" (click)="openCheckout()">
           <label>Checkout</label>
           <div class="cart-checkout-btn-right">
             <div class="cart-product-total-count">
               {{cartSummary.totalQty}} Items
             </div>
             <div class="cart-product-total-price">
-              <strong>{{cartSummary.totalAmount}}</strong>
+              <strong>{{cartSummary.totalAmount | number}}</strong>
               frs  
             </div>
             <span class="material-symbols-outlined">

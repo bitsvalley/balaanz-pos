@@ -45,7 +45,19 @@
         margin-bottom: 10px;
 
         .cart-product-img {
-            max-width: 65px;
+            width: 65px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px;
+            border: 1px solid #cdcdcd;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
         }
 
         .cart-product-content {
@@ -115,6 +127,10 @@
         padding: 15px 20px;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         cursor: pointer;
+
+        label {
+            font-size: 18px;
+        }
         
         .cart-checkout-btn-right {
             display: flex;
@@ -135,6 +151,11 @@
                 font-size: 28px;
                 padding-left: 5px;
             }
+        }
+
+        &.disabled {
+            background: $color-gray;
+            cursor: not-allowed;
         }
     }
 }

@@ -1,25 +1,30 @@
 import { Directive, Injectable, OnDestroy } from '@angular/core';
 // import { SunmiPrinter, SunmiPrinterPlugin } from '@kduma-autoid/capacitor-sunmi-printer';
 import { Sunmi } from '@bistroo/capacitor-plugin-sunmi';
+import { DecimalPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SunmiPrinterService implements OnDestroy {
 
-    // constructor(private _sunmi: SunmiPrinterPlugin) {
+    constructor(private decimalPipe: DecimalPipe) {
+      // console.log(this.decimalPipe.transform(1000));
+    }
 
-    // }
-
-    fillSpace(text) {
+    fillSpace(text, align) {
       const spacesNeeded = 29 - text.length;
       const spaces = ' '.repeat(spacesNeeded)
-      return text + spaces;
+      if (align === 'right') {
+        return spaces + text;
+      } else {
+        return text + spaces;
+      }
     }
     
-    breakWords(text) {
+    breakWords(text, align) {
       const breakString = text.match(/.{1,29}/g);
-      const breakSpaceString = breakString.map(item => item.length < 29? this.fillSpace(item) : item);
+      const breakSpaceString = breakString.map(item => item.length < 29? this.fillSpace(item, align) : item);
       return breakSpaceString.join("");
     }
 
@@ -27,13 +32,17 @@ export class SunmiPrinterService implements OnDestroy {
       return `-----------------------------`;
     }
 
-    formatLines(text: any) {
+    formatLines(text: any, align: any = 'left') {
       const isSingleString = text.length > 29? false : true;
       if (isSingleString) {
-        return this.fillSpace(text);
+        return this.fillSpace(text,  align);
       } else {
-        return this.breakWords(text);
+        return this.breakWords(text, align);
       }
+    }
+
+    addEmptyLine() {
+      return `                             `;
     }
 
     formatColumn2(colText1, colText2) {
@@ -44,38 +53,20 @@ export class SunmiPrinterService implements OnDestroy {
       return colL1 + spaces + colL2;
     }
 
-    async print(data: any) {
-        // console.log(await SunmiPrinter.printerInit());
-        // const testArray = [
-        //   {name: "Product 1", qty: 2, price: 20, total: 40},
-        //   {name: "Product 2", qty: 2, price: 30, total: 60},
-        //   {name: "Product 3", qty: 2, price: 40, total: 80}
-        // ]
-//         const receiptContent = `
-// Balaanz Food Shop            
-// Address: 123 Main St, City,  
-// Country                      
-// Date: 10/12/2024             
-                             
-// -----------------------------
-// Item        Qty  Price  Total
-// -----------------------------
-// Product A   1    $10   $10.00
-// Product B   2    $10   $30.00
-// ${testArray.map((item) => {
-//   return `${item.name}   ${item.qty}    ${item.price}   ${item.total}`
-// })}
-// -----------------------------
-// Total:                 $40.00
-// -----------------------------
-// Thank you for shopping with  
-// us! 
-// `;
+    printProducts(data) {
+      return new Promise((resolve, reject) => {
+        data.cartList.forEach((itm) => {
+          Sunmi.text({text: this.formatLines(`${itm.name} X ${itm.quantity}`)});
+          // Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
+          Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)}`, 'right')});
+        });
+        resolve(true);
+      });
+    }
 
-      const thankNote = 
-`Thank you for using agent   
-banking!                     
-                             `
+    async print(data: any) {
+      const thankNote = `Thank you for shopping with`;
+      const thankNote2 = `us`;
 
         // Default Settings
         await Sunmi.start();
@@ -83,65 +74,36 @@ banking!
         await Sunmi.fontSize({size: 1});
 
         // Title and Address
-        await Sunmi.text({text: this.formatLines("====== UNICS PLC AGENT ======")});
+        await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
+        await Sunmi.text({text: this.addEmptyLine()});
+
+        // Show Customer Name
+        await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
+        await Sunmi.text({text: this.formatLines("Order Type: SALE")});
+        await Sunmi.text({text: this.formatLines(`Payment Method: ${data.paymentData.method}`)});
+        if (data.paymentData.method !== 'CASH') {
+          await Sunmi.text({text: this.formatLines(`Account: ${data.paymentData.value}`)});
+        }
+
+        // Show Customer Name
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.formatLines("Product List")});
         await Sunmi.text({text: this.dashedBorder()});
 
         // Show Customer Name
-        await Sunmi.text({text: this.formatLines("Date")});
-        await Sunmi.text({text: this.formatLines(`${data.date}`)})
-        await Sunmi.text({text: this.dashedBorder()});
+        await this.printProducts(data);
 
-        // Show Customer Name
-        await Sunmi.text({text: this.formatLines("Transaction Type")});
-        await Sunmi.text({text: this.formatLines(`${data.transaction.transactionType}`)})
         await Sunmi.text({text: this.dashedBorder()});
-
-        // Show Customer Name
-        await Sunmi.text({text: this.formatLines("Customer Name")});
-        await Sunmi.text({text: this.formatLines(`${data.customer.customer?.firstName} ${data.customer.customer?.lastName}`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        // Show Agent Name
-        await Sunmi.text({text: this.formatLines("Agent Name")});
-        await Sunmi.text({text: this.formatLines(`${data.user?.first_name} ${data.user?.last_name}`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        // Show Account Number
-        await Sunmi.text({text: this.formatLines("Account Number")});
-        await Sunmi.text({text: this.formatLines(`${data.customer?.selectedAccount?.accountNumber}`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        // Show Account Number
-        await Sunmi.text({text: this.formatLines("Amount")});
-        await Sunmi.text({text: this.formatLines(`${data.transaction?.savingAmount} frs`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        // Show Account Balance
-        await Sunmi.text({text: this.formatLines("Account Balance")});
-        await Sunmi.text({text: this.formatLines(`${data.transResp?.savingBilanzList?.totalSaving} frs`)})
-        await Sunmi.text({text: this.dashedBorder()});
-
-        await Sunmi.text({text: thankNote})
+        await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.cartSummary.totalAmount)}`, 'right')});
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.formatLines(`${thankNote}`)});
+        await Sunmi.text({text: this.formatLines(`${thankNote2}`)});
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.addEmptyLine()});
 
         // Print 
         await Sunmi.print();
-        
-        // console.log(await SunmiPrinter.getDeviceName());
-        
-        // console.log(await SunmiPrinter.getPrinterModel());
-        // console.log(await SunmiPrinter.printerInit());
-        // console.log(await SunmiPrinter.bindService());
-        
-        // try {
-        //   const result = await SunmiPrinter.printText({
-        //     text: text
-        //   });
-        //   console.log('Print successful', result);
-        //   return true;
-        // } catch (error) {
-        //   console.error('Error printing:', error);
-        //   return false;
-        // }
       }
 
     ngOnDestroy(): void {

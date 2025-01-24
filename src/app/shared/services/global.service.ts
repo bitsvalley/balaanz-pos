@@ -30,9 +30,10 @@ export class GlobalService {
 
   constructor(private _user: UserService, private _toast: ToastrService) { }
 
-  public cartList: any = [];
-  public cartData: any = {};
+  private cartList: any = [];
+  private cartData: any = {};
   public productData: any = null;
+  private paymentData: any = null;
 
   // getToken() {
   //   return new Promise((resolve, reject) => {
@@ -82,10 +83,10 @@ export class GlobalService {
   async getCurrentLocation () {
     return new Promise(async(resolve, reject) => {
       let permission = await Geolocation.checkPermissions();
-      console.log(permission);
+      // console.log(permission);
       if (permission?.location === "denied") {
         permission = await Geolocation.requestPermissions();
-        console.log(permission);
+        // console.log(permission);
         if (permission?.location === "denied") {
           this._toast.error("App required location access to perform transactions.", "Location Permission Denied!");
           resolve({});
@@ -93,7 +94,7 @@ export class GlobalService {
         }
       }
       const location = await Geolocation.getCurrentPosition();
-      console.log(location);
+      // console.log(location);
       resolve(JSON.parse(JSON.stringify(location.coords)));
     })
     
@@ -115,28 +116,37 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
+  emptyCart(userId) {
+    this.cartData =  JSON.parse(localStorage.getItem('cart'));
+    if (this.cartData[userId]) {
+      this.cartData[userId] = {};
+      this.storeCart(userId);
+    }
+    return {list: this.cartList, data: this.cartData};
+  }
+
   addToCart(product: any, userId: any) {
-    console.log(product);
-    if (!this.cartData[userId][product.code]) {
-      this.cartData[userId][product.code] = {...product, quantity: 1}
+    // console.log(product);
+    if (this.cartData[userId][product.id]) {
+      this.cartData[userId][product.id].quantity += 1;
     } else {
-      this.cartData[userId][product.code].quantity += 1;
+      this.cartData[userId][product.id] = {...product, quantity: 1}
     }
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
   }
 
   addQuantity(product: any, userId: any) {
-    this.cartData[userId][product.code].quantity += 1;
+    this.cartData[userId][product.id].quantity += 1;
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
   }
 
   removeQuantity(product: any, userId: any) {
-    if (this.cartData[userId][product.code].quantity > 1) {
-      this.cartData[userId][product.code].quantity -= 1;
+    if (this.cartData[userId][product.id].quantity > 1) {
+      this.cartData[userId][product.id].quantity -= 1;
     } else {
-      delete this.cartData[userId][product.code];
+      delete this.cartData[userId][product.id];
     }
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
@@ -157,12 +167,20 @@ export class GlobalService {
     return summary;
   }
 
-  initCart(userId) {
+  initCart(userId: any) {
     this.retriveCart(userId);
     if (!this.cartData[userId]) {
       this.cartData[userId] = {};
       this.storeCart(userId);
     }
+  }
+
+  setPaymentData(data:  any) {
+    this.paymentData = data;
+  }
+
+  getPaymentData() {
+    return this.paymentData;
   }
 
 }

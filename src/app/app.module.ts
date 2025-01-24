@@ -9,13 +9,15 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpInterceptorClass } from 'src/app/shared/services/http.interceptor';
 import { SharedModule } from './shared/shared.module';
+import { DecimalPipe } from '@angular/common';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, BrowserAnimationsModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, ToastrModule.forRoot(), SharedModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorClass, multi:true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorClass, multi:true },
+    DecimalPipe
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,61 @@
+<div class="receipt-screen">
+  <div class="receipt-container">
+    <div class="app-header">
+      <div class="back-page" (click)="back()">
+        <span class="material-symbols-outlined">
+          close
+        </span>
+      </div>
+      <div class="app-page-title">
+        Receipt
+      </div>
+    </div> 
+    <div class="receipt-body"> 
+      <div class="receipt-page">
+        <div class="receipt-title">
+          <h2>Balaanz POS</h2>
+          <!-- <p>A-101, Address 1, New York, USA</p>
+          <p>9727040159</p> -->
+        </div>
+        <div class="receipt-header">
+          <p></p>
+          <p>Agent: <span>{{userDetails.first_name}} {{userDetails.last_name}}</span></p>
+          <p>Type: <span>SELL</span></p>
+          <p>Payment Method: <span>{{paymentData.method}} ({{paymentData.value}})</span></p>
+          <p>Order Date: <span>{{currentDate}}</span></p>
+        </div>
+        <div class="receipt-products" *ngIf="receiptCartList.length">
+          <ul>
+            <li *ngFor="let cart of receiptCartList">
+              <label>
+                {{cart.name}}
+              </label>
+              <span>
+                X {{cart.quantity}}
+              </span>
+              <b>
+                {{cart.unitPrice | number}} frs
+              </b>
+            </li>
+          </ul>
+          <div class="receipt-product-summary">
+            <h4><label>Total:</label><b>{{receiptCartSummary.totalAmount | number}} frs</b></h4>
+          </div>
+        </div>
+        <div class="receipt-footer">
+          <p>Thank you for shopping with us</p>
+        </div>
+      </div>
+    </div> 
+    <div class="receipt-bottom">
+      <div class="receipt-btn" (click)="printReceipt()">
+        <label>Print Receipt</label>
+        <div class="receipt-btn-right"> 
+          <span class="material-symbols-outlined">
+            print
+          </span>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>

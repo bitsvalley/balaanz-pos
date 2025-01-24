@@ -1,0 +1,74 @@
+<div class="checkout-screen">
+  <div class="checkout-container">
+    <div class="app-header">
+      <div class="back-page" (click)="back()">
+        <span class="material-symbols-outlined">
+          arrow_back
+        </span>
+      </div>
+      <div class="app-page-title">
+        My Checkout
+      </div>
+    </div> 
+    <div class="checkout-body"> 
+      <div class="checkout-summery">
+        <!-- <div class="checkout-summery-item">
+          <span>Subtotal</span>
+          <span>{{cartSummary.totalAmount}} frs</span>
+        </div>
+        <div class="checkout-summery-item">
+          <span>Tax</span>
+          <span>0 frs</span>
+        </div> -->
+        <div class="checkout-summery-item">
+          <label>Total</label>
+          <h2>{{cartSummary.totalAmount | number}} <span>frs</span></h2>
+        </div>
+      </div>
+      <div class="payment-method-block">
+        <h4>Payment Method</h4>
+        <form [formGroup]="paymentForm">
+          <ul>
+            <li *ngFor="let method of paymentMethods" (click)="selectMethod(method)" [ngClass]="{'active':  method.isSelected}">
+              <strong>
+                <label>
+                  <i *ngIf="method.title === 'CASH'"><img src="/assets/images/coin.png" /></i>
+                  <i *ngIf="method.title === 'MOMO'"><img src="/assets/images/mtn.png" /></i>
+                  <i *ngIf="method.title === 'BALAANZ ACCOUNT'"><img src="/assets/images/account.png" /></i>
+                  {{method.title}}
+                </label>
+                <span class="radio-symbol">
+                  <span class="radio-symbol-inner"></span>
+                </span>
+              </strong>
+              <input *ngIf="method.userInput && method.isSelected" type="text" class="form-field" formControlName="value" placeholder="{{method.placeholder}}">
+            </li>
+          </ul>
+        </form>
+      </div> 
+    </div> 
+    <div class="checkout-bottom">
+      <div class="checkout-btn" [ngClass]="{'disabled': paymentForm.invalid || !cartList.length}" (click)="processPayment()">
+        <label>Pay</label>
+        <div class="checkout-btn-right"> 
+          {{cartSummary.totalAmount | number}} frs
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
+
+<!-- <div class="dialog" *ngIf="isPaymentTimeout">
+  <div class="dialog-overlay"></div>
+  <div class="retry-payment">
+    <h2>Payment Timeout!</h2>
+    <p>Payment has been timeout.</p>
+    <div class="dialog-action">
+      <button class="btn btn-primary" (click)="retryPayment()">Retry</button>
+      <button class="btn btn-secondary" (click)="closePayment()">Close</button>
+    </div>
+  </div>
+</div> -->

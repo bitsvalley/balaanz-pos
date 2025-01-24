@@ -25,6 +25,21 @@ const routes: Routes = [
     loadChildren: () => import('./cart/cart.module').then( m => m.CartPageModule)
   },
   {
+    path: 'checkout',
+    canActivate: [AuthGuardService],
+    loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
+  },
+  {
+    path: 'paymentStatus/:requestId',
+    canActivate: [AuthGuardService],
+    loadChildren: () => import('./payment-status/payment-status.module').then( m => m.PaymentStatusPageModule)
+  },
+  {
+    path: 'receipt/:requestId',
+    canActivate: [AuthGuardService],
+    loadChildren: () => import('./receipt/receipt.module').then( m => m.ReceiptPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
