@@ -32,7 +32,7 @@
         No Products in Cart
       </div>
       <div class="products-list">
-        <div class="products-item" *ngFor="let product of productList" (click)="addToCart(product)">
+        <div class="products-item" *ngFor="let product of productList" (click)="addToCart(product)"   >
           <div class="product-image">
             <div class="product-img">
               <img [src]="product.image1 || 'assets/images/default-product.png'" alt="{{ product.name }}">
@@ -72,7 +72,7 @@
         <div class="nav-title">
           Category <button class="btn btn-small btn-primary" (click)="showAllProducts()">View All</button>
         </div> 
-        <ul>
+        <ul class="category-list">
           <li *ngFor="let category of categoryList" [ngClass]="{'active': category.id === selelctedCategory?.id}" (click)="selectCategory(category)">
             {{ category.name }} 
             <span class="record-count"  *ngIf="category.totalProducts">{{ category.totalProducts }}</span>
