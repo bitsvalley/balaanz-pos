@@ -224,34 +224,33 @@ export class DashboardPage implements OnDestroy {
     }
   }
 
-
   changeSearch() {
     if (this.searchProductField && this.searchProductField.trim() !== '') {
-        const searchTerm = this.searchProductField.toLowerCase(); 
-
-        if (this.selelctedCategory) {
-            this.productList = this.productData.products[this.selelctedCategory?.id].filter((product) =>
-                product.name.toLowerCase().includes(searchTerm) || 
-                product.barcode.toLowerCase() === searchTerm ||
-                product.code.toLowerCase() == searchTerm
-            );
-        } else {
-            this.productList = [];
-            Object.keys(this.productData.products).forEach((key) => {
-                this.productList.push(
-                    ...this.productData.products[key].filter((product) =>
-                        product.name.toLowerCase().includes(searchTerm) ||
-                        product.barcode.toLowerCase() === searchTerm ||
-                        product.code.toLowerCase() == searchTerm 
-                    )
-                );
-            });
-        }
+      const searchTerm = this.searchProductField.toLowerCase(); 
+  
+      if (this.selelctedCategory) {
+        this.productList = this.productData.products[this.selelctedCategory?.id].filter((product) =>
+          product.name && product.name.toLowerCase().includes(searchTerm) || 
+          product.barcode && product.barcode.toLowerCase() === searchTerm ||
+          product.code && product.code.toLowerCase() == searchTerm
+        );
+      } else {
+        this.productList = [];
+        Object.keys(this.productData.products).forEach((key) => {
+          this.productList.push(
+            ...this.productData.products[key].filter((product) =>
+              (product.name && product.name.toLowerCase().includes(searchTerm)) ||
+              (product.barcode && product.barcode.toLowerCase() === searchTerm) ||
+              (product.code && product.code.toLowerCase() == searchTerm)
+            )
+          );
+        });
+      }
     } else {
-        this.filterProducts();
+      this.filterProducts();
     }
-}
-
+  }
+  
   
 
   searchProducts() {
