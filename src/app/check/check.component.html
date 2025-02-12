@@ -1,0 +1,37 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="landing-container">
+    <!-- Header -->
+    <ion-header class="ion-no-border">
+      <ion-toolbar class="transparent-toolbar">
+        <ion-title class="ion-text-center">Welcome to Our Restaurant</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <!-- Main Content -->
+    <div class="content-container">
+      <h1 class="main-title">How would you like to dine today?</h1>
+      
+      <div class="buttons-container">
+        <ion-button 
+          class="custom-button" 
+          expand="block" 
+          shape="round" 
+          (click)="goToTable()"
+          color="light">
+          <ion-icon name="restaurant-outline" slot="start"></ion-icon>
+          Dine-in
+        </ion-button>
+
+        <ion-button 
+          class="custom-button" 
+          expand="block" 
+          shape="round" 
+          (click)="goToDashboard()"
+          color="light">
+          <ion-icon name="walk-outline" slot="start"></ion-icon>
+          Walk-in
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>

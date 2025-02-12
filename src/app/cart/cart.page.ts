@@ -22,6 +22,7 @@ export class CartPage implements OnInit {
   public runTimeProps: any = null;
   public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
+  public tables: any[] = [];
 
   constructor(
     private _nav: NavController,
@@ -53,6 +54,19 @@ export class CartPage implements OnInit {
   }
 
   ngOnInit() {
+    const storedTable = localStorage.getItem('selectedTable');
+    if (storedTable) {
+      const table = JSON.parse(storedTable);
+      console.log('Selected Table:', table); 
+      this.tables = [table]; 
+    } else {
+      console.log('No table found in localStorage');
+    }
+  }
+  
+
+  checkIfAnyChairOpen(table: any): boolean {
+    return table.chairs.some(chair => chair.status === 'open');
   }
 
   ionViewWillEnter() {

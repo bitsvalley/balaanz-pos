@@ -89,6 +89,10 @@ export class DashboardPage implements OnDestroy {
   }
 
   async logout() {
+    
+      localStorage.removeItem('tables');
+      localStorage.removeItem('selectedTable');
+    
     this._global.setLoader(true);
     const logoutApi = this._user.logout(this.userDetails.id).subscribe((response: any) => {
       this._global.setLoader(false);
@@ -250,7 +254,7 @@ export class DashboardPage implements OnDestroy {
       this.filterProducts();
     }
   }
-  
+    
   
 
   searchProducts() {

@@ -44,7 +44,7 @@ export class HomePage implements OnDestroy {
   }
 
   goToDashboard() {
-    this._nav.navigateForward('dashboard');
+    this._nav.navigateForward('table');
   }
 
   ionViewWillEnter() {
