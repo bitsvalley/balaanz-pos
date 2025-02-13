@@ -28,7 +28,10 @@ export const environment = {
   org: 100,
   //org: 0,
   currency: 'FRS',
-  momoCurrency: 'XAF'
+  momoCurrency: 'XAF',
+
+
+  apiBaseUrl: 'https://nkwen22.balaanz.com/',
 };
 
 /*

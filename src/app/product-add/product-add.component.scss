@@ -1,0 +1,270 @@
+.trending-container {
+    padding: 16px;
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding-bottom: 16px;
+  
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  .product-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  
+    &:active {
+      transform: scale(0.98);
+    }
+  
+    .product-image {
+      width: 100%;
+      aspect-ratio: 1;
+      overflow: hidden;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  
+    .product-info {
+      padding: 12px;
+  
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      .product-code {
+        font-size: 12px;
+        color: #666;
+        margin: 0;
+        margin-bottom: 8px;
+      }
+  
+      .product-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+  
+        .price {
+          font-weight: 600;
+          color: #2dd36f;
+          font-size: 16px;
+        }
+  
+        ion-button {
+          margin: 0;
+          --padding-start: 8px;
+          --padding-end: 8px;
+        }
+      }
+    }
+  }
+  
+
+  .skeleton-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding-bottom: 16px;
+  }
+  
+  .skeleton-card {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+    .skeleton-image {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+  
+    .skeleton-content {
+      padding: 12px;
+  
+      .skeleton-title {
+        height: 16px;
+        background: #f0f0f0;
+        margin-bottom: 8px;
+        border-radius: 4px;
+      }
+  
+      .skeleton-price {
+        height: 14px;
+        background: #f0f0f0;
+        width: 60%;
+        border-radius: 4px;
+      }
+    }
+  }
+  
+
+  .error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    text-align: center;
+  
+    ion-icon {
+      font-size: 48px;
+      color: #ff4961;
+      margin-bottom: 16px;
+    }
+  
+    p {
+      color: #666;
+      margin-bottom: 16px;
+    }
+  }
+  
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+    text-align: center;
+  
+    ion-icon {
+      font-size: 48px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+  
+    h3 {
+      margin: 0;
+      margin-bottom: 8px;
+      color: #333;
+    }
+  
+    p {
+      color: #666;
+      margin: 0;
+    }
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+
+
+
+  .app-navigation {
+  position: fixed;
+  width: 100%;
+  padding: 15px 20px 15px;
+  background-color: #ffffff;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+
+  .app-nav-bar {
+    cursor: pointer;
+  }
+
+  .app-nav-cart {
+    width: 60px;
+    border-radius: 4px;
+    height: 50px;
+    background-color: var(--ion-color-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    position: relative;
+    cursor: pointer;
+
+    span {
+      font-size: 28px;
+    }
+  }
+  
+  .app-nav-user {
+    display: flex;
+    cursor: pointer;
+
+    img {
+      border: 1px solid #666;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      object-fit: cover;
+    }
+  }
+}
+
+.nav-container {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  height: 100%;
+  background: #ffffff;
+  transition: 0.3s;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 30px;
+  margin-bottom: 18px;
+  &.nav-open {
+    left: 0;
+  }
+  
+  &.isAccountOpen {
+    left: 0;
+  }
+}
+
+
+
+@keyframes gelatine {
+  from, to { transform: scale(1, 1); }
+  25% { transform: scale(0.9, 1.1); }
+  50% { transform: scale(1.1, 0.9); }
+  75% { transform: scale(0.95, 1.05); }
+}
+
+.gelatine {
+  animation: gelatine 0.5s;
+}
+
+
+
+

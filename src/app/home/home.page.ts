@@ -61,7 +61,7 @@ export class HomePage implements OnDestroy {
 
   ionViewWillLeave() {
     this._global.setServerErr(false);
-    this.apiSubscription.unsubscribe();
+    this.apiSubscription.unsubscribe();  
   }
 
   login() {

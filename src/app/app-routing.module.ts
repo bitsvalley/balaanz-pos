@@ -19,12 +19,16 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     loadChildren: () => import('./table/table.module').then(m => m.TableModule)
   },
-  
   {
     path: 'table',
     canActivate: [AuthGuardService],
-    loadChildren: () => import('./check/check.module').then(m => m.CheckModule)
+    loadChildren: () => import('./product-add/product-add.module').then(m => m.ProductAddModule)
   },
+  // {
+  //   path: 'table',
+  //   canActivate: [AuthGuardService],
+  //   loadChildren: () => import('./check/check.module').then(m => m.CheckModule)
+  // },
   {
     path: '',
     redirectTo: 'home',

@@ -12,6 +12,9 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class GlobalService {
+  getCurrentUserId() {
+    throw new Error('Method not implemented.');
+  }
 
   // private secretKey = 'e1f8ee654dbf4e7bb4a0c235e4f0bed3';
 
@@ -27,6 +30,7 @@ export class GlobalService {
 
   private _internetStatus: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public internetStatus: any = this._internetStatus.asObservable();
+  cartUpdates: any;
 
   constructor(private _user: UserService, private _toast: ToastrService) { }
 

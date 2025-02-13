@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { endpoints } from 'src/app/shared/resources/endPoint';
+import { Product } from 'src/app/product-add/product-add.model';
+import { Observable } from 'rxjs';
 
 declare const grecaptcha: any;
 
@@ -9,6 +11,15 @@ declare const grecaptcha: any;
   providedIn: 'root'
 })
 export class UserService {
+
+  
+  getTrendingProducts(): Observable<Product[]> {
+    const url = `${environment.apiBaseUrl}/trending-products`;  // Replace with your actual API endpoint
+    return this._http.get<Product[]>(url);
+  }
+  getCurrentUserId(): any {
+    throw new Error('Method not implemented.');
+  }
 
   public momoToken: any = null;
 
