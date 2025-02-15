@@ -3,22 +3,57 @@
     <div class="cart-container">
       <div class="app-header">
         <div class="back-page" (click)="back()">
-          <span class="material-symbols-outlined">
-            arrow_back
-          </span>
+          <span class="material-symbols-outlined"> arrow_back </span>
         </div>
-        <div class="app-page-title">
-          My Cart
-        </div>
-      </div> 
+        <div class="app-page-title">My Cart</div>
+      </div>
       <div class="cart-body">
+        <div class="table-section" *ngIf="tables.length > 0">
+          <div class="section-title">Selected Table</div>
+          <div class="table-info-card" *ngFor="let table of tables">
+            <div class="table-header">
+              <div class="table-id">Table {{table.TableId}}</div>
+              <div class="table-level">{{table.level}}</div>
+            </div>
+            <div class="table-details">
+              <div class="table-image">
+                <img
+                  [src]="table.image || 'assets/images/default-table.png'"
+                  [alt]="'Table ' + table.TableId"
+                />
+              </div>
+              <div class="table-content">
+                <div class="waiter-info">
+                  <span class="material-symbols-outlined">person</span>
+                  <span>{{table.AssignedWaiterName}}</span>
+                </div>
+                <div class="chair-grid">
+                  <div class="chair-item" *ngFor="let chair of table.chairs">
+                    <div
+                      class="chair-status"
+                      [class.reserved]="chair.status === 'reserved'"
+                    >
+                      <span class="material-symbols-outlined">chair</span>
+                      <span class="chair-id">{{chair.ChairId}}</span>
+                      <span class="status-text">{{chair.status}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="cart-product-list">
           <div class="no-item" *ngIf="!cartList?.length">
             No Products in Cart
           </div>
           <div class="cart-product-item" *ngFor="let product of cartList">
             <div class="cart-product-img">
-              <img [src]="product.image1 || 'assets/images/default-product.png'" alt="{{ product.name }}">
+              <img
+                [src]="product.image1 || 'assets/images/default-product.png'"
+                alt="{{ product.name }}"
+              />
             </div>
             <div class="cart-product-content">
               <h6>{{ product?.name }}</h6>
@@ -28,24 +63,22 @@
             </div>
             <div class="cart-product-right">
               <div class="cart-product-minus" (click)="remove(product)">
-                <span class="material-symbols-outlined">
-                  remove
-                </span>
+                <span class="material-symbols-outlined">remove</span>
               </div>
-              <div class="cart-product-qty">
-                {{product?.quantity}}
-              </div>
+              <div class="cart-product-qty">{{product?.quantity}}</div>
               <div class="cart-product-plus" (click)="add(product)">
-                <span class="material-symbols-outlined">
-                  add
-                </span>
+                <span class="material-symbols-outlined">add</span>
               </div>
             </div>
           </div>
         </div>
-      </div> 
+      </div>
       <div class="cart-checkout">
-        <div class="cart-checkout-btn" [ngClass]="{'disabled': !cartList.length}" (click)="openCheckout()">
+        <div
+          class="cart-checkout-btn"
+          [ngClass]="{'disabled': !cartList.length}"
+          (click)="openCheckout()"
+        >
           <label>Checkout</label>
           <div class="cart-checkout-btn-right">
             <div class="cart-product-total-count">
@@ -53,14 +86,12 @@
             </div>
             <div class="cart-product-total-price">
               <strong>{{cartSummary.totalAmount | number}}</strong>
-              frs  
+              frs
             </div>
-            <span class="material-symbols-outlined">
-              chevron_right
-            </span>
+            <span class="material-symbols-outlined"> chevron_right </span>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
   </div>
 </ion-content>

@@ -159,3 +159,121 @@
         }
     }
 }
+
+
+
+@import "./../../assets/style/config";
+
+
+.table-section {
+  margin-bottom: 20px;
+  width: 100%;
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: $color-primary;
+  }
+}
+
+.table-info-card {
+  background: $color-white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+
+  .table-header {
+    background: $color-primary;
+    color: $color-white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .table-id {
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    .table-level {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 14px;
+    }
+  }
+
+  .table-details {
+    padding: 15px;
+
+    .table-image {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .waiter-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    color: $color-gray;
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+  }
+
+  .chair-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+
+    .chair-item {
+      .chair-status {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        background: rgba($color-primary, 0.1);
+        border-radius: 8px;
+        gap: 5px;
+
+        &.reserved {
+          background: rgba(red, 0.1);
+          color: red;
+        }
+
+        .material-symbols-outlined {
+          font-size: 24px;
+        }
+
+        .chair-id {
+          font-weight: 500;
+          font-size: 14px;
+        }
+
+        .status-text {
+          font-size: 12px;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}
+
+.cart-body {
+  padding: 20px 20px 90px; 
+}

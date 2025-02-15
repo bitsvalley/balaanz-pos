@@ -9,6 +9,22 @@ const routes: Routes = [
     canActivate: [LoginGuardService],
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
+  // {
+  //   path: 'home',
+   
+  //   loadChildren: () => import('./table/table.module').then( m => m.TableModule)
+  // },
+  {
+    path: 'tablemodule',
+    canActivate: [AuthGuardService],
+    loadChildren: () => import('./table/table.module').then(m => m.TableModule)
+  },
+  
+  {
+    path: 'table',
+    canActivate: [AuthGuardService],
+    loadChildren: () => import('./check/check.module').then(m => m.CheckModule)
+  },
   {
     path: '',
     redirectTo: 'home',

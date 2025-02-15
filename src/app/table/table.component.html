@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Table Reservation</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg-light">
+  <div class="tables-container">
+    <div class="table-grid">
+      <div
+        *ngFor="let table of tables"
+        class="table-card"
+        [ngClass]="table.level.toLowerCase()"
+        (click)="selectTable(table)"
+      >
+        <img
+          [src]="table.image"
+          [alt]="table.level + ' Table'"
+          class="table-image"
+        />
+        <div class="table-info">
+          <h3>{{ table.TableId }} - {{ table.level }}</h3>
+          <div
+            class="status-badge"
+            [ngClass]="{
+              'badge-open': table.status === 'open',
+              'badge-reserved': table.status === 'reserve'
+            }"
+          >
+            {{ table.status | uppercase }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ion-modal
+    [isOpen]="selectedTable !== null"
+    (didDismiss)="closeTableDetails()"
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="closeTableDetails()">
+              <ion-icon name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title>{{ selectedTable?.TableId }} Details</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content *ngIf="selectedTable">
+        <div class="table-details">
+          <img
+            [src]="selectedTable.image"
+            [alt]="selectedTable.level + ' Table'"
+            class="detail-image"
+          />
+          <div class="table-details-content">
+            <h2>{{ selectedTable.level }} Table</h2>
+            <p>Assigned Waiter: {{ selectedTable.AssignedWaiterName }}</p>
+            <div class="chairs-section">
+              <h3>Chairs</h3>
+              <div class="chair-grid">
+                <ion-button
+                  *ngFor="let chair of selectedTable.chairs"
+                  [color]="getChairColor(chair.status)"
+                  (click)="selectChairAndNavigate(chair, selectedTable)"
+                >
+                  {{ chair.ChairId }} - {{ chair.status | uppercase }}
+                </ion-button>
+              </div>
+            </div>
+
+            <ion-button
+              *ngIf="checkIfAllChairsReserved(selectedTable)"
+              expand="full"
+              disabled
+            >
+              Fully Reserved
+            </ion-button>
+          </div>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
