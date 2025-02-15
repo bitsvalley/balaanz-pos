@@ -5,11 +5,13 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { ToastrService } from 'ngx-toastr';
 import { Platform } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { Router, ActivatedRoute } from '@angular/router'; 
+import { Router, ActivatedRoute } from '@angular/router';
 import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { SunmiPrinterService } from 'src/app/shared/services/sunmi.printer';
+import { Chair, Table } from '../table/table.model';
+import { TableService } from '../shared/services/table.service';
 
 @Component({
   selector: 'app-receipt',
@@ -28,7 +30,8 @@ export class ReceiptPage implements OnInit {
   public receiptCartSummary: any = [];
   public requestId: any = null;
   public paymentData: any = this._global.getPaymentData();
-
+  public currentTable : Table = null;
+  public currentChair : Chair = null;
   constructor(
     private _nav: NavController,
     private _user: UserService,
@@ -38,20 +41,28 @@ export class ReceiptPage implements OnInit {
     private _route: Router,
     private _account: AccountService,
     private _sunmi: SunmiPrinterService,
-    private _actRoute: ActivatedRoute
-  ) { 
+    private _actRoute: ActivatedRoute,
+    private _table : TableService
+  ) {
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
         App.exitApp();
       }
     });
     this.requestId = this._actRoute.snapshot.params['requestId'];
-    
+    this.GetCurrentTableAndChair();
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
       this._global.initCart(this.userDetails.id);
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
+      if(this.currentChair == null && this.currentTable == null){
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
+      }
+      else{
+        this.cartList = this._global.retriveCartChair(this.userDetails.id,this.currentTable.TableId, this.currentChair.ChairId).list;
+      this.cartSummary =  this._global.getCartSummaryChair(this.currentTable.TableId, this.currentChair.ChairId);
+
+      }
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -60,7 +71,12 @@ export class ReceiptPage implements OnInit {
   }
 
   ngOnInit() {
-    
+
+  }
+
+  GetCurrentTableAndChair(){
+    this.currentChair = this._table.getCurrentChair();
+    this.currentTable = this._table.getCurrentTable();
   }
 
   clearCart() {

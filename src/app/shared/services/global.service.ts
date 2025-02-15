@@ -78,7 +78,7 @@ export class GlobalService {
     return obj;
   }
 
-  
+
 
   async getCurrentLocation () {
     return new Promise(async(resolve, reject) => {
@@ -97,7 +97,7 @@ export class GlobalService {
       // console.log(location);
       resolve(JSON.parse(JSON.stringify(location.coords)));
     })
-    
+
   };
 
   storeCart(userId: any) {
@@ -108,11 +108,25 @@ export class GlobalService {
   retriveCart(userId: any) {
     this.cartList = [];
     this.cartData = JSON.parse(localStorage.getItem('cart'));
+
     if (this.cartData[userId]) {
       Object.keys(this.cartData[userId]).forEach((key: any) => {
+
         this.cartList.push(this.cartData[userId][key]);
       });
     }
+    return {list: this.cartList, data: this.cartData};
+  }
+
+  retriveCartChair(userId: any,TableId:any, ChairId:any) {
+    this.cartList = [];
+    this.cartData = JSON.parse(localStorage.getItem('cart'));
+
+    if (this.cartData[userId]) {
+      this.cartList = Object.values(this.cartData[userId]).filter((item: any) =>
+          item.ChairId === ChairId && item.TableId === TableId
+      );
+  }
     return {list: this.cartList, data: this.cartData};
   }
 
@@ -135,6 +149,43 @@ export class GlobalService {
     this.storeCart(userId);
     return {list: this.cartList, data: this.cartData};
   }
+
+  addToCartforChair(product: any, userId: any, TableId: any, ChairId: any) {
+      // Check if the product already exists in the cart for the given user
+      if (this.cartData[userId][product.id]) {
+          // Check if both TableId and ChairId match
+          if (this.cartData[userId][product.id].TableId === TableId && this.cartData[userId][product.id].ChairId === ChairId) {
+              // Increase the quantity if they match
+              this.cartData[userId][product.id].quantity += 1;
+          } else {
+              // If TableId or ChairId don't match, add a new product entry with the correct TableId and ChairId
+              this.cartData[userId][product.id] = {
+                  ...product,
+                  quantity: 1,
+                  TableId: TableId,
+                  ChairId: ChairId
+              };
+          }
+      } else {
+          // Add a new product to the cart if it doesn't exist
+          this.cartData[userId][product.id] = {
+              ...product,
+              quantity: 1,
+              TableId: TableId,
+              ChairId: ChairId
+          };
+      }
+
+      // Store the updated cart
+      this.storeCart(userId);
+
+      // Return the updated cart details
+      return { list: this.cartList, data: this.cartData };
+  }
+
+
+
+
 
   addQuantity(product: any, userId: any) {
     this.cartData[userId][product.id].quantity += 1;
@@ -160,6 +211,25 @@ export class GlobalService {
     }
 
     cartList.forEach((product: any) => {
+      summary.totalItem += product.quantity;
+      summary.totalAmount += product.quantity * product.unitPrice;
+    });
+
+    return summary;
+  }
+
+  getCartSummaryChair(TableId:any,ChairId:any) {
+    let currentCart = this.cartList.filter((item: any) =>
+      item.ChairId === ChairId && item.TableId === TableId
+  );
+
+    const summary = {
+      totalQty: currentCart.length,
+      totalAmount: 0,
+      totalItem: 0
+    }
+
+    currentCart.forEach((product: any) => {
       summary.totalItem += product.quantity;
       summary.totalAmount += product.quantity * product.unitPrice;
     });

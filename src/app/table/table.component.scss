@@ -3,15 +3,15 @@
 }
 
 .tables-container {
-  padding: 20px;
-  max-width: 1200px;
+  padding: 10px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .table-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(125px, 0.5fr));
+  gap: 10px;
 }
 
 .table-card {
@@ -29,7 +29,7 @@
 
   .table-image {
     width: 100%;
-    height: 250px;
+    height: 125px;
     object-fit: cover;
   }
 
@@ -37,10 +37,11 @@
     padding: 15px;
     text-align: center;
 
-    h3 {
+    h5 {
       margin: 0 0 10px;
       font-weight: bold;
       color: #2c3e50;
+      font-size:small;
     }
 
     .status-badge {
@@ -102,14 +103,14 @@
   }
 
   .disabled-button {
-    --background: #b0bec5; 
-    --color: white; 
+    --background: #b0bec5;
+    --color: white;
   }
-  
+
   ion-button[disabled] {
-    --background: #b0bec5; 
-    --color: white; 
-    cursor: not-allowed; 
+    --background: #b0bec5;
+    --color: white;
+    cursor: not-allowed;
   }
-  
+
 }

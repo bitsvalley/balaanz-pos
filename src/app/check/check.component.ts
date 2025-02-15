@@ -13,7 +13,7 @@ export class CheckComponent  implements OnInit {
   ngOnInit() {}
 
   goToTable() {
-    this.router.navigate(['/tablemodule']);
+    this.router.navigate(['/table']);
   }
 
   // Navigate to the Dashboard page for Walk-in

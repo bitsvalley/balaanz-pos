@@ -63,6 +63,11 @@ export class AppComponent {
       this.pageTitle = "Transaction Summary"
     } else if (url.search('/createUser') !== -1) {
       this.pageTitle = "Create User"
+    }else if(url.search('/choose-mode') !== -1){
+      this.pageTitle = "Choose Mode"
+    }
+    else if(url.search('/table') !== -1){
+      this.pageTitle = "Choose Table"
     }
 
   }

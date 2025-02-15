@@ -5,11 +5,13 @@ import { GlobalService } from 'src/app/shared/services/global.service';
 import { ToastrService } from 'ngx-toastr';
 import { IonRouterOutlet, Platform } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Chair, Table } from '../table/table.model';
+import { TableService } from '../shared/services/table.service';
 
 @Component({
   selector: 'app-checkout',
@@ -30,7 +32,8 @@ export class CheckoutPage implements OnInit {
   public statusCycle: any = 0;
   public isPaymentTimeout: boolean =  false;
   public paymentRequest: any = null;
-
+  public currentTable : Table = null;
+  public currentChair : Chair = null;
   public paymentMethods: any = [
     {
       title: "CASH",
@@ -39,7 +42,7 @@ export class CheckoutPage implements OnInit {
       isSelected: false,
       placeholder: null,
       navVal: 'CASH'
-    }, 
+    },
     {
       title: "MOMO",
       id: 2,
@@ -59,7 +62,7 @@ export class CheckoutPage implements OnInit {
   ]
 
   public paymentForm: any = new FormGroup({})
-  
+
   constructor(
     private _nav: NavController,
     private _user: UserService,
@@ -68,20 +71,33 @@ export class CheckoutPage implements OnInit {
     private _platform: Platform,
     private _route: Router,
     private _account: AccountService,
-    private _fb: FormBuilder
-  ) { 
+    private _fb: FormBuilder,
+    private _table : TableService
+  ) {
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
         App.exitApp();
       }
     });
-    
+
+    this.GetCurrentTableAndChair();
+
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
       console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
+
+      if(this.currentChair == null && this.currentTable == null){
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
+      }
+      else{
+        this.cartList = this._global.retriveCartChair(this.userDetails.id,this.currentTable.TableId, this.currentChair.ChairId).list;
+      this.cartSummary =  this._global.getCartSummaryChair(this.currentTable.TableId, this.currentChair.ChairId);
+
+      }
+
+
       this.checkCart();
     });
 
@@ -93,14 +109,17 @@ export class CheckoutPage implements OnInit {
   ngOnInit() {
     this.generateForm();
   }
-
+  GetCurrentTableAndChair(){
+    this.currentChair = this._table.getCurrentChair();
+    this.currentTable = this._table.getCurrentTable();
+  }
   checkCart() {
     setTimeout(() => {
       if (!this.cartList.length) {
         this._nav.navigateBack('dashboard');
       }
     }, 1000);
-    
+
   }
 
   ionViewWillEnter() {
@@ -108,8 +127,15 @@ export class CheckoutPage implements OnInit {
     this.apiSubscription = new Subscription();
     this.generateForm();
     if (this.userDetails.id) {
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
+      if(this.currentTable == null && this.currentChair == null){
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
       this.cartSummary =  this._global.getCartSummary();
+      }
+      else{
+        this.cartList = this._global.retriveCartChair(this.userDetails.id,this.currentTable.TableId, this.currentChair.ChairId).list;
+      this.cartSummary =  this._global.getCartSummaryChair(this.currentTable.TableId, this.currentChair.ChairId);
+
+      }
       this.checkCart();
     }
   }
@@ -195,11 +221,11 @@ export class CheckoutPage implements OnInit {
       this._toastr.error("Invalid Session", "Authorization!");
       this._account.logout();
     })
-    
-    
+
+
   }
 
-  
+
 
   // retryPayment() {
   //   this.isPaymentTimeout = false;

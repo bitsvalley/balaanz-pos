@@ -1,3 +1,4 @@
+
 import { Component, Optional, OnDestroy } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { UserService } from 'src/app/shared/services/user.service';
@@ -10,6 +11,8 @@ import { App } from '@capacitor/app';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
+import { Chair, Table } from '../table/table.model';
+import { TableService } from '../shared/services/table.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +26,7 @@ export class DashboardPage implements OnDestroy {
   public currency: any = environment.currency.toLowerCase();
   private apiSubscription: Subscription = new Subscription();
 
-  
+
   public isNavOpen: any = false;
   public isAccountOpen: any = false;
 
@@ -35,37 +38,48 @@ export class DashboardPage implements OnDestroy {
   public selelctedCategory: any = null;
   public searchProductField: any = "";
   public cartAnimation: boolean = false;
-  selectedProductIds: any[] = [];
-
-  constructor( 
-    private _nav: NavController, 
-    private _user: UserService, 
-    private _global: GlobalService, 
-    private toaster: ToastrService, 
-    private _account: AccountService, 
-    private _platform: Platform, 
-    private _route: Router, 
+  public selectedProductIds: any[] = [];
+  public currentTable : Table = null;
+  public currentChair : Chair = null;
+  constructor(
+    private _nav: NavController,
+    private _user: UserService,
+    private _global: GlobalService,
+    private toaster: ToastrService,
+    private _account: AccountService,
+    private _platform: Platform,
+    private _route: Router,
+    private _table:TableService,
     @Optional() private _routerOutlet?: IonRouterOutlet
-  ) 
-    { 
+  )
+    {
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
         App.exitApp();
       }
     });
-    
+
+    this.retriveTable();
+
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
       // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      
+      if(this.currentTable == null && this.currentChair == null){
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
+
+      }
+      else{
+        this.cartList = this._global.retriveCartChair(this.userDetails.id,this.currentTable.TableId, this.currentChair.ChairId).list;
+
+      }
+
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
     });
-    
+
   }
   ngOnInit(): void {
     this.selectedProductIds =[];
@@ -81,18 +95,18 @@ export class DashboardPage implements OnDestroy {
   }
 
   closeNav() {
-    this.isNavOpen = false; 
+    this.isNavOpen = false;
   }
 
   closeAccount() {
-    this.isAccountOpen = false; 
+    this.isAccountOpen = false;
   }
 
   async logout() {
-    
-      localStorage.removeItem('tables');
-      localStorage.removeItem('selectedTable');
-    
+      localStorage.removeItem('cart');
+      this._table.removeCurrentChair();
+      this._table.removeCurrentTable();
+
     this._global.setLoader(true);
     const logoutApi = this._user.logout(this.userDetails.id).subscribe((response: any) => {
       this._global.setLoader(false);
@@ -139,12 +153,17 @@ export class DashboardPage implements OnDestroy {
 
     if (this.userDetails.id) {
       this._global.initCart(this.userDetails.id);
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      
-    }
+      if(this.currentTable == null && this.currentChair == null){
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
 
+      }
+      else{
+        this.cartList = this._global.retriveCartChair(this.userDetails.id,this.currentTable.TableId, this.currentChair.ChairId).list;
+
+      }
+
+    }
     this.selectedProductIds =[];
-    console.log(this.cartList)
     this.cartList.map(x => this.selectedProductIds.push(x.id));
   }
 
@@ -221,7 +240,7 @@ export class DashboardPage implements OnDestroy {
   }
 
   filterProducts() {
-    if (!this.isAllProducts && this.selelctedCategory) { 
+    if (!this.isAllProducts && this.selelctedCategory) {
       this.productList = this.productData.products[this.selelctedCategory.id];
     } else {
       this.processProducts(this.productData);
@@ -230,11 +249,11 @@ export class DashboardPage implements OnDestroy {
 
   changeSearch() {
     if (this.searchProductField && this.searchProductField.trim() !== '') {
-      const searchTerm = this.searchProductField.toLowerCase(); 
-  
+      const searchTerm = this.searchProductField.toLowerCase();
+
       if (this.selelctedCategory) {
         this.productList = this.productData.products[this.selelctedCategory?.id].filter((product) =>
-          product.name && product.name.toLowerCase().includes(searchTerm) || 
+          product.name && product.name.toLowerCase().includes(searchTerm) ||
           product.barcode && product.barcode.toLowerCase() === searchTerm ||
           product.code && product.code.toLowerCase() == searchTerm
         );
@@ -254,34 +273,48 @@ export class DashboardPage implements OnDestroy {
       this.filterProducts();
     }
   }
-    
-  
 
-  searchProducts() {
 
+
+  retriveTable(){
+    this.currentTable = this._table.getCurrentTable();
+    this.currentChair = this._table.getCurrentChair();
   }
 
   addToCart(product) {
-    
-      this.selectedProductIds.push(product.id);
-    
+
+    this.selectedProductIds.push(product.id);
     this.cartAnimation = false;
     setTimeout(() => {
-      this.cartList = this._global.addToCart(product, this.userDetails.id).list;
+
+      if(this.currentTable == null && this.currentChair == null){
+
+        this._global.addToCart(product, this.userDetails.id).list;
+      }else{
+        const products= {
+          ...product,
+          TableId: this.currentTable.TableId,
+          ChairId: this.currentChair.ChairId ,
+        };
+        this._global.addToCartforChair(products, this.userDetails.id,this.currentTable.TableId,this.currentChair.ChairId ).list;
+
+      }
+      this.cartList.push(product)
       this.cartAnimation = true;
 
       this.toaster.success(`${product.name} has been added to your cart!`, 'Product Added', {
-        timeOut: 3000, 
+        timeOut: 3000,
       });
     }, 0);
   }
+
 
   openCart() {
     this._nav.navigateForward("cart");
   }
 
   ngOnDestroy(): void {
-    this.apiSubscription.unsubscribe();    
+    this.apiSubscription.unsubscribe();
   }
 
 }

@@ -14,7 +14,7 @@
         *ngFor="let table of tables"
         class="table-card"
         [ngClass]="table.level.toLowerCase()"
-        (click)="selectTable(table)"
+        (click)="selectCurrentTable(table)"
       >
         <img
           [src]="table.image"
@@ -22,7 +22,7 @@
           class="table-image"
         />
         <div class="table-info">
-          <h3>{{ table.TableId }} - {{ table.level }}</h3>
+          <h5>{{ table.TableId }} - {{ table.level }}</h5>
           <div
             class="status-badge"
             [ngClass]="{
@@ -75,13 +75,6 @@
               </div>
             </div>
 
-            <ion-button
-              *ngIf="checkIfAllChairsReserved(selectedTable)"
-              expand="full"
-              disabled
-            >
-              Fully Reserved
-            </ion-button>
           </div>
         </div>
       </ion-content>

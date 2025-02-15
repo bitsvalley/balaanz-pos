@@ -14,12 +14,12 @@
 .products-screen {
     height: 100%;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     .products-container {
         width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center; 
+        align-items: center;
         overflow: auto;
         padding-bottom: 80px;
 
@@ -70,7 +70,7 @@
             padding: 10px;
             display: flex;
             flex-direction: column;
-            position: relative; 
+            position: relative;
             overflow: hidden;
 
             .product-image {
@@ -87,13 +87,13 @@
                     // border: 1px solid #cdcdcd;
                     padding: 5px;
                     @include box-shadow(0 0 5px rgba(0,0,0,0.2));
-    
+
                     img {
                         object-fit: contain;
                         width: 100%;
                         height: 100%;
                     }
-                    
+
                 }
             }
 
@@ -103,7 +103,7 @@
                 flex-direction: column;
                 .product-content-bottom {
                     display: flex;
-                    justify-content: space-between; 
+                    justify-content: space-between;
                     align-items: center;
                     position: absolute;
                     top: 0;
@@ -111,7 +111,7 @@
                     background: rgba(0,0,0,0.7);
                     left: 0;
                     color: #fff;
-                    padding: 3px 6px; 
+                    padding: 3px 6px;
                     .product-qty {
                         font-size: 14px;
                     }
@@ -202,18 +202,18 @@
 .nav-title {
     position: sticky;
     top: 0;
-    background-color: #fff; 
+    background-color: #fff;
     padding: 10px;
-    z-index: 1; 
+    z-index: 1;
 }
 
 .category-list {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    max-height: 80vh; 
+    max-height: 80vh;
     overflow-y: auto;
-    padding-right: 10px; 
+    padding-right: 10px;
     margin-bottom: 10px;
 }
 
@@ -223,13 +223,13 @@
 }
 
 .category-list li.active {
-    background-color: #f0f0f0; 
+    background-color: #f0f0f0;
 }
 
 .nav-bottom {
     position: sticky;
     bottom: 0;
-    background-color: #fff; 
+    background-color: #fff;
     padding: 10px;
     width: 100%;
 }

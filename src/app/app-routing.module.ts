@@ -11,20 +11,21 @@ const routes: Routes = [
   },
   // {
   //   path: 'home',
-   
+
   //   loadChildren: () => import('./table/table.module').then( m => m.TableModule)
   // },
   {
-    path: 'tablemodule',
+    path: 'table',
     canActivate: [AuthGuardService],
     loadChildren: () => import('./table/table.module').then(m => m.TableModule)
   },
-  
+
   {
-    path: 'table',
+    path: 'choose-mode',
     canActivate: [AuthGuardService],
     loadChildren: () => import('./check/check.module').then(m => m.CheckModule)
   },
+
   {
     path: '',
     redirectTo: 'home',

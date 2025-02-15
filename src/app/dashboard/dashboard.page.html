@@ -1,4 +1,4 @@
-<ion-content> 
+<ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)"></ion-refresher>
 <div class="products-screen">
   <div class="products-container">
@@ -12,7 +12,7 @@
                 search
               </span>
             </div>
-          </form> 
+          </form>
           <div class="product-filter">
             <span class="material-symbols-outlined">
               tune
@@ -26,7 +26,7 @@
         <h2 *ngIf="!selelctedCategory">All Products </h2>
         <span *ngIf="!selelctedCategory">{{productList?.length}} Result </span>
       </div>
-    </div> 
+    </div>
     <div class="products-list-container">
       <div class="no-item" *ngIf="!productList?.length">
         No Products in Cart
@@ -54,7 +54,7 @@
     </div>
     <div class="app-navigation">
       <div class="app-nav-bar" (click)="toggleNav()">
-        <img src="assets/images/menu-icon.png" alt=""> 
+        <img src="assets/images/menu-icon.png" alt="">
       </div>
       <div class="app-nav-cart"  [ngClass]="{'gelatine': cartAnimation}" (click)="openCart()">
         <span class="material-symbols-outlined">
@@ -62,19 +62,24 @@
         </span>
         <div class="app-nav-cart-count">{{cartList.length}}</div>
       </div>
+      <div class="app-nav-cart" *ngIf="currentTable !==null && currentChair !== null" [routerLink]="['/table']">
+        <span class="material-symbols-outlined">
+          chair
+        </span>
+      </div>
       <div class="app-nav-user" (click)="toggleAccount()">
         <img src="assets/images/user-icon.png" alt="">
       </div>
     </div>
   </div>
   <div class="nav-container" [class.nav-open]="isNavOpen">
-    <div class="nav-sub-section"> 
+    <div class="nav-sub-section">
         <div class="nav-title">
           Category <button class="btn btn-small btn-primary" (click)="showAllProducts()">View All</button>
-        </div> 
+        </div>
         <ul class="category-list">
           <li *ngFor="let category of categoryList" [ngClass]="{'active': category.id === selelctedCategory?.id}" (click)="selectCategory(category)">
-            {{ category.name }} 
+            {{ category.name }}
             <span class="record-count"  *ngIf="category.totalProducts">{{ category.totalProducts }}</span>
             <span class="material-symbols-outlined">
               chevron_right
@@ -88,10 +93,10 @@
   </div>
 
   <div class="nav-container" [class.isAccountOpen]="isAccountOpen">
-    <div class="nav-sub-section"> 
+    <div class="nav-sub-section">
         <div class="nav-title">
-          Account 
-        </div> 
+          Account
+        </div>
         <ul>
           <li>
             My Account
@@ -105,18 +110,19 @@
               chevron_right
             </span>
           </li>
+          <li [routerLink]="['/table']" *ngIf="currentTable !== null">
+            Change Chair
+            <span class="material-symbols-outlined">
+              chevron_right
+            </span>
+          </li>
           <li (click)="logout()">
             Logout
             <span class="material-symbols-outlined">
               chevron_right
             </span>
-          </li> 
-          <li [routerLink]="['/tablemodule']">
-            Back to Table Booking
-            <span class="material-symbols-outlined">
-              chevron_right
-            </span>
           </li>
+
         </ul>
     </div>
     <div class="nav-bottom">

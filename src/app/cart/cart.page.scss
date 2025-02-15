@@ -14,14 +14,14 @@
 .cart-screen {
     height: 100%;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     background-color: $color-bg-light-gray;
 
     .cart-container {
         width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;  
+        align-items: center;
         overflow: auto;
     }
 }
@@ -34,7 +34,7 @@
 .cart-product-list {
     padding-bottom: 20px;
     width: 100%;
-    
+
 
     .cart-product-item {
         display: flex;
@@ -131,7 +131,7 @@
         label {
             font-size: 18px;
         }
-        
+
         .cart-checkout-btn-right {
             display: flex;
             align-items: center;
@@ -275,5 +275,5 @@
 }
 
 .cart-body {
-  padding: 20px 20px 90px; 
+  padding: 20px 20px;
 }
