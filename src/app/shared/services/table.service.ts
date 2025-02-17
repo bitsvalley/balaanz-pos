@@ -27,7 +27,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T002',
@@ -41,7 +41,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T003',
@@ -55,7 +55,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T004',
@@ -69,7 +69,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T005',
@@ -83,7 +83,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T006',
@@ -97,7 +97,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T007',
@@ -111,7 +111,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T008',
@@ -125,7 +125,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T009',
@@ -139,7 +139,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T010',
@@ -153,7 +153,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T011',
@@ -167,7 +167,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
       {
         TableId: 'T012',
@@ -181,7 +181,7 @@ export class TableService {
           { ChairId: 'C004', status: 'open' },
         ],
         image:
-          'https://client.erestaupos.com/assets/images/tables.png',
+          '../../../assets/images/table.png',
       },
     ];
   }

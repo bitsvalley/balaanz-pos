@@ -12,6 +12,9 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class GlobalService {
+  storeCurrentChair(id: any, TableId: string, ChairId: string) {
+    throw new Error('Method not implemented.');
+  }
 
   // private secretKey = 'e1f8ee654dbf4e7bb4a0c235e4f0bed3';
 
@@ -151,14 +154,10 @@ export class GlobalService {
   }
 
   addToCartforChair(product: any, userId: any, TableId: any, ChairId: any) {
-      // Check if the product already exists in the cart for the given user
       if (this.cartData[userId][product.id]) {
-          // Check if both TableId and ChairId match
           if (this.cartData[userId][product.id].TableId === TableId && this.cartData[userId][product.id].ChairId === ChairId) {
-              // Increase the quantity if they match
               this.cartData[userId][product.id].quantity += 1;
           } else {
-              // If TableId or ChairId don't match, add a new product entry with the correct TableId and ChairId
               this.cartData[userId][product.id] = {
                   ...product,
                   quantity: 1,
@@ -167,7 +166,6 @@ export class GlobalService {
               };
           }
       } else {
-          // Add a new product to the cart if it doesn't exist
           this.cartData[userId][product.id] = {
               ...product,
               quantity: 1,
@@ -176,10 +174,8 @@ export class GlobalService {
           };
       }
 
-      // Store the updated cart
       this.storeCart(userId);
 
-      // Return the updated cart details
       return { list: this.cartList, data: this.cartData };
   }
 

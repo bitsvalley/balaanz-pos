@@ -104,6 +104,7 @@ export class DashboardPage implements OnDestroy {
 
   async logout() {
       localStorage.removeItem('cart');
+      localStorage.removeItem('token');
       this._table.removeCurrentChair();
       this._table.removeCurrentTable();
 
