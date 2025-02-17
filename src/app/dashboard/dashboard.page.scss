@@ -196,3 +196,40 @@
         }
     }
 }
+
+
+
+.nav-title {
+    position: sticky;
+    top: 0;
+    background-color: #fff; 
+    padding: 10px;
+    z-index: 1; 
+}
+
+.category-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 80vh; 
+    overflow-y: auto;
+    padding-right: 10px; 
+    margin-bottom: 10px;
+}
+
+.category-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.category-list li.active {
+    background-color: #f0f0f0; 
+}
+
+.nav-bottom {
+    position: sticky;
+    bottom: 0;
+    background-color: #fff; 
+    padding: 10px;
+    width: 100%;
+}

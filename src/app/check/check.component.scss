@@ -1,0 +1,98 @@
+ion-content {
+    --background: #ffffff;
+  }
+  
+  .landing-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .transparent-toolbar {
+    --background: transparent;
+    
+    ion-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+    }
+  }
+  
+  .content-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .main-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .buttons-container {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .custom-button {
+    margin: 0;
+    height: 58px;
+    --border-radius: 14px;
+    
+    &::part(native) {
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0.3px;
+    }
+  
+    ion-icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+  
+    &:first-child {
+      --background: #7F3DFF;  
+      --background-activated: #6E35DC;
+      --color: white;
+      --box-shadow: 0 4px 15px rgba(127, 61, 255, 0.2);
+      --ripple-color: rgba(255, 255, 255, 0.2);
+    }
+  
+
+  }
+  
+  .custom-button::part(native):hover {
+    opacity: 0.95;
+  }
+  
+  .custom-button::part(native):active {
+    transform: scale(0.98);
+    transition: transform 0.1s;
+  }
+  
+  @media (min-width: 768px) {
+    .buttons-container {
+      max-width: 400px;
+    }
+    
+    .main-title {
+      font-size: 28px;
+    }
+  }
+  
+  ion-button.custom-button {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+  

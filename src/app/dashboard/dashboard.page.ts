@@ -35,6 +35,7 @@ export class DashboardPage implements OnDestroy {
   public selelctedCategory: any = null;
   public searchProductField: any = "";
   public cartAnimation: boolean = false;
+  selectedProductIds: any[] = [];
 
   constructor( 
     private _nav: NavController, 
@@ -58,12 +59,17 @@ export class DashboardPage implements OnDestroy {
       // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
+      
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
     });
     
+  }
+  ngOnInit(): void {
+    this.selectedProductIds =[];
+    this.cartList.map(x => this.selectedProductIds.push(x.id));
   }
 
   toggleNav() {
@@ -83,6 +89,10 @@ export class DashboardPage implements OnDestroy {
   }
 
   async logout() {
+    
+      localStorage.removeItem('tables');
+      localStorage.removeItem('selectedTable');
+    
     this._global.setLoader(true);
     const logoutApi = this._user.logout(this.userDetails.id).subscribe((response: any) => {
       this._global.setLoader(false);
@@ -130,7 +140,12 @@ export class DashboardPage implements OnDestroy {
     if (this.userDetails.id) {
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
+      
     }
+
+    this.selectedProductIds =[];
+    console.log(this.cartList)
+    this.cartList.map(x => this.selectedProductIds.push(x.id));
   }
 
   ionViewWillLeave() {
@@ -214,18 +229,50 @@ export class DashboardPage implements OnDestroy {
   }
 
   changeSearch() {
-    
+    if (this.searchProductField && this.searchProductField.trim() !== '') {
+      const searchTerm = this.searchProductField.toLowerCase(); 
+  
+      if (this.selelctedCategory) {
+        this.productList = this.productData.products[this.selelctedCategory?.id].filter((product) =>
+          product.name && product.name.toLowerCase().includes(searchTerm) || 
+          product.barcode && product.barcode.toLowerCase() === searchTerm ||
+          product.code && product.code.toLowerCase() == searchTerm
+        );
+      } else {
+        this.productList = [];
+        Object.keys(this.productData.products).forEach((key) => {
+          this.productList.push(
+            ...this.productData.products[key].filter((product) =>
+              (product.name && product.name.toLowerCase().includes(searchTerm)) ||
+              (product.barcode && product.barcode.toLowerCase() === searchTerm) ||
+              (product.code && product.code.toLowerCase() == searchTerm)
+            )
+          );
+        });
+      }
+    } else {
+      this.filterProducts();
+    }
   }
+    
+  
 
   searchProducts() {
 
   }
 
   addToCart(product) {
+    
+      this.selectedProductIds.push(product.id);
+    
     this.cartAnimation = false;
     setTimeout(() => {
       this.cartList = this._global.addToCart(product, this.userDetails.id).list;
       this.cartAnimation = true;
+
+      this.toaster.success(`${product.name} has been added to your cart!`, 'Product Added', {
+        timeOut: 3000, 
+      });
     }, 0);
   }
 
