@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/products"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add New Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="ion-padding">
+    <div class="image-upload-container">
+      <div class="image-preview" [class.has-image]="imagePreview">
+        <img [src]="imagePreview" *ngIf="imagePreview">
+        <ion-icon name="image-outline" *ngIf="!imagePreview"></ion-icon>
+        <input type="file" (change)="onImageSelect($event)" accept="image/*" #fileInput hidden>
+        <ion-button fill="clear" expand="block" (click)="fileInput.click()">
+          {{ imagePreview ? 'Change Image' : 'Upload Image' }}
+        </ion-button>
+      </div>
+    </div>
+
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Product Name*</ion-label>
+        <ion-input formControlName="name" placeholder="Enter product name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Price*</ion-label>
+        <ion-input type="number" formControlName="price" placeholder="0.00"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Product Code*</ion-label>
+        <ion-input formControlName="code" placeholder="Enter product code"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Barcode</ion-label>
+        <ion-input formControlName="barcode" placeholder="Enter barcode"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Category*</ion-label>
+        <ion-select formControlName="category" placeholder="Select category">
+          <ion-select-option value="1">Category 1</ion-select-option>
+          <ion-select-option value="2">Category 2</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <div class="submit-button">
+      <ion-button expand="block" type="submit" [disabled]="!productForm.valid">
+        Add Product
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

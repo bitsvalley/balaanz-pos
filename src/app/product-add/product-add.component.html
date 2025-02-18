@@ -1,13 +1,50 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
+    <!-- <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Trending Products</ion-title>
+    </ion-buttons> -->
+    <ion-title>Products</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  
+
+  <ion-refresher
+    slot="fixed"
+    (ionRefresh)="handleRefresh($event)"
+  ></ion-refresher>
+  <div class="products-screen">
+    <div class="products-container">
+      <div class="product-header-container">
+        <div class="product-search">
+          <div class="product-search-form">
+            <form>
+              <input
+              type="text"
+              [(ngModel)]="searchProductField"
+              (input)="changeSearch()"
+              class="form-field"
+              placeholder="Search products..."
+            />
+            
+
+              <div class="search-icon">
+                <span class="material-symbols-outlined">search</span>
+              </div>
+            </form>
+            <div class="product-filter">
+              <span class="material-symbols-outlined">tune</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -46,8 +83,8 @@
           <p class="product-code">{{ product.code }}</p>
           <div class="product-bottom">
             <span class="price">{{ product.price | currency }}</span>
-            <ion-button fill="clear" (click)="addToCart(product, $event)">
-              <ion-icon name="cart-outline"></ion-icon>
+            <ion-button fill="clear" (click)="editProduct(product, $event)">
+              <ion-icon name="create-outline"></ion-icon>
             </ion-button>
           </div>
         </div>
@@ -72,10 +109,10 @@
       <img src="assets/images/menu-icon.png" alt=""> 
     </div>
     <div class="app-nav-cart" [ngClass]="{'gelatine': cartAnimation}" (click)="openCart()">
-      <!-- <span class="material-symbols-outlined">
-        shopping_cart
-      </span> -->
-      <img src="assets/images/menu-icon.png" alt="">
+      <span class="material-symbols-outlined" style="background-color: red; color: white; padding: 10px; border-radius: 50%; font-size: 36px; display: inline-flex; justify-content: center; align-items: center;">
+        add
+      </span>
+      <!-- <img src="assets/images/menu-icon.png" alt=""> -->
     </div>
     <div class="app-nav-user" (click)="toggleAccount()">
       <img src="assets/images/user-icon.png" alt="">

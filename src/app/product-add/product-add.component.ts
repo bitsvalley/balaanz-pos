@@ -18,6 +18,8 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   cartAnimation: boolean = false;
   categoryList: any[] = [];
   selelctedCategory: any = null;
+  searchProductField: any;
+  products: Product[] = [];
 
   trendingProducts: Product[] = [];
   loading: boolean = false;
@@ -287,7 +289,8 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     this.navCtrl.navigateForward(`/product-detail/${product.id}`);
   }
 
-  addToCart(product: Product, event: Event) {
+  editProduct(product: Product, event: Event) {
+    this.navCtrl.navigateForward('/editproduct');
     event.stopPropagation(); 
     this.globalService.addToCart(product, this.userService.getCurrentUserId());
     this.toastr.success(`${product.name} added to cart`);
@@ -314,7 +317,7 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   }
 
   openCart() {
-    this.navCtrl.navigateForward('/cart');
+    this.navCtrl.navigateForward('/newproductadd');
   }
 
   logout() {
@@ -334,4 +337,17 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     this.isNavOpen = false;
     console.log(`Selected category: ${category.name}`);
   }
+
+
+  changeSearch() {
+    // Just rely on the ngModel value and filter the products accordingly
+    if (this.searchProductField.trim() === '') {
+      this.products = [...this.trendingProducts]; // Reset to the original list if search is empty
+    } else {
+      this.products = this.trendingProducts.filter(product =>
+        product.name.toLowerCase().includes(this.searchProductField.toLowerCase())
+      );
+    }
+  }
+  
 }

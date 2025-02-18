@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/products"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit Product</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="ion-padding">
+    <div class="image-upload-container">
+      <div class="image-preview" [class.has-image]="imagePreview">
+        <img [src]="imagePreview" *ngIf="imagePreview">
+        <ion-icon name="image-outline" *ngIf="!imagePreview"></ion-icon>
+        <input type="file" (change)="onImageSelect($event)" accept="image/*" #fileInput hidden>
+        <ion-button fill="clear" expand="block" (click)="fileInput.click()">
+          {{ imagePreview ? 'Change Image' : 'Upload Image' }}
+        </ion-button>
+      </div>
+    </div>
+
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Product Name*</ion-label>
+        <ion-input formControlName="name" placeholder="Enter product name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Price*</ion-label>
+        <ion-input type="number" formControlName="price" placeholder="0.00"></ion-input>
+      </ion-item>
+    </ion-list>
+     
+    <div class="submit-button">
+      <ion-button expand="block" type="submit" [disabled]="!productForm.valid">
+        Update Product
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

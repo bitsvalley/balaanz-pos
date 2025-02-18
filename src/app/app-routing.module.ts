@@ -9,11 +9,16 @@ const routes: Routes = [
     canActivate: [LoginGuardService],
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
-  // {
-  //   path: 'home',
+  {
+    path: 'newproductadd',
    
-  //   loadChildren: () => import('./table/table.module').then( m => m.TableModule)
-  // },
+    loadChildren: () => import('./add-new-product/add-new-product/add-new-product.module').then( m => m.AddNewProductModule)
+  },
+  {
+    path: 'editproduct',
+   
+    loadChildren: () => import('./edit-product/edit-product/edit-product.module').then( m => m.EditProductModule)
+  },
   {
     path: 'tablemodule',
     canActivate: [AuthGuardService],

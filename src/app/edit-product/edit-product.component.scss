@@ -1,0 +1,100 @@
+
+.image-upload-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  
+    .image-preview {
+      width: 200px;
+      height: 200px;
+      border: 2px dashed var(--ion-color-medium);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      background: var(--ion-color-light);
+  
+      &.has-image {
+        border-style: solid;
+      }
+  
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+  
+      ion-icon {
+        font-size: 48px;
+        color: var(--ion-color-medium);
+      }
+  
+      input[type="file"] {
+        display: none;
+      }
+  
+      ion-button {
+        position: absolute;
+        bottom: 8px;
+        background: rgba(var(--ion-color-light-rgb), 0.9);
+        border-radius: 20px;
+        font-size: 14px;
+      }
+    }
+  }
+  
+  ion-list {
+    background: transparent;
+    padding: 0;
+    margin: 16px 0;
+  
+    ion-item {
+      --padding-start: 0;
+      --border-color: var(--ion-color-light);
+      margin-bottom: 16px;
+      --background: var(--ion-color-light);
+      border-radius: 8px;
+  
+      ion-label {
+        margin-bottom: 8px;
+        color: var(--ion-color-dark);
+        font-weight: 500;
+      }
+  
+      ion-input, ion-textarea, ion-select {
+        --padding-start: 16px;
+        --background: var(--ion-color-light);
+        border-radius: 8px;
+        font-size: 16px;
+      }
+    }
+  }
+  
+  .submit-button {
+    margin: 24px 0;
+  
+    ion-button {
+      --border-radius: 8px;
+      height: 48px;
+      font-weight: 600;
+      font-size: 16px;
+      margin: 0;
+    }
+  }
+  
+  // Add some responsive adjustments
+  @media (min-width: 768px) {
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+  
+  
+  
+  
+  
+  
