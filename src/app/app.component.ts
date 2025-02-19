@@ -25,7 +25,7 @@ export class AppComponent {
         // console.log(event);
         if (event.url === '/home') {
           this.displayHeader = false;
-        }else if(event.url === '/adminlogin'){
+        }else if(event.url === '/adminlogin' || event.url === '/product' || event.url === '/editproduct' || event.url === '/newproductadd'){
           this.displayHeader = false;
         }        
         else if (event.url !== '/') {

@@ -1,15 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <!-- <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons> -->
     <ion-title>Products</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  
 
+
+  
   <ion-refresher
     slot="fixed"
     (ionRefresh)="handleRefresh($event)"
@@ -27,8 +24,6 @@
               class="form-field"
               placeholder="Search products..."
             />
-            
-
               <div class="search-icon">
                 <span class="material-symbols-outlined">search</span>
               </div>
@@ -43,6 +38,38 @@
   </div>
 
 
+<ion-content>
+  
+
+  <ion-refresher
+  slot="fixed"
+  (ionRefresh)="handleRefresh($event)"
+></ion-refresher>
+<div class="products-screen">
+  <div class="products-container">
+    <div class="product-header-container">
+      <div class="product-search">
+        <div class="product-search-form">
+          <form>
+            <input
+            type="text"
+            [(ngModel)]="searchProductField"
+            (input)="changeSearch()"
+            class="form-field"
+            placeholder="Search products..."
+          />
+            <div class="search-icon">
+              <span class="material-symbols-outlined">search</span>
+            </div>
+          </form>
+          <div class="product-filter">
+            <span class="material-symbols-outlined">tune</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -74,9 +101,9 @@
 
 
     <div class="products-grid" *ngIf="!loading && !error">
-      <div class="product-card" *ngFor="let product of trendingProducts" (click)="goToProductDetail(product)">
+      <div class="product-card" *ngFor="let product of trendingProducts" >
         <div class="product-image">
-          <img [src]="product.image || 'assets/images/placeholder.png'" [alt]="product.name">
+          <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || 'assets/images/placeholder.png'" [alt]="product.name">
         </div>
         <div class="product-info">
           <h3>{{ product.name }}</h3>
@@ -96,8 +123,7 @@
 
     <div class="empty-state" *ngIf="!loading && !error && trendingProducts.length === 0">
       <ion-icon name="trending-up-outline" size="large"></ion-icon>
-      <h3>No Trending Products</h3>
-      <p>Check back later for trending items</p>
+      <h3>No Products</h3>
     </div>
   </div>
 

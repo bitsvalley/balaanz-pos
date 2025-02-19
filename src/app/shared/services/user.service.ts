@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { endpoints } from 'src/app/shared/resources/endPoint';
 import { Product } from 'src/app/product-add/product-add.model';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 declare const grecaptcha: any;
 
@@ -31,6 +31,35 @@ export class UserService {
     });
     const url = `${environment.host}${endpoints.login}/${environment.org}`;
     return this._http.post(url, payload, {headers});
+  }
+
+  adminlogin(payload: { name: string; password: string }) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
+  
+    const url = `${environment.restApiHost}${endpoints.adminlogin}`;
+  
+    const body = new URLSearchParams();
+    body.set('username', payload.name);
+    body.set('password', payload.password);
+  
+    return this._http.post(url, body.toString(), { headers }).pipe(
+      tap((response: any) => {
+        localStorage.setItem('token', response.token);
+        // localStorage.setItem('token_expiry', response.expiration);
+      })
+    );
+  }
+  
+  getProductAdmin() {
+    const refreshToken = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      "content-type": "application/json",
+      "Authorization": `${refreshToken}`,
+    });
+    const url = `${environment.restApiHost}${endpoints.productList}`;
+    return this._http.get(url, {headers: headers});
   }
 
   logout(userId) {

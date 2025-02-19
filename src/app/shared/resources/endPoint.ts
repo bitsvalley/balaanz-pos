@@ -1,6 +1,7 @@
 export const endpoints = {
     login: 'posLogin',
     logout: 'logout',
+    adminlogin :'token',
     runTimeProperty: 'getRunTimeSetting/',
     validatePin: 'validatePin',
     getToken: 'getAccessToken',
