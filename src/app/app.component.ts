@@ -25,7 +25,10 @@ export class AppComponent {
         // console.log(event);
         if (event.url === '/home') {
           this.displayHeader = false;
-        } else if (event.url !== '/') {
+        }else if(event.url === '/adminlogin'){
+          this.displayHeader = false;
+        }        
+        else if (event.url !== '/') {
           this.getUserDetails();
           this.displayHeader = true;
           this.setPageTitle(event.url);

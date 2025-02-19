@@ -75,3 +75,10 @@
     border-radius: 30px;
     @include border-radius(5px);
 }
+
+.admin {
+    display: flex;
+    justify-content: flex-end;
+    width: 96%;
+    margin-top: 8px; 
+}

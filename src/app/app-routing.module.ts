@@ -20,12 +20,17 @@ const routes: Routes = [
     loadChildren: () => import('./edit-product/edit-product/edit-product.module').then( m => m.EditProductModule)
   },
   {
+    path: 'adminlogin',
+   
+    loadChildren: () => import('./admin-login/admin-login.module').then( m => m.AdminLoginModule)
+  },
+  {
     path: 'tablemodule',
     canActivate: [AuthGuardService],
     loadChildren: () => import('./table/table.module').then(m => m.TableModule)
   },
   {
-    path: 'table',
+    path: 'product',
     canActivate: [AuthGuardService],
     loadChildren: () => import('./product-add/product-add.module').then(m => m.ProductAddModule)
   },

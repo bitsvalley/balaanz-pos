@@ -44,7 +44,7 @@ export class HomePage implements OnDestroy {
   }
 
   goToDashboard() {
-    this._nav.navigateForward('table');
+    this._nav.navigateForward('dashboard');
   }
 
   ionViewWillEnter() {
@@ -115,5 +115,8 @@ export class HomePage implements OnDestroy {
 
   ngOnDestroy(): void {
     this.apiSubscription.unsubscribe();
+  }
+  admin(){
+    this._nav.navigateForward('adminlogin');
   }
 }
