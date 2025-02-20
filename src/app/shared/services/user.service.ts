@@ -52,6 +52,23 @@ export class UserService {
     );
   }
   
+  newproductadd(payload: Object) {
+    const headers = new HttpHeaders({
+      "content-type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+    });
+    const url = `${environment.restApiHost}${endpoints.newproductadd}`;
+    return this._http.post(url, payload, {headers});
+  }
+  getnewproductadd() {
+    const refreshToken = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      "content-type": "application/json",
+      "Authorization": `${refreshToken}`,
+    });
+    const url = `${environment.restApiHost}${endpoints.newproductadd}`;
+    return this._http.get(url, {headers: headers});
+  }
   getProductAdmin() {
     const refreshToken = localStorage.getItem("token");
     const headers = new HttpHeaders({

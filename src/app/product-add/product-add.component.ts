@@ -22,6 +22,7 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   selelctedCategory: any = null;
   searchProductField: any;
   products: Product[] = [];
+  filteredProducts: Product[] = [];
 
   trendingProducts: Product[] = [];
   loading: boolean = false;
@@ -33,6 +34,8 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   
   loginError: boolean;
 
+  public productList: any = [];
+  productData: any;
   constructor(
     private navCtrl: NavController,
     private _user: UserService,
@@ -56,250 +59,16 @@ export class ProductAddComponent implements OnInit, OnDestroy {
       console.log(response)
       const productArrays: Product[][] = Object.values(response.products || {}) as Product[][];
 
-    // Flatten the array using reduce and correct typing
     this.trendingProducts = productArrays.reduce((acc: Product[], curr: Product[]) => acc.concat(curr), []);
+    this.filteredProducts = [...this.trendingProducts];
       // this.trendingProducts = response.products,
       // this.categoryList = response.categories
       const categoryArrays: Category[][] = Object.values(response.products || {}) as Category[][];
 
-      // Flatten the array using reduce and correct typing
       this.categoryList = categoryArrays.reduce((acc: Category[], curr: Category[]) => acc.concat(curr), []);
       console.log(response.products);
     },);
     this.subscriptions.add(loginApi);
-
-    // this.trendingProducts = [
-    //   {
-    //     id: 1,
-    //     price: 19.99,
-    //     name: "Product 1",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P001",
-    //     barcode: "123456789012",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 2,
-    //     price: 29.99,
-    //     name: "Product 2",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P002",
-    //     barcode: "123456789013",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 3,
-    //     price: 39.99,
-    //     name: "Product 3",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P003",
-    //     barcode: "123456789014",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 4,
-    //     price: 49.99,
-    //     name: "Product 4",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P004",
-    //     barcode: "123456789015",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 5,
-    //     price: 59.99,
-    //     name: "Product 5",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P005",
-    //     barcode: "123456789016",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 6,
-    //     price: 69.99,
-    //     name: "Product 6",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P006",
-    //     barcode: "123456789017",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 7,
-    //     price: 79.99,
-    //     name: "Product 7",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P007",
-    //     barcode: "123456789018",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 8,
-    //     price: 89.99,
-        
-    //     name: "Product 8",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P008",
-    //     barcode: "123456789019",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   }
-    // ];
-
-    // this.categoryList = [
-    //   {
-    //     id: 1,
-    //     price: 19.99,
-    //     name: "Product 1",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P001",
-    //     barcode: "123456789012",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 2,
-    //     price: 29.99,
-    //     name: "Product 2",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P002",
-    //     barcode: "123456789013",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 3,
-    //     price: 39.99,
-    //     name: "Product 3",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P003",
-    //     barcode: "123456789014",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 4,
-    //     price: 49.99,
-    //     name: "Product 4",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P004",
-    //     barcode: "123456789015",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 5,
-    //     price: 59.99,
-    //     name: "Product 5",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P005",
-    //     barcode: "123456789016",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 6,
-    //     price: 69.99,
-    //     name: "Product 6",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P006",
-    //     barcode: "123456789017",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 7,
-    //     price: 79.99,
-    //     name: "Product 7",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P007",
-    //     barcode: "123456789018",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   },
-    //   {
-    //     id: 8,
-    //     price: 89.99,
-        
-    //     name: "Product 8",
-    //     image: 'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    //     code: "P008",
-    //     barcode: "123456789019",
-    //     category: 0,
-    //     stockAmount: 0,
-    //     shortDescription: '',
-    //     online: false,
-    //     active: false,
-    //     msrp: 0
-    //   }
-    // ];
-
   }
 
   handleRefresh(event: any) {
@@ -341,12 +110,6 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   openCart() {
     this.navCtrl.navigateForward('/newproductadd');
   }
-
-  // logout() {
-  //   this._user.logout(this._user.getCurrentUserId()).subscribe(() => {
-  //     this.navCtrl.navigateRoot('home');
-  //   });
-  // }
 
   async logout() {
     
@@ -391,24 +154,50 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     this.selelctedCategory = null;
     this.isNavOpen = false;
     console.log('Showing all products');
+    this.filterProducts();
   }
 
-  selectCategory(category: Category) {
-    this.selelctedCategory = category;
+  selectCategory(categoryList: Category) {
+    this.selelctedCategory = categoryList;
     this.isNavOpen = false;
-    console.log(`Selected category: ${category.name}`);
+    console.log(`Selected category: ${categoryList.name}`);
+    this.filterProducts();
   }
 
-
-  changeSearch() {
-    // Just rely on the ngModel value and filter the products accordingly
-    if (this.searchProductField.trim() === '') {
-      this.products = [...this.trendingProducts]; // Reset to the original list if search is empty
+  processProducts(response) {
+    if (this.showAllProducts && !this.categoryList) {
+      Object.keys(response.products).forEach((key: any) => {
+        this.trendingProducts = [...this.trendingProducts, ...response.products[key]];
+      });
     } else {
-      this.products = this.trendingProducts.filter(product =>
-        product.name.toLowerCase().includes(this.searchProductField.toLowerCase())
-      );
+      this.trendingProducts = response.products[this.selelctedCategory.id];
     }
+
+    Object.keys(response.categories).forEach((key: any) => {
+      this.categoryList.push({...response.categories[key], totalProducts: response.products[key]?.length });
+    });
+  }
+  filterProducts() {
+    if (!this.showAllProducts && this.categoryList || this.selectCategory) { 
+      this.filteredProducts = this.trendingProducts.filter(product => product === this.selelctedCategory.id);
+
+    } else {
+      this.filteredProducts = [...this.trendingProducts];
+    }
+  }
+  changeSearch() {
+    const searchTerm = this.searchProductField.trim().toLowerCase();
+
+    if (!searchTerm) {
+      this.filteredProducts = [...this.trendingProducts]; 
+      return;
+    }
+
+    this.filteredProducts = this.trendingProducts.filter((product) =>
+      product.name?.toLowerCase().includes(searchTerm) ||
+      product.barcode?.toLowerCase() === searchTerm ||
+      product.code?.toLowerCase() === searchTerm
+    );
   }
   
 }

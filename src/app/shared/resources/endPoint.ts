@@ -16,6 +16,8 @@ export const endpoints = {
     momoDisburse: "momoDisburse",
     //collect: "payments/collect"
 
+    newproductadd: '/api/v1/pos/product',
+
     // Java Rest Enpoint
     searchCustomer: "api/v1/user/",
     disburseAmount: "api/v1/dailySavingAccount/registerDailySavingAccountTransactionForm",

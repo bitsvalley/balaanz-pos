@@ -3,10 +3,7 @@
     <ion-title>Products</ion-title>
   </ion-toolbar>
 </ion-header>
-
-
-
-  
+ 
   <ion-refresher
     slot="fixed"
     (ionRefresh)="handleRefresh($event)"
@@ -37,11 +34,9 @@
     </div>
   </div>
 
-
 <ion-content>
-  
-
-  <ion-refresher
+ 
+ <ion-refresher
   slot="fixed"
   (ionRefresh)="handleRefresh($event)"
 ></ion-refresher>
@@ -71,13 +66,11 @@
   </div>
 </div>
 
-
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
   <div class="trending-container">
-
     <div class="skeleton-container" *ngIf="loading">
       <div class="skeleton-card" *ngFor="let i of [1,2,3,4]">
         <div class="skeleton-image"></div>
@@ -88,20 +81,14 @@
       </div>
     </div>
 
-
-
-
     <div class="error-container" *ngIf="error">
       <ion-icon name="alert-circle-outline"></ion-icon>
       <p>{{ error }}</p>
       <ion-button (click)="loadTrendingProducts()">Try Again</ion-button>
     </div>
 
-
-
-
     <div class="products-grid" *ngIf="!loading && !error">
-      <div class="product-card" *ngFor="let product of trendingProducts" >
+      <div class="product-card" *ngFor="let product of filteredProducts">
         <div class="product-image">
           <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || 'assets/images/placeholder.png'" [alt]="product.name">
         </div>
@@ -118,17 +105,11 @@
       </div>
     </div>
 
-
-
-
     <div class="empty-state" *ngIf="!loading && !error && trendingProducts.length === 0">
       <ion-icon name="trending-up-outline" size="large"></ion-icon>
       <h3>No Products</h3>
     </div>
   </div>
-
-
-
 
   <div class="app-navigation">
     <div class="app-nav-bar" (click)="toggleNav()">
@@ -144,8 +125,6 @@
       <img src="assets/images/user-icon.png" alt="">
     </div>
   </div>
-
-
 
   <div class="nav-container" [class.nav-open]="isNavOpen">
     <div class="nav-sub-section"> 
@@ -166,8 +145,6 @@
       <button class="btn btn-primary btn-full" (click)="closeNav()">CLOSE</button>
     </div>
   </div>
-
-
 
   <div class="nav-container" [class.isAccountOpen]="isAccountOpen">
     <div class="nav-sub-section"> 
