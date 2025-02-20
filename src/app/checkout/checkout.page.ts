@@ -122,6 +122,10 @@ export class CheckoutPage implements OnInit {
 
   }
 
+  updateDiscount() {
+    this.paymentForm.get('discount').setValue(this.discount || 0);
+  }
+
   ionViewWillEnter() {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
@@ -148,7 +152,8 @@ export class CheckoutPage implements OnInit {
   generateForm() {
     this.paymentForm = this._fb.group({
       method: ["", [Validators.required]],
-      value: ["", []]
+      value: ["", []],
+      discount: [0, []]
     });
 
     this.validateForm();
@@ -186,6 +191,8 @@ export class CheckoutPage implements OnInit {
   }
 
   processPayment() {
+    console.log(this.paymentForm.value);
+    
     if (this.discount > this.cartSummary.totalAmount)  {
       return;
     }

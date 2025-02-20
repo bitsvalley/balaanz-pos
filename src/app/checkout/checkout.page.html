@@ -19,7 +19,7 @@
         <div class="checkout-summery-item half-width">
           <label>Discount (-) :</label>
           <div class="checkout-discount">
-            <input type="number" [ngClass]="{'error-field': discount > cartSummary.totalAmount}" [(ngModel)]="discount" class="form-field" placeholder="Enter Discount" />
+            <input type="number" [ngClass]="{'error-field': discount > cartSummary.totalAmount}" (input)="updateDiscount()" [(ngModel)]="discount" class="form-field" placeholder="Enter Discount" />
             <span *ngIf="discount > cartSummary.totalAmount" class="error-highlight">Discount can not be more then amount</span>
           </div>
         </div>
