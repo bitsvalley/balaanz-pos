@@ -2,7 +2,7 @@ export interface EditProduct {
     id: number;
     name: string;
     
-    price: number;
+    unitPrice: number;
     
     image: string;
    

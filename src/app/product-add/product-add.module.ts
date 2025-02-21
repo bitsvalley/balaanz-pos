@@ -17,3 +17,5 @@ import { FormsModule } from '@angular/forms';
   ]
 })
 export class ProductAddModule { }
+
+export { ProductAddComponent };

@@ -60,15 +60,35 @@ export class UserService {
     const url = `${environment.restApiHost}${endpoints.newproductadd}`;
     return this._http.post(url, payload, {headers});
   }
-  getnewproductadd() {
+  getnewproductadd(payload: Object) {
     const refreshToken = localStorage.getItem("token");
     const headers = new HttpHeaders({
       "content-type": "application/json",
       "Authorization": `${refreshToken}`,
     });
     const url = `${environment.restApiHost}${endpoints.newproductadd}`;
-    return this._http.get(url, {headers: headers});
+    return this._http.post(url,payload,{headers: headers});
   }
+
+  editproduct(payload: Object) {
+    const headers = new HttpHeaders({
+      "content-type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+    });
+    const url = `${environment.restApiHost}${endpoints.editproduct}`;
+    return this._http.put(url, payload, {headers});
+  }
+  geteditproduct(payload: Object) {
+    const refreshToken = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      "content-type": "application/json",
+      "Authorization": `${refreshToken}`,
+    });
+    const url = `${environment.restApiHost}${endpoints.editproduct}`;
+    return this._http.put(url,payload,{headers: headers});
+  }
+
+
   getProductAdmin() {
     const refreshToken = localStorage.getItem("token");
     const headers = new HttpHeaders({

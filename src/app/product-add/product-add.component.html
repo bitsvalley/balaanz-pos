@@ -35,37 +35,6 @@
   </div>
 
 <ion-content>
- 
- <ion-refresher
-  slot="fixed"
-  (ionRefresh)="handleRefresh($event)"
-></ion-refresher>
-<div class="products-screen">
-  <div class="products-container">
-    <div class="product-header-container">
-      <div class="product-search">
-        <div class="product-search-form">
-          <form>
-            <input
-            type="text"
-            [(ngModel)]="searchProductField"
-            (input)="changeSearch()"
-            class="form-field"
-            placeholder="Search products..."
-          />
-            <div class="search-icon">
-              <span class="material-symbols-outlined">search</span>
-            </div>
-          </form>
-          <div class="product-filter">
-            <span class="material-symbols-outlined">tune</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -86,8 +55,15 @@
       <p>{{ error }}</p>
       <ion-button (click)="loadTrendingProducts()">Try Again</ion-button>
     </div>
-
-    <div class="products-grid" *ngIf="!loading && !error">
+    <div   *ngIf="filteredProducts.length >0" style=" display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;">
+      <div> Total: {{filteredProducts.length}}</div>
+      <div *ngIf="selelctedCategory !== null">Category: {{selelctedCategory.name}}</div>
+    </div>
+    <div class="products-grid" *ngIf="!loading && !error && filteredProducts.length >0">
+      
       <div class="product-card" *ngFor="let product of filteredProducts">
         <div class="product-image">
           <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || 'assets/images/placeholder.png'" [alt]="product.name">
@@ -97,7 +73,7 @@
           <p class="product-code">{{ product.code }}</p>
           <div class="product-bottom">
             <span class="price">{{ product.price | currency }}</span>
-            <ion-button fill="clear" (click)="editProduct(product, $event)">
+            <ion-button fill="clear" (click)="editProduct(product)">
               <ion-icon name="create-outline"></ion-icon>
             </ion-button>
           </div>

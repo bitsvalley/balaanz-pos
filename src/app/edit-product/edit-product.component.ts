@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { EditProduct } from './edit-product-model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, NavController, ToastController } from '@ionic/angular';
+import { UserService } from '../shared/services/user.service';
+import { Subscription } from 'rxjs';
+import { ProductService } from '../shared/services/product.service';
+import { Product } from '../product-add/product-add.model';
 
 @Component({
   selector: 'app-edit-product',
@@ -12,22 +16,34 @@ export class EditProductComponent  implements OnInit {
 
   productForm: FormGroup;
     imagePreview: string | null = null;
-  
+    private subscriptions: Subscription = new Subscription();
+    itemData : Product
     constructor(
       private fb: FormBuilder,
       private loadingCtrl: LoadingController,
-      private toastCtrl: ToastController
+      private toastCtrl: ToastController,
+      private _user: UserService,
+      private productServicr: ProductService,
+      private navCtrl: NavController,
     ) {
+      
+    }
+  
+    ngOnInit() {
+      this.itemData = this.productServicr.getItemData();
+      this.formSetUp();
+      this.imagePreview = this.itemData.image1
+    }
+
+    formSetUp(){
       this.productForm = this.fb.group({
-        name: ['', [Validators.required, Validators.minLength(3)]],
-        price: [0, [Validators.required, Validators.min(0)]], // Default value should be number
+        name: [this.itemData.name, [Validators.required, Validators.minLength(3)]],
+        unitPrice: [this.itemData.unitPrice, [Validators.required, Validators.min(0)]], 
         
-        image: [''],
+        image: [this.itemData.image1,''],
        
       });
     }
-  
-    ngOnInit() {}
   
     async onImageSelect(event: any) {
       const file = event.target.files[0];
@@ -40,7 +56,7 @@ export class EditProductComponent  implements OnInit {
         reader.readAsDataURL(file);
       }
     }
-  
+
     async onSubmit() {
       if (this.productForm.valid) {
         const loading = await this.loadingCtrl.create({ message: 'Adding product...' });
@@ -52,9 +68,13 @@ export class EditProductComponent  implements OnInit {
             id: Date.now(),
            
           };
+
+          const loginApi = this._user.geteditproduct(productData).subscribe((response: any) => {
+            console.log(response)
+            
+          },);
+          this.subscriptions.add(loginApi);
   
-          // Uncomment if using backend API
-          // await this.productService.addProduct(productData);
   
           await loading.dismiss();
           const toast = await this.toastCtrl.create({
@@ -63,6 +83,9 @@ export class EditProductComponent  implements OnInit {
             color: 'success'
           });
           await toast.present();
+          setTimeout(() => {
+            this.navCtrl.navigateForward('/product');
+          }, 2000);
           this.productForm.reset();
           this.imagePreview = null;
         } catch (error) {

@@ -9,6 +9,8 @@ import { Category, Product } from './product-add.model';
 import { AccountService } from '../shared/services/account.service';
 import { FormGroup } from '@angular/forms';
 
+import {ProductService} from '../shared/services/product.service'
+
 @Component({
   selector: 'app-product-add',
   templateUrl: './product-add.component.html',
@@ -23,12 +25,13 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   searchProductField: any;
   products: Product[] = [];
   filteredProducts: Product[] = [];
+  public isAllProducts: boolean = false;
 
   trendingProducts: Product[] = [];
   loading: boolean = false;
   error: string | null = null;
   private subscriptions: Subscription = new Subscription(); 
-  public loginFrm: FormGroup = new FormGroup({});
+
   
   private apiSubscription: Subscription = new Subscription();
   
@@ -42,7 +45,7 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     private _global: GlobalService,
     private toastr: ToastrService,
     private _account: AccountService, 
-    private toaster: ToastrService,
+    private editData: ProductService
   ) {}
 
   ngOnInit() {
@@ -54,21 +57,24 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   }
 
   loadTrendingProducts() {
-    console.log("Hii");
+
+    this._global.setLoader(true);
+
     const loginApi = this._user.getProductAdmin().subscribe((response: any) => {
-      console.log(response)
+
       const productArrays: Product[][] = Object.values(response.products || {}) as Product[][];
 
-    this.trendingProducts = productArrays.reduce((acc: Product[], curr: Product[]) => acc.concat(curr), []);
-    this.filteredProducts = [...this.trendingProducts];
-      // this.trendingProducts = response.products,
-      // this.categoryList = response.categories
-      const categoryArrays: Category[][] = Object.values(response.products || {}) as Category[][];
+      this.trendingProducts = productArrays.reduce((acc: Product[], curr: Product[]) => acc.concat(curr), []);
+      this.filteredProducts = [...this.trendingProducts];
+
+      const categoryArrays: Category[][] = Object.values(response.categories || {}) as Category[][];
 
       this.categoryList = categoryArrays.reduce((acc: Category[], curr: Category[]) => acc.concat(curr), []);
-      console.log(response.products);
+      this._global.setLoader(false);
     },);
     this.subscriptions.add(loginApi);
+   
+    
   }
 
   handleRefresh(event: any) {
@@ -76,15 +82,12 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     event.target.complete();
   }
 
-  // goToProductDetail(product: Product) {
-  //   this.navCtrl.navigateForward(`/product-detail/${product.id}`);
-  // }
 
-  editProduct(product: Product, event: Event) {
+  editProduct(product: Product) {
+
+    this.editData.setItemData(product);
     this.navCtrl.navigateForward('/editproduct');
-    event.stopPropagation(); 
-    this._global.addToCart(product, this._user.getCurrentUserId());
-    this.toastr.success(`${product.name} added to cart`);
+
   }
 
   ngOnDestroy() {
@@ -112,55 +115,24 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   }
 
   async logout() {
-    
-    localStorage.removeItem('tables');
-    localStorage.removeItem('selectedTable');
-  
-  this._global.setLoader(true);
-  const logoutApi = this._user.logout(this.loginFrm.value).subscribe((response: any) => {
-    this._global.setLoader(false);
+   
     this._account.logout();
-  }, (error: any) => {
-    this._global.setLoader(false);
-    if(error.error.statusCode === 401) {
-      this._user.getToken().subscribe((resToken: any) => {
-        this._global.token = resToken.token.access.token;
-      }, (error: any) => {
-        if(error.error.statusCode === 401) {
-          this.toaster.error('Kindly re-login using username and password to continue.', 'Not Authorized',{
-            timeOut: 5000,
-          });
-          this._account.logout();
-        } else {
-          this.toaster.error('Error while processing your request.', 'Error While Processing',{
-            timeOut: 5000,
-          });
-          this._account.logout();
-          this._global.setServerErr(true);
-        }
-      });
-    } else {
-      this.toaster.error('Error while processing your request.', 'Error While Processing',{
-        timeOut: 5000,
-      });
-      this._account.logout();
-      this._global.setServerErr(true);
-    }
-  });
-  this.apiSubscription.add(logoutApi);
-}
+  }
+
 
   showAllProducts() {
+    this.isAllProducts = true
     this.selelctedCategory = null;
     this.isNavOpen = false;
-    console.log('Showing all products');
-    this.filterProducts();
+
+    this.filteredProducts = this.trendingProducts;
   }
 
   selectCategory(categoryList: Category) {
+    this.isAllProducts = false;
     this.selelctedCategory = categoryList;
     this.isNavOpen = false;
-    console.log(`Selected category: ${categoryList.name}`);
+
     this.filterProducts();
   }
 
@@ -178,8 +150,10 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     });
   }
   filterProducts() {
+
     if (!this.showAllProducts && this.categoryList || this.selectCategory) { 
-      this.filteredProducts = this.trendingProducts.filter(product => product === this.selelctedCategory.id);
+
+      this.filteredProducts = this.trendingProducts.filter(product => product.category === this.selelctedCategory.id);
 
     } else {
       this.filteredProducts = [...this.trendingProducts];
