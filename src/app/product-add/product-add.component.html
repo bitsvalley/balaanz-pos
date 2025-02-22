@@ -60,7 +60,7 @@
       align-items: center;
       padding: 1rem;">
       <div> Total: {{filteredProducts.length}}</div>
-      <div *ngIf="selelctedCategory !== null">Category: {{selelctedCategory.name}}</div>
+      <div *ngIf="selelctedCategory !== null"> <b style="color: red;">{{selelctedCategory.name}}</b></div>
     </div>
     <div class="products-grid" *ngIf="!loading && !error && filteredProducts.length >0">
       
