@@ -45,7 +45,7 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     private _global: GlobalService,
     private toastr: ToastrService,
     private _account: AccountService, 
-    private editData: ProductService
+    private _product: ProductService
   ) {}
 
   ngOnInit() {
@@ -85,7 +85,7 @@ export class ProductAddComponent implements OnInit, OnDestroy {
 
   editProduct(product: Product) {
 
-    this.editData.setItemData(product);
+    this._product.setItemData(product);
     this.navCtrl.navigateForward('/editproduct');
 
   }
@@ -111,7 +111,9 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   }
 
   openCart() {
+    this._product.setCategories(this.categoryList);
     this.navCtrl.navigateForward('/newproductadd');
+    
   }
 
   async logout() {

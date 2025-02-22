@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import { UserService } from '../shared/services/user.service';
 import { Subscription } from 'rxjs';
+import { Category } from '../product-add/product-add.model';
+import { ProductService } from '../shared/services/product.service';
 
 @Component({
   selector: 'app-add-new-product',
@@ -13,14 +15,16 @@ import { Subscription } from 'rxjs';
 export class AddNewProductComponent  implements OnInit {
   productForm: FormGroup;
   imagePreview: string | null = null;
-   private subscriptions: Subscription = new Subscription(); 
+  private subscriptions: Subscription = new Subscription(); 
+  public categories : Category[] = []
 
   constructor(
     private fb: FormBuilder,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private _user: UserService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private _product : ProductService
   ) {
     this.productForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -36,6 +40,9 @@ export class AddNewProductComponent  implements OnInit {
       online: [true],
       active: [true]
     });
+    this.categories = this._product.getCategories();
+    
+    
   }
 
   ngOnInit() {}
