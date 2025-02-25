@@ -7,7 +7,6 @@ import { Subscription } from 'rxjs';
 
 import { Category, Product } from './product-add.model'; 
 import { AccountService } from '../shared/services/account.service';
-import { FormGroup } from '@angular/forms';
 
 import {ProductService} from '../shared/services/product.service'
 

@@ -23,14 +23,14 @@ export class EditProductComponent  implements OnInit {
       private loadingCtrl: LoadingController,
       private toastCtrl: ToastController,
       private _user: UserService,
-      private productServicr: ProductService,
+      private _productServicr: ProductService,
       private navCtrl: NavController,
     ) {
       
     }
   
     ngOnInit() {
-      this.itemData = this.productServicr.getItemData();
+      this.itemData = this._productServicr.getItemData();
       this.formSetUp();
       this.imagePreview = this.itemData.image1
     }
@@ -43,6 +43,7 @@ export class EditProductComponent  implements OnInit {
         image: [this.itemData.image1,''],
        
       });
+     
     }
   
     async onImageSelect(event: any) {
@@ -65,7 +66,14 @@ export class EditProductComponent  implements OnInit {
         try {
           const productData: EditProduct = {
             ...this.productForm.value,
-            id: Date.now(),
+            lastUpdatedDate: new Date().toISOString(),
+            createdDate: this.itemData.createdDate,
+            id: this.itemData.id,
+            categoryId: this.itemData.category,
+            stockAmount: this.itemData.stockAmount,
+            barcode: this.itemData.barcode,
+            shortDescription: this.itemData.shortDescription,
+            longDescription: this.itemData.longDescription
            
           };
 

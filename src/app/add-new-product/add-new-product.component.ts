@@ -29,16 +29,12 @@ export class AddNewProductComponent  implements OnInit {
     this.productForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       unitPrice: [ [Validators.required, Validators.min(0)]],
-      // code: ['', Validators.required],
       barcode: [''],
-      category: ['', Validators.required],
+      categoryId: ['', Validators.required],
       image: [''],
       stockAmount: [0, [Validators.required, Validators.min(0)]],
       shortDescription: [''], 
       longDescription: [''],
-      msrp: [0, [Validators.required, Validators.min(0)]],
-      online: [true],
-      active: [true]
     });
     this.categories = this._product.getCategories();
     
@@ -68,7 +64,6 @@ export class AddNewProductComponent  implements OnInit {
        
         const productData: AddNewProduct = {
           ...this.productForm.value,
-          id: Date.now(),
           createdDate: new Date().toISOString(),
           lastUpdatedDate: new Date().toISOString()
         };
