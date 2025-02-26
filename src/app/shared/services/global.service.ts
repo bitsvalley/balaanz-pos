@@ -143,7 +143,6 @@ export class GlobalService {
   }
 
   addToCart(product: any, userId: any) {
-    // console.log(product);
     if (this.cartData[userId][product.id]) {
       this.cartData[userId][product.id].quantity += 1;
     } else {
@@ -154,30 +153,35 @@ export class GlobalService {
   }
 
   addToCartforChair(product: any, userId: any, TableId: any, ChairId: any) {
-      if (this.cartData[userId][product.id]) {
-          if (this.cartData[userId][product.id].TableId === TableId && this.cartData[userId][product.id].ChairId === ChairId) {
-              this.cartData[userId][product.id].quantity += 1;
-          } else {
-              this.cartData[userId][product.id] = {
-                  ...product,
-                  quantity: 1,
-                  TableId: TableId,
-                  ChairId: ChairId
-              };
-          }
-      } else {
-          this.cartData[userId][product.id] = {
-              ...product,
-              quantity: 1,
-              TableId: TableId,
-              ChairId: ChairId
-          };
-      }
+    const uniqueKey = `${product.id}-${TableId}-${ChairId}`;
 
-      this.storeCart(userId);
+    if (this.cartData[userId]) {
+        if (this.cartData[userId][uniqueKey]) {
+            this.cartData[userId][uniqueKey].quantity += 1;
+        } else {
+            this.cartData[userId][uniqueKey] = {
+                ...product,
+                quantity: 1,
+                TableId: TableId,
+                ChairId: ChairId
+            };
+        }
+    } else {
+        this.cartData[userId] = {
+            [uniqueKey]: {
+                ...product,
+                quantity: 1,
+                TableId: TableId,
+                ChairId: ChairId
+            }
+        };
+    }
 
-      return { list: this.cartList, data: this.cartData };
-  }
+    this.storeCart(userId);
+
+    return { list: this.cartList, data: this.cartData };
+}
+
 
 
 
