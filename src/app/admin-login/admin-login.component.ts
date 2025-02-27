@@ -97,7 +97,7 @@ export class AdminLoginComponent  implements OnInit {
 
 
   goToProduct(){
-    this._nav.navigateForward('product');
+    this._nav.navigateForward('adminlandingpage');
   }
   
 

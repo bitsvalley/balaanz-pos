@@ -10,6 +10,11 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'adminlandingpage',
+   
+    loadChildren: () => import('./admin-landing-page/admin-landing-page.module').then( m => m.AdminLandingPageModule)
+  },
+  {
     path: 'newproductadd',
    
     loadChildren: () => import('./add-new-product/add-new-product/add-new-product.module').then( m => m.AddNewProductModule)

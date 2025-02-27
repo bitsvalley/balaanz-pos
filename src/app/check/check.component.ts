@@ -16,7 +16,6 @@ export class CheckComponent  implements OnInit {
     this.router.navigate(['/tablemodule']);
   }
 
-  // Navigate to the Dashboard page for Walk-in
   goToDashboard() {
     this.router.navigate(['/dashboard']);
   }

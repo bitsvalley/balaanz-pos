@@ -1,0 +1,47 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="landing-container">
+<!-- 
+    <ion-header class="ion-no-border">
+      <ion-toolbar class="transparent-toolbar">
+        <ion-title class="ion-text-center">Welcome to Admin Landing Page</ion-title>
+      </ion-toolbar>
+    </ion-header> -->
+
+
+    <div class="content-container">
+      <h1 class="main-title">Welcome to Admin Landing Page</h1>
+      
+      <div class="buttons-container">
+        <ion-button 
+          class="custom-button" 
+          expand="block" 
+          shape="round" 
+          (click)="goToProducts()"
+          color="light">
+          <ion-icon name="cart-outline" slot="start"></ion-icon>
+          Products
+        </ion-button>
+
+        <ion-button 
+          class="custom-button" 
+          expand="block" 
+          shape="round" 
+          (click)="goToPurchases()"
+          color="light">
+          <ion-icon name="basket-outline" slot="start"></ion-icon>
+          Purchases
+        </ion-button>
+
+        <ion-button 
+          class="custom-button" 
+          expand="block" 
+          shape="round" 
+          (click)="goToSales()"
+          color="light">
+          <ion-icon name="stats-chart" slot="start"></ion-icon>
+          Sales Report
+        </ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
