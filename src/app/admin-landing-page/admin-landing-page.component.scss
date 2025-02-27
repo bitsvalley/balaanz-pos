@@ -1,5 +1,5 @@
 ion-content {
-  --background: #f5f7fa;
+  --background: #495575;
 }
 
 .dashboard-container {
@@ -8,7 +8,6 @@ ion-content {
   flex-direction: column;
 }
 
-/* New header styles */
 .header-container {
   display: flex;
   justify-content: space-between;
@@ -36,7 +35,7 @@ ion-content {
   
   ion-icon {
     font-size: 32px;
-    color: #7F3DFF;
+    color: #ff2a00;
   }
 }
 
@@ -88,7 +87,7 @@ ion-content {
 }
 
 .card-icon {
-  background: #7F3DFF;
+  background: #ff2a00;
   width: 50px;
   height: 50px;
   border-radius: 12px;
@@ -121,7 +120,7 @@ ion-content {
 }
 
 .card-arrow {
-  color: #7F3DFF;
+  color: #ff2a00;
   
   ion-icon {
     font-size: 20px;
