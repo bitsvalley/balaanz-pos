@@ -1,98 +1,160 @@
 ion-content {
-    --background: #ffffff;
-  }
+  --background: #f5f7fa;
+}
+
+.dashboard-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* New header styles */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 16px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 600px;
+  align-self: center;
+}
+
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   
-  .landing-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+  ion-icon {
+    font-size: 32px;
+    color: #7F3DFF;
   }
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-top: 4px;
+}
+
+.content-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 20px 20px 20px;
+}
+
+.main-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.cards-container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:active, .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card-icon {
+  background: #7F3DFF;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
   
-  .transparent-toolbar {
-    --background: transparent;
-    
-    ion-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #333;
-    }
+  ion-icon {
+    font-size: 24px;
+    color: white;
   }
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+}
+
+.card-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.card-arrow {
+  color: #7F3DFF;
   
-  .content-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+  ion-icon {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .header-container,
+  .cards-container {
+    max-width: 700px;
   }
   
   .main-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-    text-align: center;
-    margin-bottom: 40px;
+    font-size: 28px;
   }
   
-  .buttons-container {
-    width: 100%;
-    max-width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  .user-icon ion-icon {
+    font-size: 36px;
   }
   
-  .custom-button {
-    margin: 0;
-    height: 58px;
-    --border-radius: 14px;
-    
-    &::part(native) {
-      font-size: 16px;
-      font-weight: 600;
-      text-transform: none;
-      letter-spacing: 0.3px;
-    }
-  
-    ion-icon {
-      font-size: 20px;
-      margin-right: 10px;
-    }
-  
-    &:first-child {
-      --background: #7F3DFF;  
-      --background-activated: #6E35DC;
-      --color: white;
-      --box-shadow: 0 4px 15px rgba(127, 61, 255, 0.2);
-      --ripple-color: rgba(255, 255, 255, 0.2);
-    }
-  
-
+  .user-name {
+    font-size: 16px;
   }
   
-  .custom-button::part(native):hover {
-    opacity: 0.95;
+  .card {
+    padding: 24px;
   }
   
-  .custom-button::part(native):active {
-    transform: scale(0.98);
-    transition: transform 0.1s;
+  .card-title {
+    font-size: 20px;
   }
   
-  @media (min-width: 768px) {
-    .buttons-container {
-      max-width: 400px;
-    }
-    
-    .main-title {
-      font-size: 28px;
-    }
+  .card-description {
+    font-size: 15px;
   }
-  
-  ion-button.custom-button {
-    opacity: 1 !important;
-    visibility: visible !important;
-    display: block !important;
-  }
-  
+}

@@ -1,46 +1,56 @@
 <ion-content [fullscreen]="true" class="ion-padding">
-  <div class="landing-container">
-<!-- 
-    <ion-header class="ion-no-border">
-      <ion-toolbar class="transparent-toolbar">
-        <ion-title class="ion-text-center">Welcome to Admin Landing Page</ion-title>
-      </ion-toolbar>
-    </ion-header> -->
-
-
+  <div class="dashboard-container">
+    <!-- Header section -->
+    <div class="header-container">
+      <h1 class="main-title">Admin Dashboard</h1>
+      <div class="user-profile">
+        <div class="user-icon">
+          <ion-icon name="person-circle-outline"></ion-icon>
+        </div>
+        <span class="user-name">{{ userName }}</span>
+      </div>
+    </div>
+    
     <div class="content-container">
-      <h1 class="main-title">Welcome to Admin Landing Page</h1>
-      
-      <div class="buttons-container">
-        <ion-button 
-          class="custom-button" 
-          expand="block" 
-          shape="round" 
-          (click)="goToProducts()"
-          color="light">
-          <ion-icon name="cart-outline" slot="start"></ion-icon>
-          Products
-        </ion-button>
+      <div class="cards-container">
+        <div class="card" (click)="goToProducts()">
+          <div class="card-icon">
+            <ion-icon name="cart-outline"></ion-icon>
+          </div>
+          <div class="card-content">
+            <h2 class="card-title">Products</h2>
+            <p class="card-description">Manage your inventory and product catalog</p>
+          </div>
+          <div class="card-arrow">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </div>
 
-        <ion-button 
-          class="custom-button" 
-          expand="block" 
-          shape="round" 
-          (click)="goToPurchases()"
-          color="light">
-          <ion-icon name="basket-outline" slot="start"></ion-icon>
-          Purchases
-        </ion-button>
+        <div class="card" (click)="goToPurchases()">
+          <div class="card-icon">
+            <ion-icon name="basket-outline"></ion-icon>
+          </div>
+          <div class="card-content">
+            <h2 class="card-title">Purchases</h2>
+            <p class="card-description">Track purchase orders and invoices</p>
+          </div>
+          <div class="card-arrow">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </div>
 
-        <ion-button 
-          class="custom-button" 
-          expand="block" 
-          shape="round" 
-          (click)="goToSales()"
-          color="light">
-          <ion-icon name="stats-chart" slot="start"></ion-icon>
-          Sales Report
-        </ion-button>
+        <div class="card" (click)="goToSales()">
+          <div class="card-icon">
+            <ion-icon name="stats-chart"></ion-icon>
+          </div>
+          <div class="card-content">
+            <h2 class="card-title">Sales Report</h2>
+            <p class="card-description">View analytics and sales performance</p>
+          </div>
+          <div class="card-arrow">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </div>
       </div>
     </div>
   </div>

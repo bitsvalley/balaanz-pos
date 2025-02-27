@@ -67,6 +67,7 @@ export class AdminLoginComponent  implements OnInit {
       console.log(response)
       if (response.token !== null) {
         //localStorage.setItem('token', response.token);
+        localStorage.setItem('userName', this.loginForm.value.name);
         this.goToProduct();
       } else if (response.token === null) {
         if (response.message === 'User is not active') {

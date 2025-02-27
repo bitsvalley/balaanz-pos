@@ -69,6 +69,7 @@ export class AccountService implements OnDestroy {
   logout() {
     this._global.token = "";
     localStorage.removeItem('token');
+    localStorage.removeItem('userName');
     this._nav.navigateForward('home');
   }
 

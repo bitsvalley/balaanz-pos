@@ -8,9 +8,13 @@ import { Router } from '@angular/router';
 })
 export class AdminLandingPageComponent  implements OnInit {
 
+  userName: string;
+
   constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userName = localStorage.getItem('userName');
+  }
 
   goToProducts(){
     this.router.navigate(['/product']);
