@@ -60,22 +60,26 @@ export class ProductAddComponent implements OnInit, OnDestroy {
     this._global.setLoader(true);
 
     const loginApi = this._user.getProductAdmin().subscribe((response: any) => {
-
+      
       const productArrays: Product[][] = Object.values(response.products || {}) as Product[][];
-
+      
       this.trendingProducts = productArrays.reduce((acc: Product[], curr: Product[]) => acc.concat(curr), []);
       this.filteredProducts = [...this.trendingProducts];
-
+      
       const categoryArrays: Category[][] = Object.values(response.categories || {}) as Category[][];
-
+      
       this.categoryList = categoryArrays.reduce((acc: Category[], curr: Category[]) => acc.concat(curr), []);
       this._global.setLoader(false);
-    },);
+    },    
+    (error: any) => {      
+      this._global.setLoader(false); 
+    }
+  
+  );
     this.subscriptions.add(loginApi);
-   
-    
+ 
   }
-
+  
   handleRefresh(event: any) {
     this.loadTrendingProducts();
     event.target.complete();
