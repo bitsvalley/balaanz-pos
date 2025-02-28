@@ -1,48 +1,121 @@
-// login.page.scss
+@import "./../../assets/style/config";
+
+.login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%; 
+  width: 100%;
+}
+
 .login-container {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%; 
+  
+  .login-content {
+    padding: 30px 20px;
+    background: $color-bg-light-gray;
+    width: 100%;
+    position: relative;
+    
+    h4 {
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: 0;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 30px;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    &::before {
+      content: "";
+      display: inline-block;
+      background: url(../../assets/images/login-pattern.png) no-repeat center;
+      position: absolute;
+      right: 40%;
+      width: 100%; 
+      top: 0;
+      height: 100%;
+      left: 40px;
+    }
+    
+    .swipe-machine-img {
+      padding: 20px 0;
+    }
   }
   
   .login-form {
+    flex-grow: 2;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: column;
     width: 100%;
-    max-width: 400px;
+    
+    .btn.btn-primary.btn-full {
+      margin-top: 10px;
+    }
   }
+}
+
+.form-field, .btn {
+  height: 60px;
+  font-size: 20px;
+  padding: 10px 25px;
+  border-radius: 30px;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 10px;
+}
+
+.btn {
+  background-color: var(--ion-color-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
   
-  ion-card {
-    margin: 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  &:disabled {
+    opacity: 0.7;
   }
+}
+
+.admin {
+  display: flex;
+  justify-content: flex-end;
+  width: 96%;
+  margin-top: 8px;
+  max-width: 400px;
   
-  ion-card-header {
-    text-align: center;
-    padding: 24px 16px;
+  a {
+    color: var(--ion-color-primary);
+    text-decoration: none;
+    cursor: pointer;
   }
-  
-  ion-card-title {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  ion-card-subtitle {
-    margin-top: 8px;
-  }
-  
-  ion-item {
-    margin-bottom: 16px;
-    --padding-start: 0;
-  }
-  
-  .error-message {
-    color: var(--ion-color-danger);
-    font-size: 12px;
-    margin: -12px 0 16px 0;
-    padding-left: 16px;
-  }
-  
-  .login-button {
-    margin-top: 24px;
-  }
+}
+
+.error-message {
+  color: var(--ion-color-danger);
+  font-size: 12px;
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  padding-left: 25px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+}
+
+.invalid-field {
+  border-color: var(--ion-color-danger);
+}

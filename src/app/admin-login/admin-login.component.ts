@@ -101,6 +101,9 @@ export class AdminLoginComponent  implements OnInit {
     this._nav.navigateForward('adminlandingpage');
   }
   
+  goToLogin(){
+    this._nav.navigateForward('home');
+  }
 
 }
 

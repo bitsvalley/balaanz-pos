@@ -1,49 +1,48 @@
-<ion-header>
-  <ion-toolbar>
-     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
-    </ion-buttons>
-    
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <div class="login-container">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Secure Admin Login</ion-card-title>
-          <ion-card-subtitle>Please sign in to continue</ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content>
-          <ion-item>
-            <ion-label position="floating">Username</ion-label>
-            <ion-input type="text" formControlName="name"></ion-input>
-          </ion-item>
-          <div class="error-message" *ngIf="isSubmitted && errorControl['name'].errors?.['required']">
-            Username is required
-          </div>
-          <div class="error-message" *ngIf="isSubmitted && errorControl['name'].errors?.['minlength']">
-            Username should be min 3 chars long
-          </div>
-
-          <ion-item>
-            <ion-label position="floating">Password</ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
-          </ion-item>
-          <div class="error-message" *ngIf="isSubmitted && errorControl['password'].errors?.['required']">
-            Password is required
-          </div>
-          <div class="error-message" *ngIf="isSubmitted && errorControl['password'].errors?.['minlength']">
-            Password should be min 6 chars long
-          </div>
-
-          <ion-button expand="block" type="submit" class="login-button">
-            Login
-          </ion-button>
-        </ion-card-content>
-      </ion-card>
-    </form>
+<ion-content [fullscreen]="true">
+  <div class="login-screen">
+    <div class="login-container"> 
+      <div class="login-content"> 
+        <div class="login-logo">
+          <img src="/assets/images/logo.png" />
+        </div>
+        <div class="swipe-machine-img">
+          <img src="/assets/images/swipe-machine.png" />
+        </div>
+        <h4>Manage your store with</h4>
+        <h2>Balaanz Admin</h2> 
+      </div>
+      <form class="login-form" [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+        <input 
+          class="form-field" 
+          [ngClass]="{'invalid-field': isSubmitted && errorControl['name'].errors}" 
+          formControlName="name" 
+          type="text" 
+          placeholder="Username" />
+        <div class="error-message" *ngIf="isSubmitted && errorControl['name'].errors?.['required']">
+          Username is required
+        </div>
+        <div class="error-message" *ngIf="isSubmitted && errorControl['name'].errors?.['minlength']">
+          Username should be min 3 chars long
+        </div>
+        
+        <input 
+          class="form-field" 
+          [ngClass]="{'invalid-field': isSubmitted && errorControl['password'].errors}"
+          formControlName="password" 
+          type="password" 
+          placeholder="Password" />
+        <div class="error-message" *ngIf="isSubmitted && errorControl['password'].errors?.['required']">
+          Password is required
+        </div>
+        <div class="error-message" *ngIf="isSubmitted && errorControl['password'].errors?.['minlength']">
+          Password should be min 6 chars long
+        </div>
+        
+        <button class="btn btn-primary btn-full" type="submit" [disabled]="loginForm.invalid">Sign In</button>
+        <div class="admin">
+          <a (click)="goToLogin()">Sale Login</a>
+        </div> 
+      </form>
+    </div>
   </div>
 </ion-content>
