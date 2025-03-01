@@ -64,7 +64,7 @@
   
       .product-bottom {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         align-items: center;
   
         .price {
@@ -411,3 +411,46 @@
   padding-bottom: 70px; 
 }
 
+
+
+
+
+.price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px; 
+  margin: 8px 0;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-right: 30px;
+}
+
+.price-icon {
+  width: 20px; 
+  margin-right: 6px; 
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px; 
+}
+
+.price-value {
+  font-weight: 500;
+  font-size: 12px; 
+}
+
+.unit-price .price-icon {
+  color: #4a6eb5;
+}
+
+.purchase-price .price-icon {
+  color: #4caf50;
+}
+
+.bulk-price .price-icon {
+  color: #ff9800;
+}

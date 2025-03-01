@@ -77,6 +77,22 @@
           <div class="product-bottom">
             <span class="price">{{ product.price | currency }}</span>
             <ion-button fill="clear" (click)="editProduct(product)">
+              <div class="price-container">
+                <div class="price-row unit-price">
+                  <span class="price-icon">UP</span>
+                  <span class="price-value">{{product.unitPrice}}</span>
+                </div>
+                
+                <div class="price-row purchase-price">
+                  <span class="price-icon">PP</span>
+                  <span class="price-value">{{product.purchasePrice}}</span>
+                </div>
+                
+                <div class="price-row bulk-price">
+                  <span class="price-icon">BP</span>
+                  <span class="price-value">{{product.bulkPrice}}</span>
+                </div>
+              </div>
               <ion-icon name="create-outline"></ion-icon>
             </ion-button>
           </div>

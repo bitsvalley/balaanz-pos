@@ -38,7 +38,7 @@ export class EditProductComponent  implements OnInit {
     formSetUp(){
       this.productForm = this.fb.group({
         name: [this.itemData.name, [Validators.required, Validators.minLength(3)]],
-        unitPrice: [this.itemData.unitPrice, [Validators.required, Validators.min(0)]], 
+        barcode: [this.itemData.barcode, [Validators.required, Validators.min(0)]], 
         
         image: [this.itemData.image1,''],
        
@@ -71,9 +71,10 @@ export class EditProductComponent  implements OnInit {
             id: this.itemData.id,
             categoryId: this.itemData.category,
             stockAmount: this.itemData.stockAmount,
-            barcode: this.itemData.barcode,
+            // barcode: this.itemData.barcode,
             shortDescription: this.itemData.shortDescription,
-            longDescription: this.itemData.longDescription
+            longDescription: this.itemData.longDescription,
+            unitPrice: this.itemData.unitPrice
            
           };
 
