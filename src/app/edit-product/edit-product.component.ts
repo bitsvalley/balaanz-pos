@@ -46,18 +46,30 @@ export class EditProductComponent  implements OnInit {
      
     }
   
-    async onImageSelect(event: any) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.imagePreview = reader.result as string;
-          this.productForm.patchValue({ image: reader.result });
-        };
-        reader.readAsDataURL(file);
-      }
+    
+ async onImageSelect(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    const fileSizeInKB = file.size / 1024; 
+
+    if (fileSizeInKB > 700) {
+      const toast = await this.toastCtrl.create({
+        message: 'Image size must be less than or equal to 700 KB.',
+        duration: 2000,
+        color: 'danger',
+      });
+      await toast.present();
+      return; 
     }
 
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+      this.productForm.patchValue({ image: reader.result });
+    };
+    reader.readAsDataURL(file);
+  }
+}
     async onSubmit() {
       if (this.productForm.valid) {
         const loading = await this.loadingCtrl.create({ message: 'Adding product...' });
