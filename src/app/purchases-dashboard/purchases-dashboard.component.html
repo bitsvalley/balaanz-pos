@@ -1,0 +1,162 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Products</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <div class="products-screen">
+    <div class="products-container">
+      <div class="product-header-container">
+        <div class="product-search">
+          <div class="product-search-form">
+            <form>
+              <input
+                type="text"
+                [(ngModel)]="searchProductField"
+                (input)="changeSearch()"
+                class="form-field"
+                placeholder="Search products..."
+              />
+              <div class="search-icon">
+                <span class="material-symbols-outlined">search</span>
+              </div>
+            </form>
+            <div class="product-filter">
+              <span class="material-symbols-outlined">tune</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trending-container">
+    <div class="skeleton-container" *ngIf="loading">
+      <div class="skeleton-card" *ngFor="let i of [1,2,3,4]">
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-price"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-container" *ngIf="error">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <p>{{ error }}</p>
+      <ion-button (click)="loadTrendingProducts()">Try Again</ion-button>
+    </div>
+    
+    <div *ngIf="filteredProducts.length > 0" class="products-header">
+      <div>Total: {{filteredProducts.length}}</div>
+      <div *ngIf="selelctedCategory !== null"><b class="category-name">{{selelctedCategory.name}}</b></div>
+    </div>
+    
+    <div class="products-list" *ngIf="!loading && !error && filteredProducts.length > 0">
+      <div class="product-card" *ngFor="let product of filteredProducts">
+        <div class="product-image">
+          <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || 'assets/images/placeholder.png'" [alt]="product.name">
+        </div>
+        <div class="product-details">
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-code">{{ product.code }}</p>
+          <div class="price-details">
+            <div class="price">{{ product.price | currency }}</div>
+            <div class="price-container">
+              <div class="price-row">
+                <span class="price-label">UP:</span>
+                <span class="price-value">{{product.unitPrice}}</span>
+              </div>
+              <div class="price-row">
+                <span class="price-label">PP:</span>
+                <span class="price-value">{{product.purchasePrice}}</span>
+              </div>
+              <div class="price-row">
+                <span class="price-label">BP:</span>
+                <span class="price-value">{{product.bulkPrice}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="edit-button">
+            <ion-button fill="clear" (click)="editProduct(product)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && !error && trendingProducts.length === 0">
+      <ion-icon name="trending-up-outline" size="large"></ion-icon>
+      <h3>No Products</h3>
+    </div>
+  </div>
+
+  <div class="app-navigation">
+    <div class="app-nav-bar" (click)="toggleNav()">
+      <img src="assets/images/menu-icon.png" alt="">
+    </div>
+    <div class="app-nav-user" (click)="toggleAccount()">
+      <img src="assets/images/user-icon.png" alt="">
+    </div>
+  </div>
+
+  <div class="nav-container" [class.nav-open]="isNavOpen">
+    <div class="nav-sub-section"> 
+      <div class="nav-title">
+        Category <button class="btn btn-small btn-primary" (click)="showAllProducts()">View All</button>
+      </div> 
+      <ul class="category-list">
+        <li *ngFor="let category of categoryList" [ngClass]="{'active': category.id === selelctedCategory?.id}" (click)="selectCategory(category)">
+          {{ category.name }} 
+          <span class="record-count" *ngIf="category.totalProducts">{{ category.totalProducts }}</span>
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="nav-bottom">
+      <button class="btn btn-primary btn-full" (click)="closeNav()">CLOSE</button>
+    </div>
+  </div>
+
+  <div class="nav-container" [class.isAccountOpen]="isAccountOpen">
+    <div class="nav-sub-section"> 
+      <div class="nav-title">
+        Account 
+      </div> 
+      <ul>
+        <li>
+          My Account
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+        </li>
+        <li>
+          Update Password
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+        </li>
+        <li (click)="logout()">
+          Logout
+          <span class="material-symbols-outlined">
+            chevron_right
+          </span>
+        </li> 
+      </ul>
+    </div>
+    <div class="nav-bottom">
+      <button class="btn btn-primary btn-full" (click)="closeAccount()">CLOSE</button>
+    </div>
+  </div>
+</ion-content>

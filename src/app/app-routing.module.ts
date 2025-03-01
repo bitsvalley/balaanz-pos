@@ -30,6 +30,11 @@ const routes: Routes = [
     loadChildren: () => import('./admin-login/admin-login.module').then( m => m.AdminLoginModule)
   },
   {
+    path: 'purchasesdashboardmodule',
+   
+    loadChildren: () => import('./purchases-dashboard/purchases-dashboard.module').then( m => m.PurchasesDashboardModule)
+  },
+  {
     path: 'tablemodule',
     canActivate: [AuthGuardService],
     loadChildren: () => import('./table/table.module').then(m => m.TableModule)
