@@ -1,0 +1,62 @@
+<ion-content class="ion-padding">
+  <div class="trending-container">
+
+    <div class="header-section">
+      <h1 class="title">Trending Products</h1>
+      <p class="subtitle">Top 5 most sold products</p>
+    </div>
+    
+
+    <div *ngIf="loading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Loading trending products...</p>
+    </div>
+    
+
+    <div *ngIf="!loading" class="dashboard-content">
+      <div class="chart-section">
+        <div class="chart-container">
+          <canvas id="topProductsChart"></canvas>
+        </div>
+      </div>
+      
+      <div class="product-list-section">
+        <h2 class="section-title">Top Products Details</h2>
+        
+        <ion-list>
+          <ion-item *ngFor="let product of topProducts; let i = index" class="product-item">
+            <div class="product-card">
+              <div class="product-rank">
+                <span class="rank-badge" [ngClass]="'rank-' + (i + 1)">{{i + 1}}</span>
+              </div>
+              <div class="product-image">
+                <img [src]="getImagePath(product)" alt="{{product.name}}">
+              </div>
+              <div class="product-info">
+                <h3 class="product-name">{{product.name}}</h3>
+                <p class="product-desc">{{product.shortDescription}}</p>
+                <div class="product-details">
+                  <div class="product-price">
+                    <span class="price-label">Price:</span>
+                    <span class="price-value">{{product.unitPrice | currency}}</span>
+                  </div>
+                  <div class="product-stock">
+                    <span class="stock-label">Stock:</span>
+                    <span class="stock-value" [ngClass]="{'stock-negative': product.stockAmount < 0}">
+                      {{Math.abs(product.stockAmount)}} units
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="product-action">
+                <ion-button fill="clear" size="small" color="primary">
+                  <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+      </div>
+    </div>
+  </div>
+</ion-content>

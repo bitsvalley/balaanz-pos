@@ -25,7 +25,7 @@ export class AppComponent {
         // console.log(event);
         if (event.url === '/home') {
           this.displayHeader = false;
-        }else if(event.url === '/adminlogin' || event.url === '/product' || event.url === '/editproduct' || event.url === '/newproductadd' || event.url === '/adminlandingpage' || event.url === '/purchasesdashboardmodule'){
+        }else if(event.url === '/adminlogin' || event.url === '/product' || event.url === '/editproduct' || event.url === '/newproductadd' || event.url === '/adminlandingpage' || event.url === '/purchasesdashboardmodule' || event.url === '/salesdashboardmodule'){
           this.displayHeader = false;
         }        
         else if (event.url !== '/') {

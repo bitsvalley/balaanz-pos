@@ -25,7 +25,7 @@ export class AdminLandingPageComponent  implements OnInit {
   }
 
   goToSales(){
-    alert("Coming Soon");
+    this.router.navigate(['/salesdashboardmodule']);
   }
 
 }

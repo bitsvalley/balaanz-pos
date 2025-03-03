@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { endpoints } from 'src/app/shared/resources/endPoint';
 import { Product } from 'src/app/product-add/product-add.model';
 import { Observable, tap } from 'rxjs';
+import { Products } from 'src/app/sales-dashboard/sales-dashboard.model';
 
 declare const grecaptcha: any;
 
@@ -98,6 +99,18 @@ export class UserService {
     const url = `${environment.restApiHost}${endpoints.productList}`;
     return this._http.get(url, {headers: headers});
   }
+
+
+  getSalesProduct(from: string = '', to: string = '', limit: number = 5) {
+    const refreshToken = localStorage.getItem("token");
+    const headers = new HttpHeaders({
+      "content-type": "application/json",
+      "Authorization": `Bearer ${refreshToken}`,
+    });
+    const url = `${environment.restApiHost}${endpoints.sales}`;
+    return this._http.get<Products[]>(url, { headers: headers });
+  }
+  
 
   logout(userId) {
     const url = `${environment.host}${endpoints.logout}`;
