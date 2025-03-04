@@ -80,7 +80,7 @@ export class PurchasesDashboardComponent  implements OnInit {
 
   editProduct(product: Product) {
     this._product.setItemData(product);
-    this.navCtrl.navigateForward('/editproduct');
+    this.navCtrl.navigateForward('/purchasesedit');
   }
 
   ngOnDestroy() {

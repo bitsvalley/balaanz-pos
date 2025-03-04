@@ -21,10 +21,12 @@ export class AdminLandingPageComponent  implements OnInit {
   }
 
   goToPurchases(){
+    // alert("Coming Soon");
     this.router.navigate(['/purchasesdashboardmodule']);
   }
 
   goToSales(){
+    // alert("Coming Soon");
     this.router.navigate(['/salesdashboardmodule']);
   }
 

@@ -1,17 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { Products } from './sales-dashboard.model';
-import { HttpClient } from '@angular/common/http';
-import { Chart } from 'chart.js';
+
+import { Chart, registerables } from 'chart.js';
+import { UserService } from '../shared/services/user.service';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-sales-dashboard',
   templateUrl: './sales-dashboard.component.html',
   styleUrls: ['./sales-dashboard.component.scss'],
 })
-export class SalesDashboardComponent  implements OnInit {
-  topProducts: Products[] = [];
+export class SalesDashboardComponent implements OnInit, AfterViewInit {
+  @ViewChild('topProductsChart', { static: false }) chartCanvas!: ElementRef;
 
-  chart: any;
+  topProducts: Products[] = [];
+  dummyProducts: Products[] = [
+  ];
+
+  chart: Chart | null = null;
   loading = true;
   Math = Math;
   
@@ -23,135 +30,16 @@ export class SalesDashboardComponent  implements OnInit {
     '#9966FF'  // Purple
   ];
 
-  // Dummy data for testing
-  dummyProducts: Products[] = [
-    {
-      id: 1290,
-      name: 'Fanta',
-      createdDate: null,
-      lastUpdatedDate: null,
-      category: 1268,
-      unitPrice: 15.0,
-      bulkPrice: 14.0,
-      purchasePrice: 0.0,
-      stockAmount: 150,
-      image1: 'assets/images/coca-cola_1.jpg',
-      image2: null,
-      image3: null,
-      image4: null,
-      code: 'drink',
-      barcode: 'soup',
-      expiry: null,
-      shortDescription: 'Orange flavored soda',
-      longDescription: 'Refreshing orange flavored carbonated drink',
-      online: false,
-      active: true,
-      msrp: 0.0
-    },
-    {
-      id: 1291,
-      name: 'Coca Cola',
-      createdDate: null,
-      lastUpdatedDate: null,
-      category: 1268,
-      unitPrice: 18.0,
-      bulkPrice: 16.0,
-      purchasePrice: 0.0,
-      stockAmount: 200,
-      image1: 'assets/images/image-2.jpg',
-      image2: null,
-      image3: null,
-      image4: null,
-      code: 'drink',
-      barcode: 'cola',
-      expiry: null,
-      shortDescription: 'Coca Cola soft drink',
-      longDescription: 'Classic cola flavor carbonated drink',
-      online: false,
-      active: true,
-      msrp: 0.0
-    },
-    {
-      id: 1292,
-      name: 'Sprite',
-      createdDate: null,
-      lastUpdatedDate: null,
-      category: 1268,
-      unitPrice: 14.0,
-      bulkPrice: 12.0,
-      purchasePrice: 0.0,
-      stockAmount: 125,
-      image1: 'assets/images/image-3.jpg',
-      image2: null,
-      image3: null,
-      image4: null,
-      code: 'drink',
-      barcode: 'sprite',
-      expiry: null,
-      shortDescription: 'Lemon lime flavor soda',
-      longDescription: 'Refreshing lemon-lime flavored carbonated drink',
-      online: false,
-      active: true,
-      msrp: 0.0
-    },
-    {
-      id: 1293,
-      name: 'Pepsi',
-      createdDate: null,
-      lastUpdatedDate: null,
-      category: 1268,
-      unitPrice: 17.0,
-      bulkPrice: 15.0,
-      purchasePrice: 0.0,
-      stockAmount: 180,
-      image1: 'assets/images/image-4.avif',
-      image2: null,
-      image3: null,
-      image4: null,
-      code: 'drink',
-      barcode: 'pepsi',
-      expiry: null,
-      shortDescription: 'Pepsi soft drink',
-      longDescription: 'Refreshing cola flavored carbonated drink',
-      online: false,
-      active: true,
-      msrp: 0.0
-    },
-    {
-      id: 1294,
-      name: 'Mountain Dew',
-      createdDate: null,
-      lastUpdatedDate: null,
-      category: 1268,
-      unitPrice: 16.0,
-      bulkPrice: 14.0,
-      purchasePrice: 0.0,
-      stockAmount: 100,
-      image1: 'assets/images/image-5.jpg',
-      image2: null,
-      image3: null,
-      image4: null,
-      code: 'drink',
-      barcode: 'dew',
-      expiry: null,
-      shortDescription: 'Citrus flavored soda',
-      longDescription: 'Energizing citrus flavored carbonated drink',
-      online: false,
-      active: true,
-      msrp: 0.0
-    }
-  ];
-
-  constructor(private http: HttpClient) {}
+  constructor(private _user: UserService) {}
 
   ngOnInit() {
-  
-    this.topProducts = this.dummyProducts;
-    this.loading = false;
-    
-    setTimeout(() => {
+    this.fetchTopProducts();
+  }
+
+  ngAfterViewInit() {
+    if (this.topProducts.length > 0) {
       this.createPieChart();
-    }, 500);
+    }
   }
 
   fetchTopProducts() {
@@ -159,34 +47,50 @@ export class SalesDashboardComponent  implements OnInit {
     const to = '2025-12-30 15:21:46';
     const limit = 5;
     
-    const url = `/api/v1/pos/product/topSold?from=${from}&to=${to}&limit=${limit}`;
-    
-    this.http.get<Products[]>(url).subscribe(
-      (data) => {
-        this.topProducts = data;
+    this._user.getSalesProduct(from, to, limit).subscribe(
+      (data: Products[]) => {
+        this.topProducts = data.length > 0 ? data : this.dummyProducts; 
         this.loading = false;
-        this.createPieChart();
+        
+        setTimeout(() => {
+          this.createPieChart();
+        }, 0);
+        
+        console.log("Fetched Products:", data);
       },
       (error) => {
         console.error('Error fetching top products:', error);
         this.loading = false;
-        this.topProducts = this.dummyProducts;
-        this.createPieChart();
+        this.topProducts = this.dummyProducts; 
+        
+        setTimeout(() => {
+          this.createPieChart();
+        }, 0);
       }
     );
   }
-
-  getAbsoluteValue(value: number): number {
-    return Math.abs(value);
-  }
   
   createPieChart() {
-    const canvas = document.getElementById('topProductsChart') as HTMLCanvasElement;
-    if (!canvas) return;
+    if (this.chart) {
+      this.chart.destroy();
+    }
+
+    if (!this.chartCanvas) {
+      console.error('Chart canvas not found');
+      return;
+    }
+
+    const context = this.chartCanvas.nativeElement.getContext('2d');
+    if (!context) {
+      console.error('Could not get 2D context');
+      return;
+    }
     
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    
+    if (this.topProducts.length === 0) {
+      console.error('No products to create chart');
+      return;
+    }
+
     const labels = this.topProducts.map(product => product.name);
     const data = this.topProducts.map(product => Math.abs(product.stockAmount)); 
     
@@ -195,7 +99,7 @@ export class SalesDashboardComponent  implements OnInit {
       data: {
         labels: labels,
         datasets: [{
-          label: 'Top Selling Products',
+          label: 'Stock Amount',
           data: data,
           backgroundColor: this.chartColors,
           hoverOffset: 4
@@ -203,6 +107,7 @@ export class SalesDashboardComponent  implements OnInit {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'bottom',
@@ -226,15 +131,4 @@ export class SalesDashboardComponent  implements OnInit {
       }
     });
   }
-  
-  getImagePath(product: Products): string {
-   
-    if (!product.image1) return 'assets/images/placeholder.jpg';
-    
-    const imagePath = product.image1.replace('C:\\\\', '').replace(/\\/g, '/');
-    
-  
-    return 'assets/images/' + imagePath.split('/').pop() || 'placeholder.jpg';
-  }
-
 }

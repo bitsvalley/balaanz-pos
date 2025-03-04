@@ -18,7 +18,7 @@ export const endpoints = {
 
     newproductadd: 'api/v1/pos/product',
     editproduct:  'api/v1/pos/product',
-    sales: '/api/v1/pos/product/topSold?from=${from}&to=${to}&limit=${limit}',
+    sales: '/api/v1/pos/product/topSold',
 
     // Java Rest Enpoint
     searchCustomer: "api/v1/user/",

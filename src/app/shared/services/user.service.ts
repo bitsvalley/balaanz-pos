@@ -14,10 +14,10 @@ declare const grecaptcha: any;
 export class UserService {
 
   
-  getTrendingProducts(): Observable<Product[]> {
-    const url = `${environment.apiBaseUrl}/trending-products`;  // Replace with your actual API endpoint
-    return this._http.get<Product[]>(url);
-  }
+  // getTrendingProducts(): Observable<Product[]> {
+  //   const url = `${environment.apiBaseUrl}/trending-products`;  // Replace with your actual API endpoint
+  //   return this._http.get<Product[]>(url);
+  // }
   getCurrentUserId(): any {
     throw new Error('Method not implemented.');
   }
@@ -101,14 +101,14 @@ export class UserService {
   }
 
 
-  getSalesProduct(from: string = '', to: string = '', limit: number = 5) {
+  getSalesProduct(from: string, to: string , limit: number) {
     const refreshToken = localStorage.getItem("token");
     const headers = new HttpHeaders({
       "content-type": "application/json",
       "Authorization": `Bearer ${refreshToken}`,
     });
-    const url = `${environment.restApiHost}${endpoints.sales}`;
-    return this._http.get<Products[]>(url, { headers: headers });
+    const url = `${environment.restApiHost}${endpoints.sales}?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&limit=${limit}`;
+    return this._http.get (url, { headers: headers });
   }
   
 

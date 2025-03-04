@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/product"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Update Product Prices</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="product-details-card">
+
+      <div class="product-image-container">
+        <img [src]="imagePreview" alt="Product Image" *ngIf="imagePreview">
+      </div>
+      
+      <div class="product-info">
+        <h2 class="product-name">{{itemData.name}}</h2>
+        
+        <div class="barcode-container">
+          <span class="barcode-label">Barcode:</span>
+          <span class="barcode-value">{{itemData.barcode}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-edit-section">
+      <h3>Update Pricing</h3>
+      
+      <ion-list>
+        <ion-item>
+          <ion-label position="stacked">Quantity*</ion-label>
+          <ion-input type="number" formControlName="stockAmount" inputmode="decimal"></ion-input>
+          <ion-note slot="error" *ngIf="productForm.get('stockAmount')?.hasError('required') && productForm.get('stockAmount')?.touched">
+            Quantity is required
+          </ion-note>
+          <ion-note slot="error" *ngIf="productForm.get('stockAmount')?.hasError('min') && productForm.get('stockAmount')?.touched">
+            Quantity must be greater than zero
+          </ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Unit Price*</ion-label>
+          <ion-input type="number" formControlName="unitPrice" inputmode="decimal"></ion-input>
+          <ion-note slot="error" *ngIf="productForm.get('unitPrice')?.hasError('required') && productForm.get('unitPrice')?.touched">
+            Unit price is required
+          </ion-note>
+          <ion-note slot="error" *ngIf="productForm.get('unitPrice')?.hasError('min') && productForm.get('unitPrice')?.touched">
+            Unit price must be greater than zero
+          </ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Purchase Price*</ion-label>
+          <ion-input type="number" formControlName="purchasePrice" inputmode="decimal"></ion-input>
+          <ion-note slot="error" *ngIf="productForm.get('purchasePrice')?.hasError('required') && productForm.get('purchasePrice')?.touched">
+            Purchase price is required
+          </ion-note>
+          <ion-note slot="error" *ngIf="productForm.get('purchasePrice')?.hasError('min') && productForm.get('purchasePrice')?.touched">
+            Purchase price must be greater than zero
+          </ion-note>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Bulk Price*</ion-label>
+          <ion-input type="number" formControlName="bulkPrice" inputmode="decimal"></ion-input>
+          <ion-note slot="error" *ngIf="productForm.get('bulkPrice')?.hasError('required') && productForm.get('bulkPrice')?.touched">
+            Bulk price is required
+          </ion-note>
+          <ion-note slot="error" *ngIf="productForm.get('bulkPrice')?.hasError('min') && productForm.get('bulkPrice')?.touched">
+            Bulk price must be greater than zero
+          </ion-note>
+        </ion-item>
+      </ion-list>
+    </div>
+
+    <div class="submit-button">
+      <ion-button expand="block" type="submit" [disabled]="!productForm.valid">
+        Update Prices
+      </ion-button>
+    </div>
+  </form>
+</ion-content>
