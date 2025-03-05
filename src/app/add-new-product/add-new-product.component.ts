@@ -1,22 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { AddNewProduct } from './add-new-product.model';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import { UserService } from '../shared/services/user.service';
 import { Subscription } from 'rxjs';
 import { Category } from '../product-add/product-add.model';
 import { ProductService } from '../shared/services/product.service';
+import { AddNewProduct } from './add-new-product.model';
+import { GlobalService } from '../shared/services/global.service';
 
 @Component({
   selector: 'app-add-new-product',
   templateUrl: './add-new-product.component.html',
   styleUrls: ['./add-new-product.component.scss'],
 })
-export class AddNewProductComponent  implements OnInit {
+export class AddNewProductComponent {
   productForm: FormGroup;
   imagePreview: string | null = null;
   private subscriptions: Subscription = new Subscription(); 
-  public categories : Category[] = []
+  public categories: Category[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -24,7 +25,8 @@ export class AddNewProductComponent  implements OnInit {
     private toastCtrl: ToastController,
     private _user: UserService,
     private navCtrl: NavController,
-    private _product : ProductService
+    private _product: ProductService,
+    private _global: GlobalService,
   ) {
     this.productForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -37,35 +39,91 @@ export class AddNewProductComponent  implements OnInit {
       longDescription: [''],
     });
     this.categories = this._product.getCategories();
-    
-    
   }
 
-  ngOnInit() {}
+  async compressImage(file: File, maxSizeKB: number = 700): Promise<string> {
+    this._global.setLoader(true);
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = async (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          
+          let quality = 0.9;
+          let scale = 1;
+          let compressedDataUrl: string;
 
- async onImageSelect(event: any) {
-  const file = event.target.files[0];
-  if (file) {
-    const fileSizeInKB = file.size / 1024; 
+          const compress = () => {
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            
+            ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+            
+            compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+            
+            const base64Size = compressedDataUrl.length * (3/4);
+            const sizeInKB = base64Size / 1024;
 
-    if (fileSizeInKB > 700) {
-      const toast = await this.toastCtrl.create({
-        message: 'Image size must be less than or equal to 700 KB.',
-        duration: 2000,
-        color: 'danger',
-      });
-      await toast.present();
-      return; 
+            if (sizeInKB > maxSizeKB) {
+              if (quality > 0.1) {
+                quality -= 0.1;
+              } else if (scale > 0.5) {
+                scale -= 0.1;
+                quality = 0.9;
+              } else {
+                reject(new Error('Cannot compress image to required size'));
+                return;
+              }
+              compress();
+            } else {
+              resolve(compressedDataUrl);
+            }
+          };
+
+          compress();
+          this._global.setLoader(false);
+        };
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  async onImageSelect(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const compressedImage = await this.compressImage(file);
+        
+        const base64Size = compressedImage.length * (3/4);
+        const fileSizeInKB = base64Size / 1024;
+
+        if (fileSizeInKB > 700) {
+          const toast = await this.toastCtrl.create({
+            message: 'Image size must be less than or equal to 700 KB.',
+            duration: 2000,
+            color: 'danger',
+          });
+          await toast.present();
+          return;
+        }
+
+        this.imagePreview = compressedImage;
+        this.productForm.patchValue({ image: compressedImage });
+      } catch (error) {
+        const toast = await this.toastCtrl.create({
+          message: 'Failed to compress image. Please try another image.',
+          duration: 2000,
+          color: 'danger',
+        });
+        await toast.present();
+      }
     }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result as string;
-      this.productForm.patchValue({ image: reader.result });
-    };
-    reader.readAsDataURL(file);
   }
-}
+
 
 
   async onSubmit() {
