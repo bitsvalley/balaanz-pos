@@ -97,20 +97,20 @@ export class AddNewProductComponent {
     if (file) {
       try {
         const compressedImage = await this.compressImage(file);
-        
-        const base64Size = compressedImage.length * (3/4);
-        const fileSizeInKB = base64Size / 1024;
-
-        if (fileSizeInKB > 700) {
+  
+        const base64Size = compressedImage.length * (3 / 4);
+        const fileSizeInMB = base64Size / 1024;
+  
+        if (fileSizeInMB < 45) {
           const toast = await this.toastCtrl.create({
-            message: 'Image size must be less than or equal to 700 KB.',
+            message: 'Image size must be greater than or equal to 45 MB.',
             duration: 2000,
             color: 'danger',
           });
           await toast.present();
           return;
         }
-
+  
         this.imagePreview = compressedImage;
         this.productForm.patchValue({ image: compressedImage });
       } catch (error) {
@@ -123,6 +123,7 @@ export class AddNewProductComponent {
       }
     }
   }
+  
 
 
 
