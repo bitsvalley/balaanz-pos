@@ -14,7 +14,7 @@
         <img [src]="imagePreview" *ngIf="imagePreview">
         <ion-icon name="image-outline" *ngIf="!imagePreview"></ion-icon>
         <input type="file" (change)="onImageSelect($event)" accept="image/*" #fileInput hidden>
-        <ion-button fill="clear" expand="block" (click)="fileInput.click()">
+        <ion-button fill="clear" expand="block" (click)="presentImageSourceActionSheet()">
           {{ imagePreview ? 'Change Image' : 'Upload Image' }}
         </ion-button>
       </div>

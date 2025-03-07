@@ -1,14 +1,15 @@
-<ion-content class="ion-padding">
-  <div class="trending-container">
+<ion-header>
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
+    <ion-title>Sales Report</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-    <div class="header-section">
-      <h1 class="title">Trending Products</h1>
-      <p class="subtitle">Top 5 most sold products</p>
-    </div>
-    
+<ion-content class="ion-padding">
+  <div class="trending-container">
+        
 
     <div *ngIf="loading" class="loading-container">
       <ion-spinner name="crescent"></ion-spinner>

@@ -16,7 +16,7 @@
           <input class="form-field" type="password"  placeholder="Password" (focus)="onFocus('password')" [ngClass]="{'invalid-field': loginError}" formControlName="password"  />
           <button class="btn btn-primary btn-full" #loginButton [disabled]="loginFrm.invalid">Sign In</button>
           <div class="admin" >
-            <a (click)="admin()" >Admin-Login?</a>
+            <a (click)="admin()" >Admin-Login</a>
           </div> 
         </form>
       </div>
