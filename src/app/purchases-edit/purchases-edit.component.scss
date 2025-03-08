@@ -1,3 +1,18 @@
+.balaanz-logo {
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center; 
+  height: 30px;
+}
+
+.balaanz-logo img {
+  height: 30px; 
+  width: 30px; 
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 2px;
+}
+
 .product-details-card {
     background-color: var(--ion-color-light);
     border-radius: 16px;
@@ -128,3 +143,5 @@
       margin: 0 auto;
     }
   }
+
+  

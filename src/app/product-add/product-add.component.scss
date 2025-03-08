@@ -1,3 +1,19 @@
+.balaanz-logo {
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center; 
+  height: 30px;
+}
+
+.balaanz-logo img {
+  height: 30px; 
+  width: 30px; 
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 2px;
+}
+
+
 .trending-container {
     padding: 16px;
   }
@@ -66,7 +82,7 @@
   }
 }
     .product-info {
-      padding: 12px;
+      padding: 8px;
       padding-bottom: 1px;
   
       h3 {
@@ -75,9 +91,9 @@
         font-weight: 500;
         color: #333;
         margin-bottom: 4px;
-        white-space: nowrap;
+        // white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
+        // text-overflow: ellipsis;
       }
   
       .product-code {
@@ -467,6 +483,10 @@
 .price-value {
   font-weight: 500;
   font-size: 8px; 
+}
+
+.quantity .price-icon{
+  color: palevioletred;
 }
 
 .unit-price .price-icon {

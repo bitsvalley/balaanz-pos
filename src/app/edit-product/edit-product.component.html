@@ -1,11 +1,16 @@
-<ion-header>
+<div>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/products"></ion-back-button>
     </ion-buttons>
+    <div style="display: flex">
     <ion-title>Edit Product</ion-title>
+    <span class="balaanz-logo">
+      <img src="/assets/images/balaanz-logo.jpg" />
+    </span>
+    </div>
   </ion-toolbar>
-</ion-header>
+</div>
 
 <ion-content>
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="ion-padding">

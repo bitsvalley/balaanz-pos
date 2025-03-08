@@ -8,11 +8,26 @@
     --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
   
+  .balaanz-logo {
+    display: flex;
+    justify-content: flex-end; 
+    align-items: center; 
+    height: 30px;
+  }
+  
+  .balaanz-logo img {
+    height: 30px; 
+    width: 30px; 
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 2px;
+  }
+
   .trending-container {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    position: fixed;
+    position: relative;
     width: 96%;
   }
   

@@ -1,11 +1,16 @@
-<ion-header>
+<div>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Products</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <div style="display: flex">
+      <ion-title>Products</ion-title>
+      <span class="balaanz-logo">
+        <img src="/assets/images/balaanz-logo.jpg" />
+      </span>
+    </div>    
+    </ion-toolbar>
+</div>
  
   <ion-refresher
     slot="fixed"
@@ -78,6 +83,10 @@
             <span class="price">{{ product.price | currency }}</span>
             <ion-button fill="clear" (click)="editProduct(product)">
               <div class="price-container">
+                <div class="price-row quantity">
+                  <span class="price-icon">QU</span>
+                  <span class="price-value">{{product.stockAmount}}</span>
+                </div>
                 <div class="price-row unit-price">
                   <span class="price-icon">UP</span>
                   <span class="price-value">{{product.unitPrice}}</span>
@@ -147,19 +156,28 @@
       </div> 
       <ul>
         <li>
-          My Account
+          <div>
+            <ion-icon name="person-outline"></ion-icon>
+            My Account
+          </div>
           <span class="material-symbols-outlined">
             chevron_right
           </span>
         </li>
         <li>
-          Update Password
+          <div>
+            <ion-icon name="key-outline"></ion-icon>
+            Update Password
+          </div>
           <span class="material-symbols-outlined">
             chevron_right
           </span>
         </li>
         <li (click)="logout()">
-          Logout
+          <div>
+            <ion-icon name="log-out-outline"></ion-icon>
+            Logout
+          </div>
           <span class="material-symbols-outlined">
             chevron_right
           </span>

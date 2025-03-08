@@ -94,29 +94,38 @@
         </div> 
         <ul>
           <li>
-            My Account
+            <div>
+              <ion-icon name="person-outline"></ion-icon>
+              My Account
+            </div>
             <span class="material-symbols-outlined">
               chevron_right
             </span>
           </li>
           <li>
-            Update Password
+            <div>
+              <ion-icon name="key-outline"></ion-icon>
+              Update Password
+            </div>
             <span class="material-symbols-outlined">
               chevron_right
             </span>
           </li>
           <li (click)="logout()">
-            Logout
+            <div>
+              <ion-icon name="log-out-outline"></ion-icon>
+              Logout
+            </div>
             <span class="material-symbols-outlined">
               chevron_right
             </span>
           </li> 
-          <li [routerLink]="['/tablemodule']">
+          <!-- <li [routerLink]="['/tablemodule']">
             Back to Table Booking
             <span class="material-symbols-outlined">
               chevron_right
             </span>
-          </li>
+          </li> -->
         </ul>
     </div>
     <div class="nav-bottom">

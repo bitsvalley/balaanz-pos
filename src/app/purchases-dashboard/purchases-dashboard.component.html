@@ -1,11 +1,16 @@
-<ion-header>
+<div>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
+    <div style="display: flex">
     <ion-title>Purchases</ion-title>
+    <span class="balaanz-logo">
+      <img src="/assets/images/balaanz-logo.jpg" />
+    </span>
+    </div>
   </ion-toolbar>
-</ion-header>
+</div>
  
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
@@ -136,19 +141,28 @@
       </div> 
       <ul>
         <li>
-          My Account
+          <div>
+            <ion-icon name="person-outline"></ion-icon>
+            My Account
+          </div>
           <span class="material-symbols-outlined">
             chevron_right
           </span>
         </li>
         <li>
-          Update Password
+          <div>
+            <ion-icon name="key-outline"></ion-icon>
+            Update Password
+          </div>
           <span class="material-symbols-outlined">
             chevron_right
           </span>
         </li>
         <li (click)="logout()">
-          Logout
+          <div>
+            <ion-icon name="log-out-outline"></ion-icon>
+            Logout
+          </div>
           <span class="material-symbols-outlined">
             chevron_right
           </span>
