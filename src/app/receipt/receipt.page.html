@@ -39,7 +39,13 @@
             </li>
           </ul>
           <div class="receipt-product-summary">
-            <h4><label>Total:</label><b>{{receiptCartSummary.totalAmount | number}} frs</b></h4>
+            <h4 class="light-line"><label>Subtotal:</label><b>{{receiptCartSummary.totalAmount | number}} frs</b></h4>
+          </div>
+          <div class="receipt-product-summary" style="color: green;">
+            <h4 class="light-line"><label>Discount:</label><b>-{{paymentData.discount | number}} frs</b></h4>
+          </div>
+          <div class="receipt-product-summary">
+            <h4><label>Total:</label><b>{{receiptCartSummary.totalAmount - paymentData.discount | number}} frs</b></h4>
           </div>
         </div>
         <div class="receipt-footer">
