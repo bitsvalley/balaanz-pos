@@ -97,10 +97,10 @@
       }
   
       .product-code {
-        font-size: 12px;
+        font-size: 8px;
         color: #666;
         margin: 0;
-        margin-bottom: 8px;
+        // margin-bottom: 8px;
       }
   
       .product-bottom {
@@ -118,6 +118,7 @@
           margin: 0;
           --padding-start: 8px;
           --padding-end: 8px;
+          height: fit-content;
         }
       }
     }

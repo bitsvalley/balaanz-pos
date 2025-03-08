@@ -175,6 +175,7 @@ export class CheckoutPage implements OnInit {
           "type": this.paymentForm.value.method,
           "identifier": this.paymentForm.value.value
       },
+      "discount": this.discount,
       "cartContent": {}
     };
     this.cartList.forEach((itm) => {
