@@ -9,6 +9,8 @@ export interface EditProduct {
     stockAmount: number; 
     barcode: string;  
     shortDescription: string;
-    longDescription: string;     
+    longDescription: string;  
+    purchasePrice: number;
+    bulkPrice: number;   
    
   }

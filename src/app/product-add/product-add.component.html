@@ -80,7 +80,7 @@
           <h3>{{ product.name }}</h3>
           <!-- <p class="product-code">{{ product.code }}</p> -->
           <div class="product-bottom">
-            <span class="price">{{ product.price | currency }}</span>
+            <!-- <span class="price">{{ product.price | currency }}</span> -->
             <ion-button fill="clear" (click)="editProduct(product)">
               <div class="price-container">
                 <div class="price-row quantity">
@@ -91,7 +91,8 @@
                   <span class="price-icon">UP</span>
                   <span class="price-value">{{product.unitPrice}}</span>
                 </div>
-                
+              </div>
+                <div class="price-container">
                 <div class="price-row purchase-price">
                   <span class="price-icon">PP</span>
                   <span class="price-value">{{product.purchasePrice}}</span>

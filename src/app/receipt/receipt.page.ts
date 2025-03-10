@@ -92,6 +92,7 @@ export class ReceiptPage implements OnInit {
 
   printReceipt() {
     this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
+    this._nav.navigateBack('dashboard');
   }
 
 }

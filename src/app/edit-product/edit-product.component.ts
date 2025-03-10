@@ -227,54 +227,69 @@ export class EditProductComponent implements OnInit {
   }
 
   async onSubmit() {
-    if (this.productForm.valid) {
-      const loading = await this.loadingCtrl.create({ message: 'Updating product...' });
-      await loading.present();
-
-      try {
-        const productData: EditProduct = {
-          ...this.productForm.value,
-          lastUpdatedDate: new Date().toISOString(),
-          createdDate: this.itemData.createdDate,
-          id: this.itemData.id,
-          categoryId: this.itemData.category,
-          stockAmount: this.itemData.stockAmount,
-          shortDescription: this.itemData.shortDescription,
-          longDescription: this.itemData.longDescription,
-          unitPrice: this.itemData.unitPrice
-        };
-
-        const loginApi = this._user.geteditproduct(productData).subscribe((response: any) => {
-          console.log(response);
-        });
-        this.subscriptions.add(loginApi);
-
-        await loading.dismiss();
-        const toast = await this.toastCtrl.create({
-          message: 'Product updated successfully!',
-          duration: 2000,
-          color: 'success'
-        });
-        await toast.present();
-        setTimeout(() => {
-          this.navCtrl.navigateForward('/product');
-        }, 2000);
-      } catch (error) {
-        await loading.dismiss();
-        const toast = await this.toastCtrl.create({
-          message: 'Failed to update product. Please try again.',
-          duration: 2000,
-          color: 'danger'
-        });
-        await toast.present();
-      }
-    } else {
+    if (!this.productForm.valid) {
       const toast = await this.toastCtrl.create({
         message: 'Please fill in all required fields correctly.',
         duration: 2000,
-        color: 'warning'
+        color: 'warning',
+      });
+      await toast.present();
+      return; 
+    }
+  
+    const loading = await this.loadingCtrl.create({ message: 'Updating product...' });
+    await loading.present();
+  
+    try {
+      const productData: EditProduct = {
+        ...this.productForm.value,
+        lastUpdatedDate: new Date().toISOString(),
+        createdDate: this.itemData.createdDate,
+        id: this.itemData.id,
+        categoryId: this.itemData.category,
+        stockAmount: this.itemData.stockAmount,
+        shortDescription: this.itemData.shortDescription,
+        longDescription: this.itemData.longDescription,
+        unitPrice: this.itemData.unitPrice,
+        bulkPrice: this.itemData.bulkPrice,
+        purchasePrice: this.itemData.purchasePrice
+      };
+  
+      this._user.geteditproduct(productData).subscribe(
+        async (response: any) => {
+          console.log(response);
+          await loading.dismiss();
+          const toast = await this.toastCtrl.create({
+            message: 'Product updated successfully!',
+            duration: 2000,
+            color: 'success',
+          });
+          await toast.present();
+          setTimeout(() => {
+            this.navCtrl.navigateForward('/product');
+          }, 2000);
+        },
+        async (error: any) => {
+          console.error('API error:', error);
+          await loading.dismiss();
+          const toast = await this.toastCtrl.create({
+            message: 'Failed to update product. Please try again.',
+            duration: 2000,
+            color: 'danger',
+          });
+          await toast.present();
+        }
+      );
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      await loading.dismiss();
+      const toast = await this.toastCtrl.create({
+        message: 'Failed to update product. Please try again.',
+        duration: 2000,
+        color: 'danger',
       });
       await toast.present();
     }
   }
+  
 }

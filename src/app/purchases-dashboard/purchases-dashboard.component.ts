@@ -46,12 +46,16 @@ export class PurchasesDashboardComponent  implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.selelctedCategory = null;
     this.loadTrendingProducts();
   }
 
   ionViewWillEnter() {
+    this.selelctedCategory = null;
     this.loadTrendingProducts();
   }
+
+  refresh
 
   loadTrendingProducts() {
     this._global.setLoader(true);
@@ -76,6 +80,7 @@ export class PurchasesDashboardComponent  implements OnInit {
   handleRefresh(event: any) {
     this.loadTrendingProducts();
     event.target.complete();
+    this.selelctedCategory = null;
   }
 
   editProduct(product: Product) {

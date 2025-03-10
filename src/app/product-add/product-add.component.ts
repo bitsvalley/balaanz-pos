@@ -48,10 +48,12 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.selelctedCategory = null;
     this.loadTrendingProducts();
   }
 
   ionViewWillEnter() {
+    this.selelctedCategory = null;
     this.loadTrendingProducts();
   }
 
@@ -83,6 +85,7 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   handleRefresh(event: any) {
     this.loadTrendingProducts();
     event.target.complete();
+    this.selelctedCategory = null;
   }
 
 
