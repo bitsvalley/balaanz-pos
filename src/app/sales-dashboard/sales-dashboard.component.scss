@@ -193,11 +193,12 @@
       
       .product-price, .product-stock {
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
       }
       
       .price-label, .stock-label {
         color: var(--text-secondary);
+        padding-right: 4px;
       }
       
       .price-value {

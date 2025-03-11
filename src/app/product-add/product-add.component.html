@@ -74,14 +74,14 @@
       
       <div class="product-card" *ngFor="let product of filteredProducts">
         <div class="product-image">
-          <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || 'assets/images/placeholder.png'" [alt]="">
+          <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || 'assets/images/shopping-cart.png'" [alt]="">
         </div>
         <div class="product-info">
           <h3>{{ product.name }}</h3>
           <!-- <p class="product-code">{{ product.code }}</p> -->
           <div class="product-bottom">
             <!-- <span class="price">{{ product.price | currency }}</span> -->
-            <ion-button fill="clear" (click)="editProduct(product)">
+            <div class="all-price">
               <div class="price-container">
                 <div class="price-row quantity">
                   <span class="price-icon">Qty</span>
@@ -103,8 +103,10 @@
                   <span class="price-value">{{product.bulkPrice}}</span>
                 </div>
               </div>
+            <ion-button  fill="clear" (click)="editProduct(product)">
               <ion-icon name="create-outline"></ion-icon>
             </ion-button>
+            </div>
           </div>
         </div>
       </div>

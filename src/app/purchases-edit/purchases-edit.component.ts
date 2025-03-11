@@ -31,14 +31,14 @@ export class PurchasesEditComponent  implements OnInit {
   ngOnInit() {
     this.itemData = this._productService.getItemData();
     this.formSetUp();
-    this.imagePreview = this.itemData.image1;
+    this.imagePreview = this.itemData.image1 ? this.itemData.image1 : 'assets/images/shopping-cart.png';
   }
 
   formSetUp() {
     this.productForm = this.fb.group({
       name: [{value: this.itemData.name, disabled: true}],
       barcode: [{value: this.itemData.barcode, disabled: true}],
-      image: [{value: this.itemData.image1, disabled: true}],
+      image: [{value: this.itemData.image1 ? this.itemData.image1 : 'assets/images/shopping-cart.png', disabled: true}],
       
       stockAmount: [this.itemData.stockAmount, [Validators.required, Validators.min(0)]],
       unitPrice: [this.itemData.unitPrice, [Validators.required, Validators.min(0)]],
@@ -56,7 +56,7 @@ export class PurchasesEditComponent  implements OnInit {
         const productData: EditProduct = {
           id: this.itemData.id,
           name: this.itemData.name,
-          image: this.itemData.image1,
+          image: this.itemData.image1 ? this.itemData.image1 : 'assets/images/shopping-cart.png',
           createdDate: this.itemData.createdDate,
           lastUpdatedDate: new Date().toISOString(),
           categoryId: this.itemData.category,

@@ -46,7 +46,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  padding: 20px;
+  padding: 10px;
+  border-radius: 20%;
 }
 
 .product-info {
@@ -83,17 +84,20 @@
 }
     .product-info {
       padding: 8px;
-      padding-bottom: 1px;
+      // padding-bottom: 1px;
   
       h3 {
         margin: 0;
         font-size: 16px;
         font-weight: 500;
         color: #333;
-        margin-bottom: 4px;
+        // margin-bottom: 4px;
         // white-space: nowrap;
         overflow: hidden;
-        // text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
   
       .product-code {
@@ -115,10 +119,12 @@
         }
   
         ion-button {
-          margin: 0;
-          --padding-start: 8px;
-          --padding-end: 8px;
-          height: fit-content;
+          // margin: 0;
+          // --padding-start: 8px;
+          // --padding-end: 8px;
+          position: absolute;
+          right: 0;
+          bottom: 0;  
         }
       }
     }
@@ -456,13 +462,15 @@
 
 
 
-
+.all-price{
+  display: flex;
+}
 
 .price-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1px; 
+  gap: 7px; 
   margin: 8px 0;
 }
 
@@ -470,7 +478,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding-right: 50px;
+  padding-right: 30px;
 }
 
 .price-icon {

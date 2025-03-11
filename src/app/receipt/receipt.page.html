@@ -21,7 +21,7 @@
           <p></p>
           <p>Agent: <span>{{userDetails.first_name}} {{userDetails.last_name}}</span></p>
           <p>Type: <span>SELL</span></p>
-          <p>Payment Method: <span>{{paymentData.method}} ({{paymentData.value}})</span></p>
+          <p>Payment Method: <span>{{paymentData.method}} {{paymentData.value}}</span></p>
           <p>Order Date: <span>{{currentDate}}</span></p>
         </div>
         <div class="receipt-products" *ngIf="receiptCartList.length">
@@ -41,8 +41,8 @@
           <div class="receipt-product-summary">
             <h4 class="light-line"><label>Subtotal:</label><b>{{receiptCartSummary.totalAmount | number}} frs</b></h4>
           </div>
-          <div class="receipt-product-summary" style="color: green;">
-            <h4 class="light-line"><label>Discount:</label><b>-{{paymentData.discount | number}} frs</b></h4>
+          <div class="receipt-product-summary" style="color: green">
+            <h4 class="light-line"  *ngIf="paymentData.discount > 0"><label>Discount:</label><b>-{{paymentData.discount | number}} frs</b></h4>
           </div>
           <div class="receipt-product-summary">
             <h4><label>Total:</label><b>{{receiptCartSummary.totalAmount - paymentData.discount | number}} frs</b></h4>
