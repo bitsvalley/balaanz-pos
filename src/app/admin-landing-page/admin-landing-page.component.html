@@ -3,9 +3,14 @@
 
     <div class="header-container">
       <h1 class="main-title">Admin Dashboard</h1>
+      <span class="balaanz-logo">
+        <img src="/assets/images/balaanz-logo.jpg" />
+      </span>
       <div class="user-profile">
         <div class="user-icon">
-          <ion-icon name="person-circle-outline"></ion-icon>
+          <button (click)="toggleAccountMenu()">
+            <ion-icon name="person-circle-outline"></ion-icon>
+          </button>
         </div>
         <span class="user-name">{{ userName }}</span>
       </div>
@@ -54,4 +59,38 @@
       </div>
     </div>
   </div>
+
+  <div class="nav-container" [class.isAccountOpen]="isAccountOpen">
+    <div class="nav-sub-section"> 
+      <div class="nav-title">Account</div> 
+      <ul>
+        <li>
+          <div>
+            <ion-icon name="person-outline"></ion-icon>
+            My Account
+          </div>
+          <span class="material-symbols-outlined">chevron_right</span>
+        </li>
+        <li>
+          <div>
+            <ion-icon name="key-outline"></ion-icon>
+            Update Password
+          </div>
+          <span class="material-symbols-outlined">chevron_right</span>
+        </li>
+        <li (click)="Logout()">
+          <div>
+            <ion-icon name="log-out-outline"></ion-icon>
+            Logout
+          </div>
+          <span class="material-symbols-outlined">chevron_right</span>
+        </li> 
+      </ul>
+    </div>
+  
+    <div class="nav-bottom">
+      <button class="btn btn-primary btn-full" (click)="closeAccount()">CLOSE</button>
+    </div>
+  </div>
+  
 </ion-content>

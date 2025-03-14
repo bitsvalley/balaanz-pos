@@ -10,6 +10,7 @@ import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-checkout',
@@ -58,6 +59,7 @@ export class CheckoutPage implements OnInit {
     }
   ]
 
+
   public paymentForm: any = new FormGroup({})
   
   constructor(
@@ -68,7 +70,8 @@ export class CheckoutPage implements OnInit {
     private _platform: Platform,
     private _route: Router,
     private _account: AccountService,
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private alertController: AlertController
   ) { 
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
@@ -103,9 +106,37 @@ export class CheckoutPage implements OnInit {
     
   }
 
-  updateDiscount() {
-    this.paymentForm.get('discount').setValue(this.discount || 0);
+  // updateDiscount() {
+  //   this.paymentForm.get('discount').setValue(this.discount || 0);
+  // }
+
+
+  async updateDiscount() {
+    if (this.discount < 0) {
+      this.discount = 0; // Reset to zero
+  
+      // Show alert notification
+      const alert = await this.alertController.create({
+        header: 'Invalid Discount',
+        message: 'Negative Discount Not Allowed',
+        buttons: ['OK']
+      });
+  
+      await alert.present();
+    }
+  
+    this.paymentForm.get('discount').setValue(this.discount);
   }
+  
+
+
+  // updateDiscount() {
+  //   if (this.discount < 0) {
+  //     this.discount = 0; // Prevent negative values
+  //   }
+  //   this.paymentForm.get('discount').setValue(this.discount);
+  // }
+  
 
   ionViewWillEnter() {
     this._global.setServerErr(false);

@@ -22,19 +22,41 @@ ion-content {
   align-self: center;
 }
 
+.balaanz-logo {
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center; 
+  height: 30px;
+}
+
+.balaanz-logo img {
+  height: 40px; 
+  width: 40px; 
+  border-radius: 80%;
+  object-fit: cover;
+  margin-right: 10px;
+}
 .user-profile {
+  position: fixed;  
+  bottom: 20px;     
+  right: 20px; 
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
 }
 
 .user-icon {
   display: flex;
-  justify-content: center;
+  justify-content:center;
   align-items: center;
+  background: none;
   
   ion-icon {
-    font-size: 32px;
+    font-size: 40px;
     color: #ff2a00;
   }
 }
@@ -42,9 +64,45 @@ ion-content {
 .user-name {
   font-size: 14px;
   font-weight: 500;
-  color: #333;
+  color: #f3efef;
   margin-top: 4px;
 }
+
+
+.nav-container {
+  position: fixed;
+  top: 10px;
+  left: -100%;
+  width: 80%;
+  height: 100vh;
+  background: #ffffff;
+  transition: 0.3s;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-container.nav-open,
+.nav-container.isAccountOpen {
+  left: 0;
+}
+
+.nav-sub-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nav-title {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
 
 .content-container {
   flex: 1;
@@ -76,14 +134,14 @@ ion-content {
   padding: 20px;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(15, 15, 15, 0.05);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:active, .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 16px rgba(233, 229, 229, 0.08);
 }
 
 .card-icon {

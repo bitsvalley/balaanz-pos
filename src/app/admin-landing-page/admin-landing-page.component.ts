@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class AdminLandingPageComponent  implements OnInit {
 
   userName: string;
+  isAccountOpen: boolean = false;
 
   constructor(private router: Router) { }
 
@@ -29,5 +30,18 @@ export class AdminLandingPageComponent  implements OnInit {
     // alert("Coming Soon");
     this.router.navigate(['/salesdashboardmodule']);
   }
-
-}
+  
+    toggleAccountMenu() {
+      this.isAccountOpen = !this.isAccountOpen;
+    }
+  
+    closeAccount() {
+      this.isAccountOpen = false;
+    }
+  
+    Logout() {
+      console.log("User logged out!");
+      localStorage.removeItem('userName');
+      this.router.navigate(['/admin-login']); 
+    }
+  }

@@ -74,7 +74,7 @@
       
       <div class="product-card" *ngFor="let product of filteredProducts">
         <div class="product-image">
-          <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || 'assets/images/shopping-cart.png'" [alt]="">
+          <img [src]="product.image1 || product.image2 || product.image3 || product.image4 || './assets/images/shopping-cart.png'" [alt]="">
         </div>
         <div class="product-info">
           <h3>{{ product.name }}</h3>

@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.balaanzpos',
-  appName: 'Balaanz POS',
+  appId: 'io.ionic.Adminpos',
+  appName: 'Admin POS',
   webDir: 'www',
   server: {
     androidScheme: 'https'
