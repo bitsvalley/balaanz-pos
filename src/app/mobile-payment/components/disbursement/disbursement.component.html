@@ -1,0 +1,66 @@
+<ion-content class="ion-padding-horizontal">
+  <!-- Gradient Header -->
+  <div class="gradient-header">
+    <ion-button fill="clear" class="back-button" (click)="goBack()">
+      <ion-text color="light">Back</ion-text>
+    </ion-button>
+    <div class="header-content">
+      <ion-text color="light" class="secure-text">Secure Payment Service</ion-text>
+      <ion-text color="light" class="momo-text">momo</ion-text>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <ion-card class="payment-card">
+      <ion-card-content>
+        <ion-text class="card-title">Payment Information</ion-text>
+        
+        <div class="input-group">
+          <ion-label>Price</ion-label>
+          <ion-input 
+            placeholder="Enter money" 
+            type="number" 
+            [(ngModel)]="price"
+            class="custom-input">
+          </ion-input>
+        </div>
+        
+        <div class="input-group">
+          <ion-label>Phone Number</ion-label>
+          <ion-input 
+            placeholder="Enter your phone number" 
+            type="tel" 
+            [(ngModel)]="phoneNumber"
+            class="custom-input">
+          </ion-input>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="payment-card">
+      <ion-card-content>
+        <ion-text class="card-title">Other Information</ion-text>
+        
+        <div class="input-group">
+          <ion-label>Note</ion-label>
+          <ion-input 
+            placeholder="Enter your note" 
+            [(ngModel)]="note"
+            class="custom-input">
+          </ion-input>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <ion-button expand="block" class="proceed-button" (click)="handlePayment()">
+      Proceed to Verification
+    </ion-button>
+    <ion-text class="security-text">
+      Your payment is secure and encrypted
+    </ion-text>
+  </div>
+</ion-content>

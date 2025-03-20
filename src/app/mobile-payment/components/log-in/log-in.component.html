@@ -1,0 +1,67 @@
+<ion-content class="login-screen">
+  <div class="login-container">
+    <!-- Left Panel - Logo and Tagline -->
+    <div class="logo-panel">
+      <img src="../../../../assets/images/logo.png" alt="Momo Logo" class="logo-image">
+      <h2 class="brand-name">Balaanz</h2>
+      <p class="tagline">Simplifying Payments & Agent Banking</p>
+    </div>
+
+    <!-- Right Panel - Login Form -->
+    <div class="form-panel">
+      <div class="welcome-text">
+        <h1 class="heading">Welcome</h1>
+        <p class="subheading">Please sign in to continue</p>
+      </div>
+
+      <form (ngSubmit)="handleLogin()" #loginFrm="ngForm">
+        <div class="input-group">
+          <ion-label class="input-label">Username</ion-label>
+          <div class="input-container">
+            <ion-icon name="person-outline" class="input-icon"></ion-icon>
+            <ion-input 
+              placeholder="Enter your username" 
+              [(ngModel)]="username"
+              name="username"
+              required
+              #usernameInput="ngModel"
+              class="custom-input">
+            </ion-input>
+          </div>
+          <div *ngIf="usernameInput.invalid && usernameInput.touched" class="error-message">
+            Username is required.
+          </div>
+        </div>
+      
+        <div class="input-group">
+          <ion-label class="input-label">Password</ion-label>
+          <div class="input-container">
+            <ion-icon name="lock-closed-outline" class="input-icon"></ion-icon>
+            <ion-input 
+              placeholder="Enter your password" 
+              [type]="passwordVisible ? 'text' : 'password'"
+              [(ngModel)]="password"
+              name="password"
+              required
+              #passwordInput="ngModel"
+              class="custom-input">
+            </ion-input>
+            <ion-icon 
+              [name]="passwordVisible ? 'eye-outline' : 'eye-off-outline'" 
+              class="visibility-icon"
+              (click)="togglePasswordVisibility()">
+            </ion-icon>
+          </div>
+          <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error-message">
+            Password is required.
+          </div>
+        </div>
+      
+        <ion-button expand="block" class="login-button" type="submit" [disabled]="loginFrm.invalid">
+          Login
+        </ion-button>
+      </form>
+      
+    </div>
+  </div>
+</ion-content>

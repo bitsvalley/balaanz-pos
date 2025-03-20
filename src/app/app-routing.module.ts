@@ -9,11 +9,16 @@ const routes: Routes = [
     canActivate: [LoginGuardService],
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
-  // {
-  //   path: 'home',
+  {
+    path: 'disbursement',
    
-  //   loadChildren: () => import('./table/table.module').then( m => m.TableModule)
-  // },
+    loadChildren: () => import('./mobile-payment/components/disbursement/disbursement.module').then( m => m.DisbursementModule)
+  },
+  {
+    path: 'collection',
+   
+    loadChildren: () => import('./mobile-payment/components/collection/collection.module').then( m => m.CollectionModule)
+  },
   {
     path: 'tablemodule',
     canActivate: [AuthGuardService],
@@ -27,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'payment/login',
     pathMatch: 'full',
   },
   {
@@ -59,6 +64,11 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
+  },
+  {
+    path: 'payment/login',
+    // canActivate: [AuthGuardService],
+    loadChildren: () => import('./mobile-payment/components/log-in/log-in.module').then( m => m.LogInModule)
   }
 ];
 

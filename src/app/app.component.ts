@@ -23,7 +23,7 @@ export class AppComponent {
     this._router.events.forEach((event) => {
       if(event instanceof NavigationStart) {
         // console.log(event);
-        if (event.url === '/home') {
+        if (event.url === '/home' || event.url === '/disbursement' || event.url === '/collection') {
           this.displayHeader = false;
         } else if (event.url !== '/') {
           this.getUserDetails();
