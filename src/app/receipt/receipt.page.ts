@@ -60,7 +60,7 @@ export class ReceiptPage implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
   clearCart() {
@@ -78,6 +78,13 @@ export class ReceiptPage implements OnInit {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
     this.clearCart();
+
+    
+      this._account.runTimePropObservable.subscribe((response: any) => {
+        console.log("Runtime Props Received:", response);
+        this.runTimeProps = response;
+      });
+
   }
 
   ionViewWillLeave() {

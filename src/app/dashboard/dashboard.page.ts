@@ -56,7 +56,7 @@ export class DashboardPage implements OnDestroy {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      // console.log(this.userDetails);
+      console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
       
@@ -64,6 +64,8 @@ export class DashboardPage implements OnDestroy {
 
     this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
+      console.log(response);
+      console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     });
     
   }

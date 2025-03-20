@@ -13,14 +13,21 @@
     <div class="receipt-body"> 
       <div class="receipt-page">
         <div class="receipt-title">
-          <h2>Balaanz POS</h2>
+            <h2>{{runTimeProps[0].property_value}}</h2>
+            <!-- <h2>{{runTimeProps.BusinessName}}</h2> -->
+            <p>{{runTimeProps[3].property_value}}</p>
+            <p>{{runTimeProps[12].property_value}}</p>
+          
+          <!-- console.log(runTimeProps); -->
+    
+         <!-- <span>{{runtimeProps.uuid}}</span> -->
           <!-- <p>A-101, Address 1, New York, USA</p>
           <p>9727040159</p> -->
         </div>
         <div class="receipt-header">
           <p></p>
           <p>Agent: <span>{{userDetails.first_name}} {{userDetails.last_name}}</span></p>
-          <p>Type: <span>SELL</span></p>
+          <p>Type: <span>SALE</span></p>
           <p>Payment Method: <span>{{paymentData.method}} {{paymentData.value}}</span></p>
           <p>Order Date: <span>{{currentDate}}</span></p>
         </div>

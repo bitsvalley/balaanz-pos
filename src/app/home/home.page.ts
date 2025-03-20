@@ -74,6 +74,7 @@ export class HomePage implements OnDestroy {
           localStorage.setItem('cart', JSON.stringify({}));
         }
         localStorage.setItem('token', response.token.refresh.token);
+        console.log(response);
         this.goToDashboard();
       } else if (response.status === 'failed') {
         if (response.message === 'User is not active') {
