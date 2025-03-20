@@ -20,18 +20,18 @@ export class AppComponent {
   public pageTitle: any = "";
 
   constructor(private platform: Platform, private _account: AccountService, private _router: Router, private _global: GlobalService, private zone: NgZone) {
-    this._router.events.forEach((event) => {
-      if(event instanceof NavigationStart) {
-        // console.log(event);
-        if (event.url === '/home' || event.url === '/disbursement' || event.url === '/collection') {
-          this.displayHeader = false;
-        } else if (event.url !== '/') {
-          this.getUserDetails();
-          this.displayHeader = true;
-          this.setPageTitle(event.url);
-        }
-      }
-    });
+    // this._router.events.forEach((event) => {
+    //   if(event instanceof NavigationStart) {
+    //     // console.log(event);
+    //     if (event.url === '/home' || event.url === '/disbursement' || event.url === '/collection') {
+    //       this.displayHeader = false;
+    //     } else if (event.url !== '/') {
+    //       this.getUserDetails();
+    //       this.displayHeader = true;
+    //       this.setPageTitle(event.url);
+    //     }
+    //   }
+    // });
     this.setPageTitle(this._router.url);
     this.initializeApp();
 

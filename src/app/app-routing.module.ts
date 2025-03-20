@@ -8,7 +8,8 @@ const routes: Routes = [
     path: 'home',
     canActivate: [LoginGuardService],
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
+  },  
+
   {
     path: 'disbursement',
    
@@ -18,6 +19,11 @@ const routes: Routes = [
     path: 'collection',
    
     loadChildren: () => import('./mobile-payment/components/collection/collection.module').then( m => m.CollectionModule)
+  },
+  {
+    path: 'transaction',
+   
+    loadChildren: () => import('./mobile-payment/components/transactions/transactions.module').then( m => m.TransactionsModule)
   },
   {
     path: 'tablemodule',
@@ -69,7 +75,8 @@ const routes: Routes = [
     path: 'payment/login',
     // canActivate: [AuthGuardService],
     loadChildren: () => import('./mobile-payment/components/log-in/log-in.module').then( m => m.LogInModule)
-  }
+  },
+ 
 ];
 
 @NgModule({
