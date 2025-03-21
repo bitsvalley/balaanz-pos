@@ -1,5 +1,5 @@
 .login-screen {
-    --background: #f3f4f6; // bg-gray-100
+    --background: #f3f4f6; 
   }
   
   .login-container {
@@ -9,7 +9,7 @@
   
   .logo-panel {
     width: 40%;
-    background-color: #4C1D95; // bg-purple-900
+    background-color: #4C1D95; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,12 +51,12 @@
       .heading {
         font-size: 1.875rem;
         font-weight: bold;
-        color: #1F2937; // text-gray-800
+        color: #1F2937;
         margin-bottom: 0.25rem;
       }
   
       .subheading {
-        color: #6B7280; // text-gray-500
+        color: #6B7280; 
         margin-top: 0.25rem;
       }
     }
@@ -65,7 +65,7 @@
       margin-bottom: 1.5rem;
   
       .input-label {
-        color: #374151; // text-gray-700
+        color: #374151; 
         font-weight: 500;
         margin-bottom: 0.25rem;
         margin-left: 0.25rem;
@@ -75,11 +75,11 @@
       .input-container {
         display: flex;
         align-items: center;
-        border-bottom: 1px solid #D1D5DB; // border-gray-300
+        border-bottom: 1px solid #D1D5DB; 
         padding-bottom: 0.5rem;
   
         .input-icon {
-          color: #4B5563; // text-gray-600
+          color: #4B5563; 
           font-size: 1.25rem;
         }
   
@@ -88,12 +88,12 @@
           --padding-end: 0.5rem;
           --padding-top: 0.5rem;
           --padding-bottom: 0.5rem;
-          --color: #1F2937; // text-gray-800
-          --placeholder-color: #9CA3AF; // text-gray-400
+          --color: #1F2937; 
+          --placeholder-color: #9CA3AF;
         }
   
         .visibility-icon {
-          color: #4B5563; // text-gray-600
+          color: #4B5563; 
           font-size: 1.25rem;
           margin-left: auto;
           padding: 0.25rem;
@@ -102,7 +102,7 @@
     }
   
     .login-button {
-      --background: #6D28D9; // bg-purple-700
+      --background: #6D28D9; 
       --border-radius: 0.5rem;
       --padding-top: 0.75rem;
       --padding-bottom: 0.75rem;
@@ -114,7 +114,6 @@
     }
   }
   
-  // Media queries for responsiveness
   @media (max-width: 768px) {
     .login-container {
       flex-direction: column;

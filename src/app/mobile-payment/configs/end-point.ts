@@ -1,4 +1,4 @@
 export const endpoints = {
-    login: 'posLogin',
+    login: 'login',
 
 }

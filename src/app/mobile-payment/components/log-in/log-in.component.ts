@@ -4,7 +4,6 @@ import { NavController, ToastController } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GlobalService } from 'src/app/shared/services/global.service';
 
@@ -24,7 +23,6 @@ export class LogInComponent implements OnDestroy {
   private apiSubscription: Subscription = new Subscription();
 
   constructor(
-    private navCtrl: NavController,
     private toastController: ToastController,
     private _nav: NavController, 
     private _account: AccountService,
@@ -32,7 +30,6 @@ export class LogInComponent implements OnDestroy {
     private _user: LoginService,
     private _global: GlobalService,
     private toaster: ToastrService,
-    private _route: Router
   ) {
     this.loginFrm = this._fb.group({
       username: ['', [Validators.required]],
@@ -45,19 +42,18 @@ export class LogInComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // Clean up the subscription when the component is destroyed
     if (this.apiSubscription) {
       this.apiSubscription.unsubscribe();
     }
   }
 
   goToDisbursement() {
-    this._nav.navigateForward('payment');
+    this._nav.navigateForward('disbursement');
   }
   
   handleLogin() {
     if (this.username == '' || this.password == '') {
-      return; // Don't do anything if the form is invalid
+      return;
     }
 
     this._account.resetUserDetails();
@@ -71,9 +67,6 @@ export class LogInComponent implements OnDestroy {
       this._global.setLoader(false);
 
       if (response.status === 'success') {
-        if (!localStorage.getItem('cart')) {
-          localStorage.setItem('cart', JSON.stringify({}));
-        }
         localStorage.setItem('token', response.token.refresh.token);
         this.goToDisbursement();
       } else if (response.status === 'failed') {
@@ -102,8 +95,6 @@ export class LogInComponent implements OnDestroy {
     });
 
     this.apiSubscription.add(loginApi);
-    this.showSuccessToast('Login Successful');
-    this.navCtrl.navigateForward('/disbursement');
   }
 
   togglePasswordVisibility() {
