@@ -1,4 +1,4 @@
-package io.ionic.Adminpos;
+package io.ionic.Essentialistpos;
 
 import com.getcapacitor.BridgeActivity;
 

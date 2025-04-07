@@ -28,6 +28,9 @@ export class ReceiptPage implements OnInit {
   public receiptCartSummary: any = [];
   public requestId: any = null;
   public paymentData: any = this._global.getPaymentData();
+  public businessName: string = '';
+  public telephone: string = '';
+
 
   constructor(
     private _nav: NavController,
@@ -57,6 +60,19 @@ export class ReceiptPage implements OnInit {
     this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
     });
+
+    this._account.runTimePropObservable.subscribe((response: any[]) => {
+      this.runTimeProps = response;
+    
+      // Get Business Name
+      const nameProp = response.find(item => item.property_name === 'Business Name');
+      this.businessName = nameProp?.property_value || '';
+    
+      // Get telephone1
+      const telProp = response.find(item => item.property_name === 'telephone1');
+      this.telephone = telProp?.property_value || '';
+    });
+
   }
 
   ngOnInit() {
@@ -94,5 +110,6 @@ export class ReceiptPage implements OnInit {
     this._sunmi.print({cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
     this._nav.navigateBack('dashboard');
   }
+  
 
 }
