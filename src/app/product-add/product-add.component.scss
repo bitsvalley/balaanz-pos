@@ -61,7 +61,7 @@
 .product-bottom {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   width: 100%;
 }
 
@@ -472,16 +472,16 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 7px; 
-  margin: 8px 0px;
-  // margin-top: 10px;
+  margin: 5px 0px;
+  padding-top: 10px;
 }
 
 .price-row {
   display: flex;
   align-items: center;
   width: 100%;
-  padding-right: 30px;
-  margin-bottom: 12px;
+  padding-right: 40px;
+  margin-bottom: 10px;
 }
 
 .price-icon {
@@ -494,7 +494,7 @@
 
 .price-value {
   font-weight: 500;
-  font-size: 17px; 
+  font-size: 16px; 
 }
 
 .quantity .price-icon{

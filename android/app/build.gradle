@@ -1,10 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
+<<<<<<< HEAD
     namespace "io.ionic.Favourpos"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "io.ionic.Favourpos"
+=======
+    namespace "io.ionic.Essentialistpos"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "io.ionic.Essentialistpos"
+>>>>>>> 9f7817b358bc1c9292af707b54f50994587c16d1
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

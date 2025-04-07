@@ -9,7 +9,11 @@ export const environment = {
   captchKey: "6LeNMmYpAAAAAAPdFoxZ-A0hFuhdJOHJENo6N0uP",
   paymentUser: "bitsvalley",
   paymentPass: "b@lanz4lifE202!",
+<<<<<<< HEAD
   org: 83,
+=======
+  org: 100,
+>>>>>>> 9f7817b358bc1c9292af707b54f50994587c16d1
   // org: 20,
   // org: 13,
   // org: 15,
