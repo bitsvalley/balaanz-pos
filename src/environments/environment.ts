@@ -25,11 +25,7 @@ export const environment = {
   restApiHost: "https://balaanz.com/",
   paymentUser: "bitsvalley",
   paymentPass: "b@lanz4lifE202!",
-<<<<<<< HEAD
-  org: 83,
-=======
-  org: 100,
->>>>>>> 9f7817b358bc1c9292af707b54f50994587c16d1
+  org: 82,
   //org: 0,
   currency: 'FRS',
   momoCurrency: 'XAF',

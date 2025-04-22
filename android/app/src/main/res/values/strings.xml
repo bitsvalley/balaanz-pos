@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Essentialist POS</string>
-    <string name="title_activity_main">Essentialist POS</string>
-    <string name="package_name">io.ionic.Essentialistpos</string>
-    <string name="custom_url_scheme">io.ionic.Essentialistpos</string>
+    <string name="app_name">Balaanz POS13</string>
+    <string name="title_activity_main">Balaanz POS13</string>
+    <string name="package_name">io.ionic.Balaanpos13</string>
+    <string name="custom_url_scheme">io.ionic.Balaanpos13</string>
 </resources>
