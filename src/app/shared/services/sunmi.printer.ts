@@ -77,6 +77,11 @@ export class SunmiPrinterService implements OnDestroy {
         await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
         await Sunmi.text({text: this.addEmptyLine()});
 
+        //owerInfo
+        await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
+        await Sunmi.text({text: this.formatLines(data.ownerInfo.Location)});
+        await Sunmi.text({text: this.formatLines(`Tel: ${data.ownerInfo.Tel}`)});
+        await Sunmi.text({text: this.dashedBorder()});
         // Show Customer Name
         await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
         await Sunmi.text({text: this.formatLines("Order Type: SALE")});
