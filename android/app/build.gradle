@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "io.ionic.Balaanpos13"
+    namespace "io.ionic.Essentialistpos"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "io.ionic.Balaanpos13"
+        applicationId "io.ionic.Essentialistpos"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -14,36 +14,20 @@ android {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
-        }  
-
-    }
-
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_21
-            targetCompatibility JavaVersion.VERSION_21
-        } 
-
-        kotlinOptions {
-            jvmTarget = "21"
-        }
-        // Ensure Gradle wrapper is present and executable
-        // tasks.register("checkGradleWrapper") {
-        //     doLast {
-        //         def gradleWrapper = file("${rootDir}/gradlew")
-        //         if (!gradleWrapper.exists()) {
-        //             throw new GradleException("Gradle wrapper not found. Please ensure the Gradle wrapper is set up correctly.")
-        //         }
-        //     }
-        // }
-
-
-        buildTypes {
-            release {
-                minifyEnabled false
-                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            }
         }
     }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
 
 repositories {
     flatDir{
