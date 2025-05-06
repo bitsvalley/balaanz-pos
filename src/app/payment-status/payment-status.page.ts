@@ -27,8 +27,8 @@ export class PaymentStatusPage implements OnInit {
   public receiptCartSummary: any = [];
   public requestId: any = null;
   public paymentData: any = this._global.getPaymentData();
-
   public tranStatus: any = null;
+  public totalPayment : number;
 
   constructor(
     private _nav: NavController,
@@ -57,6 +57,11 @@ export class PaymentStatusPage implements OnInit {
     this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
     });
+
+    this.totalPayment = this.cartSummary.totalAmount - this.paymentData.discount;
+ 
+    console.log(this.cartSummary.totalAmount - this.paymentData.discount)
+
   }
 
   ngOnInit() {
