@@ -1,4 +1,4 @@
-package io.ionic.Balaanpos13;
+package io.ionic.Essentialistpos;
 
 import com.getcapacitor.BridgeActivity;
 
