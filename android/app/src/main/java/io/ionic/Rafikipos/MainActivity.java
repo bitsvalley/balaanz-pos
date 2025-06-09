@@ -1,4 +1,4 @@
-package io.ionic.Essentialistpos;
+package io.ionic.Rafikipos;
 
 import com.getcapacitor.BridgeActivity;
 
