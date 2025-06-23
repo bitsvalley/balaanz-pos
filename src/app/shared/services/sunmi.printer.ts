@@ -73,9 +73,11 @@ export class SunmiPrinterService implements OnDestroy {
         await Sunmi.align({ direction: "LEFT"});
         await Sunmi.fontSize({size: 1});
 
-        // Title and Address
+        // Title and Addressawait 
+        Sunmi.fontSize({size: 2});
         await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
         await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.fontSize({size: 1});
 
         //owerInfo
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
@@ -99,9 +101,9 @@ export class SunmiPrinterService implements OnDestroy {
         await this.printProducts(data);
 
         await Sunmi.text({text: this.dashedBorder()});
-        await Sunmi.text({text: this.formatLines(`Subtotal: ${this.decimalPipe.transform(data.cartSummary.totalAmount)}`, 'right')});
-        await Sunmi.text({text: this.formatLines(`Discount: -${this.decimalPipe.transform(data.paymentData.discount)}`, 'right')});
-        await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.cartSummary.totalAmount - data.paymentData.discount)}`, 'right')});
+        await Sunmi.text({text: this.formatLines(`Subtotal: ${this.decimalPipe.transform(data.cartSummary.totalAmount)} frs`, 'right')});
+        await Sunmi.text({text: this.formatLines(`Discount: -${this.decimalPipe.transform(data.paymentData.discount)} frs`, 'right')});
+        await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.cartSummary.totalAmount - data.paymentData.discount)} frs`, 'right')});
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.formatLines(`${thankNote}`)});
         await Sunmi.text({text: this.formatLines(`${thankNote2}`)});
