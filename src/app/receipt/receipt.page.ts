@@ -117,7 +117,9 @@ export class ReceiptPage implements OnInit {
     let ownerInfo ={
       Name: this.runTimeProps[0].property_value,
       Location : this.runTimeProps[3].property_value,
-      Tel : this.telephone
+      Tel : this.telephone,
+      Slogan : this.runTimeProps[2].property_value
+
     }
     this._sunmi.print({ownerInfo:ownerInfo,cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
     this._nav.navigateBack('dashboard');
