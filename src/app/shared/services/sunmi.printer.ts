@@ -64,7 +64,7 @@ export class SunmiPrinterService implements OnDestroy {
       });
     }
 
-    async print(data: any) {
+    async print(data: any) {     
       const thankNote = `Thank you for shopping with`;
       const thankNote2 = `us`;
 
@@ -73,14 +73,16 @@ export class SunmiPrinterService implements OnDestroy {
         await Sunmi.align({ direction: "LEFT"});
         await Sunmi.fontSize({size: 1});
 
-        // Title and Addressawait 
-        Sunmi.fontSize({size: 2});
+        // Title and Addressawait         
         await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
         await Sunmi.text({text: this.addEmptyLine()});
-        await Sunmi.fontSize({size: 1});
+       
 
         //owerInfo
+        await Sunmi.fontSize({size: 2});
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
+        await Sunmi.fontSize({size: 1});
+        await Sunmi.text({text: this.formatLines(data.ownerInfo.Slogan)});
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Location)});
         await Sunmi.text({text: this.formatLines(`Tel: ${data.ownerInfo.Tel}`)});
         await Sunmi.text({text: this.dashedBorder()});
