@@ -81,10 +81,10 @@ export class SunmiPrinterService implements OnDestroy {
         //owerInfo
         // await Sunmi.fontSize({size: 2});
         
-        await Sunmi.bold();
-        await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
-        await Sunmi.normal();
-        // await Sunmi.align({ direction: "LEFT"});
+        // await Sunmi.bold();
+        // await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
+        // await Sunmi.normal();
+        await Sunmi.align({ direction: "LEFT"});
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Slogan)});
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Location)});
         await Sunmi.text({text: this.formatLines(`Tel: ${data.ownerInfo.Tel}`)});
