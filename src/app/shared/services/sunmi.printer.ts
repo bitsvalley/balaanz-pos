@@ -70,18 +70,21 @@ export class SunmiPrinterService implements OnDestroy {
 
         // Default Settings
         await Sunmi.start();
-        await Sunmi.align({ direction: "LEFT"});
-        await Sunmi.fontSize({size: 1});
+        await Sunmi.align({ direction: "LEFT" });
+        
 
         // Title and Addressawait         
-        await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
-        await Sunmi.text({text: this.addEmptyLine()});
+        // await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
+      
        
 
         //owerInfo
-        await Sunmi.fontSize({size: 2});
+        // await Sunmi.fontSize({size: 2});
+        
+        await Sunmi.bold();
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
-        await Sunmi.fontSize({size: 1});
+        await Sunmi.normal();
+        // await Sunmi.align({ direction: "LEFT"});
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Slogan)});
         await Sunmi.text({text: this.formatLines(data.ownerInfo.Location)});
         await Sunmi.text({text: this.formatLines(`Tel: ${data.ownerInfo.Tel}`)});
@@ -109,9 +112,11 @@ export class SunmiPrinterService implements OnDestroy {
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.formatLines(`${thankNote}`)});
         await Sunmi.text({text: this.formatLines(`${thankNote2}`)});
+        await Sunmi.text({text: this.formatLines(`$www.balaanz.com`)});
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.addEmptyLine()});
+        await Sunmi.text({text: this.formatLines("www.balaanz.com")});
 
         // Print 
         await Sunmi.print();
