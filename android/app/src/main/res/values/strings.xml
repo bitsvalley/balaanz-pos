@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Chepele POS</string>
-    <string name="title_activity_main">Chepele POS</string>
-    <string name="package_name">io.ionic.ChepelePOS</string>
-    <string name="custom_url_scheme">io.ionic.ChepelePOS</string>
+    <string name="app_name">Njieforbi POS</string>
+    <string name="title_activity_main">Njieforbi POS</string>
+    <string name="package_name">io.ionic.NjieforbiPOS</string>
+    <string name="custom_url_scheme">io.ionic.NjieforbiPOS</string>
 </resources>

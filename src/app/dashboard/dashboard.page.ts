@@ -73,6 +73,10 @@ export class DashboardPage implements OnDestroy {
     this.selectedProductIds =[];
     this.cartList.map(x => this.selectedProductIds.push(x.id));
   }
+  ionViewDidEnter() {
+    // Refresh product list when returning to this page
+    this.getProductList();
+  }
 
   toggleNav() {
     this.isNavOpen = !this.isNavOpen;
@@ -138,6 +142,8 @@ export class DashboardPage implements OnDestroy {
     this.selelctedCategory = null;
     this.cartAnimation = false;
     this.getProductList();
+    this.loadProducts();
+
 
     if (this.userDetails.id) {
       this._global.initCart(this.userDetails.id);
@@ -148,6 +154,10 @@ export class DashboardPage implements OnDestroy {
     this.selectedProductIds =[];
     console.log(this.cartList)
     this.cartList.map(x => this.selectedProductIds.push(x.id));
+  }
+  loadProducts() {
+    throw new Error('Method not implemented.');
+  
   }
 
   ionViewWillLeave() {

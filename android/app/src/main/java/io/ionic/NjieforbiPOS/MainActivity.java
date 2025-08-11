@@ -1,4 +1,4 @@
-package io.ionic.ChepelePOS;
+package io.ionic.NjieforbiPOS;
 
 import com.getcapacitor.BridgeActivity;
 
