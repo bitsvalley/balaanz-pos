@@ -9,11 +9,9 @@ import { Products } from 'src/app/sales-dashboard/sales-dashboard.model';
 declare const grecaptcha: any;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
-  
   // getTrendingProducts(): Observable<Product[]> {
   //   const url = `${environment.apiBaseUrl}/trending-products`;  // Replace with your actual API endpoint
   //   return this._http.get<Product[]>(url);
@@ -24,27 +22,27 @@ export class UserService {
 
   public momoToken: any = null;
 
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {}
 
   login(payload: Object) {
     const headers = new HttpHeaders({
-      "content-type": "application/json"
+      'content-type': 'application/json',
     });
     const url = `${environment.host}${endpoints.login}/${environment.org}`;
-    return this._http.post(url, payload, {headers});
+    return this._http.post(url, payload, { headers });
   }
 
   adminlogin(payload: { name: string; password: string }) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
     });
-  
+
     const url = `${environment.restApiHost}${endpoints.adminlogin}`;
-  
+
     const body = new URLSearchParams();
     body.set('username', payload.name);
     body.set('password', payload.password);
-  
+
     return this._http.post(url, body.toString(), { headers }).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
@@ -52,84 +50,85 @@ export class UserService {
       })
     );
   }
-  
+
   newproductadd(payload: Object) {
     const headers = new HttpHeaders({
-      "content-type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      'content-type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     });
     const url = `${environment.restApiHost}${endpoints.newproductadd}`;
-    return this._http.post(url, payload, {headers});
+    return this._http.post(url, payload, { headers });
   }
   getnewproductadd(payload: Object) {
-    const refreshToken = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      "content-type": "application/json",
-      "Authorization": `${refreshToken}`,
+      'content-type': 'application/json',
+      Authorization: `${refreshToken}`,
     });
     const url = `${environment.restApiHost}${endpoints.newproductadd}`;
-    return this._http.post(url,payload,{headers: headers});
+    return this._http.post(url, payload, { headers: headers });
   }
 
   editproduct(payload: Object) {
     const headers = new HttpHeaders({
-      "content-type": "application/json",
-      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      'content-type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     });
     const url = `${environment.restApiHost}${endpoints.editproduct}`;
-    return this._http.put(url, payload, {headers});
+    return this._http.put(url, payload, { headers });
   }
   geteditproduct(payload: Object) {
-    const refreshToken = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      "content-type": "application/json",
-      "Authorization": `${refreshToken}`,
+      'content-type': 'application/json',
+      Authorization: `${refreshToken}`,
     });
     const url = `${environment.restApiHost}${endpoints.editproduct}`;
-    return this._http.put(url,payload,{headers: headers});
+    return this._http.put(url, payload, { headers: headers });
   }
-
 
   getProductAdmin() {
-    const refreshToken = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      "content-type": "application/json",
-      "Authorization": `${refreshToken}`,
+      'content-type': 'application/json',
+      Authorization: `${refreshToken}`,
     });
     const url = `${environment.restApiHost}${endpoints.productList}`;
-    return this._http.get(url, {headers: headers});
+    return this._http.get(url, { headers: headers });
   }
 
-
-  getSalesProduct(from: string, to: string , limit: number) {
-    const refreshToken = localStorage.getItem("token");
+  getSalesProduct(from: string, to: string, limit: number) {
+    const refreshToken = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      "content-type": "application/json",
-      "Authorization": `Bearer ${refreshToken}`,
+      'content-type': 'application/json',
+      Authorization: `Bearer ${refreshToken}`,
     });
-    const url = `${environment.restApiHost}${endpoints.sales}?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&limit=${limit}`;
-    return this._http.get (url, { headers: headers });
+    const url = `${environment.restApiHost}${
+      endpoints.sales
+    }?from=${encodeURIComponent(from)}&to=${encodeURIComponent(
+      to
+    )}&limit=${limit}`;
+    return this._http.get(url, { headers: headers });
   }
-  
 
   logout(userId) {
     const url = `${environment.host}${endpoints.logout}`;
-    return this._http.post(url, {userId: userId});
+    return this._http.post(url, { userId: userId });
   }
 
   getToken() {
-    const refreshToken = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      "content-type": "application/json",
-      "Authorization": `${refreshToken}`,
+      'content-type': 'application/json',
+      Authorization: `${refreshToken}`,
     });
     const url = `${environment.host}${endpoints.getToken}`;
-    return this._http.get(url, {headers: headers});
+    return this._http.get(url, { headers: headers });
   }
 
   getUserDetails() {
     const url = `${environment.host}${endpoints.getUserDetails}`;
-    return this._http.get(url );
+    return this._http.get(url);
   }
 
   getAccount(apiUrl: any) {
@@ -143,15 +142,18 @@ export class UserService {
   // }
 
   getMomoToken() {
-    // const headers = new HttpHeaders({ 
-    //   "Content-Type": 'application/json', 
+    // const headers = new HttpHeaders({
+    //   "Content-Type": 'application/json',
     //   "Authorization": 'Basic ' + btoa(environment.paymentUser + ':' + environment.paymentPass)
     // });
     // return this._http.post<any>(`${environment.momoHost}${endpoints.paymentLogin}`, {}, {headers});
     let payload = {
-      authToken: btoa(environment.paymentUser + ':' + environment.paymentPass)
-    }
-    return this._http.post<any>(`${environment.host}${endpoints.momoAuth}`, payload);
+      authToken: btoa(environment.paymentUser + ':' + environment.paymentPass),
+    };
+    return this._http.post<any>(
+      `${environment.host}${endpoints.momoAuth}`,
+      payload
+    );
   }
 
   providerInfo(number: any) {
@@ -161,11 +163,14 @@ export class UserService {
     //   "Authorization": `Bearer ${localStorage.getItem('momoToken')}`,
     // });
     const headers = new HttpHeaders({
-      "g-token": `${localStorage.getItem('momoCaptcha')}`,
-      "m-token": `Bearer ${localStorage.getItem('momoToken')}`,
+      'g-token': `${localStorage.getItem('momoCaptcha')}`,
+      'm-token': `Bearer ${localStorage.getItem('momoToken')}`,
     });
     //return this._http.get<any>(`${environment.momoHost}${endpoints.mobilePay}${endpoints.providerInfo}${number}`, {headers});
-    return this._http.get<any>(`${environment.host}${endpoints.getProviderInfo}/${number}`, {headers});
+    return this._http.get<any>(
+      `${environment.host}${endpoints.getProviderInfo}/${number}`,
+      { headers }
+    );
   }
 
   disburse(payload: any) {
@@ -175,47 +180,58 @@ export class UserService {
     //   "Authorization": `Bearer ${localStorage.getItem('momoToken')}`,
     // });
     const headers = new HttpHeaders({
-      "g-token": `${localStorage.getItem('momoCaptcha')}`,
-      "m-token": `Bearer ${localStorage.getItem('momoToken')}`,
+      'g-token': `${localStorage.getItem('momoCaptcha')}`,
+      'm-token': `Bearer ${localStorage.getItem('momoToken')}`,
     });
-	  // return this._http.post<any>(`${environment.momoHost}${endpoints.mobilePay}${endpoints.disburse}`, payload, {headers});
-    return this._http.post<any>(`${environment.host}${endpoints.momoDisburse}`, payload, {headers});
+    // return this._http.post<any>(`${environment.momoHost}${endpoints.mobilePay}${endpoints.disburse}`, payload, {headers});
+    return this._http.post<any>(
+      `${environment.host}${endpoints.momoDisburse}`,
+      payload,
+      { headers }
+    );
   }
 
   async getCaptcha() {
     // grecaptcha.enterprise.ready(async () => {
     //   return await grecaptcha.enterprise.execute(environment.captchKey, {action: 'LOGIN'});
     // });
-    return grecaptcha.enterprise.execute(environment.captchKey, { action: "login" });
+    return grecaptcha.enterprise.execute(environment.captchKey, {
+      action: 'login',
+    });
   }
 
   getRunTimeProperties() {
-	  return this._http.get<any>(`${environment.host}${endpoints.runTimeProperty}${environment.org}`);
+    return this._http.get<any>(
+      `${environment.host}${endpoints.runTimeProperty}${environment.org}`
+    );
   }
 
   validatePin(payload: any) {
-    return this._http.post<any>(`${environment.host}${endpoints.validatePin}`, payload);
+    return this._http.post<any>(
+      `${environment.host}${endpoints.validatePin}`,
+      payload
+    );
   }
 
-
-  disburseCollect(payload:any){
-    return this._http.post<any>(`${environment.restApiHost}${endpoints.disburseAmount}`, payload);
+  disburseCollect(payload: any) {
+    return this._http.post<any>(
+      `${environment.restApiHost}${endpoints.disburseAmount}`,
+      payload
+    );
   }
 
-
-  productList(payload?: any)  {
-    const url = `${environment.restApiHost}${endpoints.productList}`; 
+  productList(payload?: any) {
+    const url = `${environment.restApiHost}${endpoints.productList}`;
     return this._http.get(url, payload);
   }
 
   pay(payload) {
-    const url = `${environment.restApiHost}${endpoints.payment}`; 
+    const url = `${environment.restApiHost}${endpoints.payment}`;
     return this._http.post(url, payload);
   }
 
   payStatus(resId) {
-    const url = `${environment.restApiHost}${endpoints.paymentStatus}${resId}`; 
+    const url = `${environment.restApiHost}${endpoints.paymentStatus}${resId}`;
     return this._http.get(url);
   }
-
 }

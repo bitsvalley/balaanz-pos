@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core';
 import { Category, Product } from 'src/app/product-add/product-add.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
-
-  private productData:  Product;
-  private categoryList : Category[];
+  private productData: Product;
+  private categoryList: Category[];
 
   setItemData(Product: any): void {
     this.productData = Product;
@@ -21,17 +20,17 @@ export class ProductService {
     this.productData = null;
   }
 
-  setCategories(list : Category[]){
-    this.categoryList = list
+  setCategories(list: Category[]) {
+    this.categoryList = list;
   }
 
-  getCategories():Category[]{
+  getCategories(): Category[] {
     return this.categoryList;
   }
 
-  cleanCategoryList():void{
+  cleanCategoryList(): void {
     this.categoryList = null;
   }
 
-  constructor() { }
+  constructor() {}
 }

@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { EditProduct } from './edit-product-model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LoadingController, NavController, ToastController, ActionSheetController } from '@ionic/angular';
+import {
+  LoadingController,
+  NavController,
+  ToastController,
+  ActionSheetController,
+} from '@ionic/angular';
 import { UserService } from '../shared/services/user.service';
 import { Subscription } from 'rxjs';
 import { ProductService } from '../shared/services/product.service';
-import { Product } from '../product-add/product-add.model';
+import { Product, Category } from '../product-add/product-add.model';
 import { GlobalService } from '../shared/services/global.service';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
@@ -19,7 +24,8 @@ export class EditProductComponent implements OnInit {
   imagePreview: string | null = null;
   private subscriptions: Subscription = new Subscription();
   itemData: Product;
-  
+  public categories: Category[] = [];
+
   private readonly MAX_FILE_SIZE = 45 * 1024 * 1024;
 
   constructor(
@@ -27,23 +33,75 @@ export class EditProductComponent implements OnInit {
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController,
     private _user: UserService,
-    private _productService: ProductService,
+    private _product: ProductService,
     private navCtrl: NavController,
     private _global: GlobalService,
     private actionSheetController: ActionSheetController
-  ) {}
+  ) {
+    this.categories = this._product.getCategories();
+  }
 
   ngOnInit() {
-    this.itemData = this._productService.getItemData();
+    const itemData = this._product.getItemData();
+    this.itemData = itemData;
+    console.log(this.itemData);
+
     this.formSetUp();
     this.imagePreview = this.itemData.image1;
   }
 
   formSetUp() {
     this.productForm = this.fb.group({
-      name: [this.itemData.name, [Validators.required, Validators.minLength(3)]],
-      barcode: [this.itemData.barcode, [Validators.required, Validators.min(0)]],
-      image: [this.itemData.image1, ''],
+      name: [
+        this.itemData.name,
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(100),
+        ],
+      ],
+      unitPrice: [
+        this.itemData.unitPrice || this.itemData.price || 0,
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.pattern(/^\d+(\.\d{1,2})?$/),
+        ],
+      ],
+      purchasePrice: [
+        this.itemData.purchasePrice || 0,
+        [
+          Validators.required,
+          Validators.min(0),
+          Validators.pattern(/^\d+(\.\d{1,2})?$/),
+        ],
+      ],
+      bulkPrice: [
+        this.itemData.bulkPrice || 0,
+        [Validators.min(0), Validators.pattern(/^\d+(\.\d{1,2})?$/)],
+      ],
+      barcode: [
+        this.itemData.barcode,
+        [Validators.required, Validators.maxLength(50)],
+      ],
+      categoryId: [this.itemData.category || '', [Validators.required]],
+      stockAmount: [
+        this.itemData.stockAmount || 0,
+        [Validators.required, Validators.min(0), Validators.pattern(/^\d+$/)],
+      ],
+      shortDescription: [
+        this.itemData.shortDescription || '',
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(100),
+        ],
+      ],
+      longDescription: [
+        this.itemData.longDescription || '',
+        [Validators.maxLength(500)],
+      ],
+      image: [this.itemData.image1 || '', ''],
     });
   }
 
@@ -56,24 +114,26 @@ export class EditProductComponent implements OnInit {
           icon: 'camera',
           handler: () => {
             this.takePicture(CameraSource.Camera);
-          }
+          },
         },
         {
           text: 'File',
           icon: 'folder',
           handler: () => {
-            const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+            const fileInput = document.querySelector(
+              'input[type="file"]'
+            ) as HTMLInputElement;
             if (fileInput) {
               fileInput.click();
             }
-          }
+          },
         },
         {
           text: 'Cancel',
           icon: 'close',
-          role: 'cancel'
-        }
-      ]
+          role: 'cancel',
+        },
+      ],
     });
     await actionSheet.present();
   }
@@ -87,12 +147,12 @@ export class EditProductComponent implements OnInit {
         source: source,
         correctOrientation: true,
         width: 500,
-        height: 500
+        height: 500,
       });
 
       if (image.base64String) {
         const base64Image = `data:image/jpeg;base64,${image.base64String}`;
-        
+
         const sizeInBytes = this.getBase64Size(base64Image);
         if (sizeInBytes > this.MAX_FILE_SIZE) {
           const toast = await this.toastCtrl.create({
@@ -103,7 +163,7 @@ export class EditProductComponent implements OnInit {
           await toast.present();
           return;
         }
-        
+
         try {
           const compressedImage = await this.compressImage(base64Image);
           this.imagePreview = compressedImage;
@@ -122,7 +182,7 @@ export class EditProductComponent implements OnInit {
       const toast = await this.toastCtrl.create({
         message: 'Failed to get image. Please try again.',
         duration: 2000,
-        color: 'danger'
+        color: 'danger',
       });
       await toast.present();
     }
@@ -137,12 +197,15 @@ export class EditProductComponent implements OnInit {
     return file.size;
   }
 
-  async compressImage(file: File | string, maxSizeKB: number = 700): Promise<string> {
+  async compressImage(
+    file: File | string,
+    maxSizeKB: number = 700
+  ): Promise<string> {
     this._global.setLoader(true);
     return new Promise((resolve, reject) => {
       let reader: FileReader;
       let img = new Image();
-      
+
       if (typeof file === 'string') {
         img.src = file;
       } else {
@@ -157,7 +220,7 @@ export class EditProductComponent implements OnInit {
       img.onload = () => {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
+
         let quality = 0.9;
         let scale = 1;
         let compressedDataUrl: string;
@@ -165,12 +228,12 @@ export class EditProductComponent implements OnInit {
         const compress = () => {
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
-          
+
           ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-          
+
           compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
-          
-          const base64Size = compressedDataUrl.length * (3/4);
+
+          const base64Size = compressedDataUrl.length * (3 / 4);
           const sizeInKB = base64Size / 1024;
 
           if (sizeInKB > maxSizeKB) {
@@ -192,7 +255,7 @@ export class EditProductComponent implements OnInit {
         compress();
         this._global.setLoader(false);
       };
-      
+
       img.onerror = (error) => reject(error);
     });
   }
@@ -209,10 +272,10 @@ export class EditProductComponent implements OnInit {
         await toast.present();
         return;
       }
-      
+
       try {
         const compressedImage = await this.compressImage(file);
-  
+
         this.imagePreview = compressedImage;
         this.productForm.patchValue({ image: compressedImage });
       } catch (error) {
@@ -228,68 +291,113 @@ export class EditProductComponent implements OnInit {
 
   async onSubmit() {
     if (!this.productForm.valid) {
+      this.markFormGroupTouched();
       const toast = await this.toastCtrl.create({
         message: 'Please fill in all required fields correctly.',
         duration: 2000,
         color: 'warning',
       });
       await toast.present();
-      return; 
+      return;
     }
-  
-    const loading = await this.loadingCtrl.create({ message: 'Updating product...' });
+
+    const loading = await this.loadingCtrl.create({
+      message: 'Updating product...',
+    });
     await loading.present();
-  
+
     try {
       const productData: EditProduct = {
-        ...this.productForm.value,
-        lastUpdatedDate: new Date().toISOString(),
-        createdDate: this.itemData.createdDate,
         id: this.itemData.id,
-        categoryId: this.itemData.category,
-        stockAmount: this.itemData.stockAmount,
-        shortDescription: this.itemData.shortDescription,
-        longDescription: this.itemData.longDescription,
-        unitPrice: this.itemData.unitPrice,
-        bulkPrice: this.itemData.bulkPrice,
-        purchasePrice: this.itemData.purchasePrice
+        name: this.productForm.get('name')?.value?.trim(),
+        unitPrice: parseFloat(this.productForm.get('unitPrice')?.value) || 0,
+        image: this.productForm.get('image')?.value || '',
+        createdDate: this.itemData.createdDate,
+        lastUpdatedDate: new Date().toISOString(),
+        categoryId: parseInt(this.productForm.get('categoryId')?.value),
+        stockAmount: parseInt(this.productForm.get('stockAmount')?.value) || 0,
+        barcode: this.productForm.get('barcode')?.value?.trim(),
+        shortDescription: this.productForm
+          .get('shortDescription')
+          ?.value?.trim(),
+        longDescription:
+          this.productForm.get('longDescription')?.value?.trim() || '',
+        purchasePrice:
+          parseFloat(this.productForm.get('purchasePrice')?.value) || 0,
+        bulkPrice: parseFloat(this.productForm.get('bulkPrice')?.value) || 0,
       };
-  
+
+      console.log('Form Data:', this.productForm.value);
+      console.log('Processed Data:', productData);
+
       this._user.geteditproduct(productData).subscribe(
         async (response: any) => {
-          console.log(response);
+          console.log('API Response:', response);
           await loading.dismiss();
-          const toast = await this.toastCtrl.create({
-            message: 'Product updated successfully!',
-            duration: 2000,
-            color: 'success',
-          });
-          await toast.present();
-          setTimeout(() => {
-            this.navCtrl.navigateForward('/product');
-          }, 2000);
+          this.handleSuccess();
         },
         async (error: any) => {
           console.error('API error:', error);
           await loading.dismiss();
-          const toast = await this.toastCtrl.create({
-            message: 'Failed to update product. Please try again.',
-            duration: 2000,
-            color: 'danger',
-          });
-          await toast.present();
+          this.handleError('Failed to update product. Please try again.');
         }
       );
     } catch (error) {
       console.error('Unexpected error:', error);
       await loading.dismiss();
-      const toast = await this.toastCtrl.create({
-        message: 'Failed to update product. Please try again.',
-        duration: 2000,
-        color: 'danger',
-      });
-      await toast.present();
+      this.handleError('An unexpected error occurred. Please try again.');
     }
   }
-  
+
+  private async handleSuccess() {
+    const toast = await this.toastCtrl.create({
+      message: 'Product updated successfully!',
+      duration: 2000,
+      color: 'success',
+    });
+    await toast.present();
+
+    setTimeout(() => {
+      this.navCtrl.navigateForward('/product');
+    }, 2000);
+  }
+
+  private async handleError(message: string) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      color: 'danger',
+    });
+    await toast.present();
+  }
+
+  private markFormGroupTouched() {
+    Object.keys(this.productForm.controls).forEach((key) => {
+      const control = this.productForm.get(key);
+      control?.markAsTouched();
+    });
+  }
+
+  // Helper method to check if a field is invalid and touched
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.productForm.get(fieldName);
+    return field ? field.invalid && field.touched : false;
+  }
+
+  // Helper method to get field error message
+  getFieldErrorMessage(fieldName: string): string {
+    const field = this.productForm.get(fieldName);
+    if (!field || !field.errors) return '';
+
+    if (field.errors['required']) return 'This field is required';
+    if (field.errors['minlength'])
+      return `Minimum length is ${field.errors['minlength'].requiredLength} characters`;
+    if (field.errors['maxlength'])
+      return `Maximum length is ${field.errors['maxlength'].requiredLength} characters`;
+    if (field.errors['min'])
+      return `Minimum value is ${field.errors['min'].min}`;
+    if (field.errors['pattern']) return 'Invalid format';
+
+    return 'Invalid input';
+  }
 }

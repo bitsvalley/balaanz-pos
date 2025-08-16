@@ -49,7 +49,7 @@
 //   mrsp: number;
 //   requisitionLevel?: number;
 //   stockAmount: number;
-//   imageUrl1: string; 
+//   imageUrl1: string;
 //   imageUrl2?: string;
 //   imageUrl3?: string;
 //   imageUrl4?: string;

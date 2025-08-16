@@ -4,10 +4,10 @@
       <ion-back-button defaultHref="/products"></ion-back-button>
     </ion-buttons>
     <div style="display: flex">
-    <ion-title>Add New Product</ion-title>
-    <span class="balaanz-logo">
-      <img src="/assets/images/balaanz-logo.jpg" />
-    </span>
+      <ion-title>Add New Product</ion-title>
+      <span class="balaanz-logo">
+        <img src="/assets/images/balaanz-logo.jpg" />
+      </span>
     </div>
   </ion-toolbar>
 </div>
@@ -16,38 +16,150 @@
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="ion-padding">
     <div class="image-upload-container">
       <div class="image-preview" [class.has-image]="imagePreview">
-        <img [src]="imagePreview" *ngIf="imagePreview">
+        <img [src]="imagePreview" *ngIf="imagePreview" />
         <ion-icon name="image-outline" *ngIf="!imagePreview"></ion-icon>
-        <input type="file" (change)="onImageSelect($event)" accept="image/*" #fileInput hidden>
-        <ion-button fill="clear" expand="block" (click)="presentImageSourceActionSheet()">
-          {{ imagePreview ? 'Change Image' : 'Upload Image' }}
+        <input
+          type="file"
+          (change)="onImageSelect($event)"
+          accept="image/*"
+          #fileInput
+          hidden
+        />
+        <ion-button
+          fill="clear"
+          expand="block"
+          (click)="presentImageSourceActionSheet()"
+        >
+          {{ imagePreview ? "Change Image" : "Upload Image" }}
         </ion-button>
       </div>
     </div>
 
     <ion-list>
       <ion-item>
-        <ion-label position="stacked">Product Name*</ion-label>
-        <ion-input formControlName="name" placeholder="Enter product name"></ion-input>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label position="stacked">Barcode</ion-label>
-        <ion-input formControlName="barcode" placeholder="Enter barcode"></ion-input>
+        <ion-label position="stacked">Product Name</ion-label>
+        <ion-input
+          formControlName="name"
+          placeholder="Enter product name"
+        ></ion-input>
+        <ion-note
+          slot="error"
+          *ngIf="
+            productForm.get('name')?.invalid && productForm.get('name')?.touched
+          "
+        >
+          Product name is required and must be at least 3 characters
+        </ion-note>
       </ion-item>
 
       <ion-item>
-        <ion-label position="stacked">Category*</ion-label>
+        <ion-label position="stacked">Unit Price</ion-label>
+        <ion-input
+          type="number"
+          formControlName="unitPrice"
+          placeholder="Enter unit price"
+          min="0"
+          step="0.01"
+        ></ion-input>
+        <ion-note
+          slot="error"
+          *ngIf="
+            productForm.get('unitPrice')?.invalid &&
+            productForm.get('unitPrice')?.touched
+          "
+        >
+          Unit price must be a positive number
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Barcode</ion-label>
+        <ion-input
+          formControlName="barcode"
+          placeholder="Enter barcode"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Category</ion-label>
         <ion-select formControlName="categoryId" placeholder="Select category">
-          <ion-select-option *ngFor="let category of categories" [value]="category.id">
+          <ion-select-option
+            *ngFor="let category of categories"
+            [value]="category.id"
+          >
             {{ category.name }}
           </ion-select-option>
         </ion-select>
+        <ion-note
+          slot="error"
+          *ngIf="
+            productForm.get('categoryId')?.invalid &&
+            productForm.get('categoryId')?.touched
+          "
+        >
+          Please select a category
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Stock Amount</ion-label>
+        <ion-input
+          type="number"
+          formControlName="stockAmount"
+          placeholder="Enter stock amount"
+          min="0"
+        ></ion-input>
+        <ion-note
+          slot="error"
+          *ngIf="
+            productForm.get('stockAmount')?.invalid &&
+            productForm.get('stockAmount')?.touched
+          "
+        >
+          Stock amount must be a positive number
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Short Description</ion-label>
+        <ion-textarea
+          formControlName="shortDescription"
+          placeholder="Enter short description"
+          rows="3"
+          maxlength="100"
+        ></ion-textarea>
+        <ion-note
+          slot="error"
+          *ngIf="
+            productForm.get('shortDescription')?.invalid &&
+            productForm.get('shortDescription')?.touched
+          "
+        >
+          Short description is required
+        </ion-note>
+        <ion-note slot="helper">
+          {{ productForm.get("shortDescription")?.value?.length || 0 }}/100
+          characters
+        </ion-note>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Long Description</ion-label>
+        <ion-textarea
+          formControlName="longDescription"
+          placeholder="Enter detailed description (optional)"
+          rows="5"
+          maxlength="500"
+        ></ion-textarea>
+        <ion-note slot="helper">
+          {{ productForm.get("longDescription")?.value?.length || 0 }}/500
+          characters
+        </ion-note>
       </ion-item>
     </ion-list>
 
     <div class="submit-button">
-      <ion-button expand="block" type="submit">
+      <ion-button expand="block" type="submit" [disabled]="!productForm.valid">
         Add Product
       </ion-button>
     </div>

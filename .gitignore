@@ -55,3 +55,5 @@ Thumbs.db
 
 # Ignore Gradle build output directory
 build
+
+/.code
