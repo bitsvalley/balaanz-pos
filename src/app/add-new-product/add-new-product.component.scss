@@ -190,11 +190,13 @@ ion-label[for="shortDescription"]::after {
 }
 
 // Alternative approach using position="stacked" and specific field targeting
-ion-item:nth-child(2) ion-label::after,  // Product Name
-ion-item:nth-child(3) ion-label::after,  // Unit Price
-ion-item:nth-child(5) ion-label::after,  // Category
-ion-item:nth-child(6) ion-label::after,  // Stock Amount
-ion-item:nth-child(7) ion-label::after {
+ion-item:nth-child(1) ion-label::after,  // Product Name
+// ion-item:nth-child(3) ion-label::after,  // Unit Price
+ion-item:nth-child(4) ion-label::after // Category
+// ion-item:nth-child(6) ion-label::after,  // Stock Amount
+// ion-item:nth-child(7) ion-label::after  // Short Description
+// ion-item:nth-child(8) ion-label::after  // Long Description 
+{
   // Short Description
   content: " *";
   color: #eb445a;

@@ -1,8 +1,12 @@
 <div>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/products"></ion-back-button>
+      <ion-back-button defaultHref="/product"></ion-back-button>
     </ion-buttons>
+
+    <!-- <ion-button (click)="goBack()">Back</ion-button> -->
+
+
     <div style="display: flex">
       <ion-title>Add New Product</ion-title>
       <span class="balaanz-logo">
@@ -120,7 +124,7 @@
         </ion-note>
       </ion-item>
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label position="stacked">Short Description</ion-label>
         <ion-textarea
           formControlName="shortDescription"
@@ -155,7 +159,7 @@
           {{ productForm.get("longDescription")?.value?.length || 0 }}/500
           characters
         </ion-note>
-      </ion-item>
+      </ion-item> -->
     </ion-list>
 
     <div class="submit-button">

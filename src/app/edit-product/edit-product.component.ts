@@ -89,18 +89,18 @@ export class EditProductComponent implements OnInit {
         this.itemData.stockAmount || 0,
         [Validators.required, Validators.min(0), Validators.pattern(/^\d+$/)],
       ],
-      shortDescription: [
-        this.itemData.shortDescription || '',
-        [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(100),
-        ],
-      ],
-      longDescription: [
-        this.itemData.longDescription || '',
-        [Validators.maxLength(500)],
-      ],
+      // shortDescription: [
+      //   this.itemData.shortDescription || '',
+      //   [
+      //     Validators.required,
+      //     Validators.minLength(10),
+      //     Validators.maxLength(100),
+      //   ],
+      // ],
+      // longDescription: [
+      //   this.itemData.longDescription || '',
+      //   [Validators.maxLength(500)],
+      // ],
       image: [this.itemData.image1 || '', ''],
     });
   }

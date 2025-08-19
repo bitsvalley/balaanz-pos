@@ -51,32 +51,43 @@ export class AddNewProductComponent {
           Validators.maxLength(100),
         ],
       ],
-      unitPrice: [
-        0,
-        [
-          Validators.required,
-          Validators.min(0),
-          Validators.pattern(/^\d+(\.\d{1,2})?$/),
-        ],
-      ],
+      // unitPrice: [
+      //   0,
+      //   [
+      //     Validators.required,
+      //     Validators.min(0),
+      //     Validators.pattern(/^\d+(\.\d{1,2})?$/),
+      //   ],
+      // ],
       barcode: ['', [Validators.maxLength(50)]],
       categoryId: ['', [Validators.required]],
       image: [''],
       stockAmount: [
         0,
-        [Validators.required, Validators.min(0), Validators.pattern(/^\d+$/)],
-      ],
-      shortDescription: [
-        '',
         [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(100),
-        ],
+          // Validators.required,
+          //  Validators.min(0), Validators.pattern(/^\d+$/)
+          ],
       ],
-      longDescription: ['', [Validators.maxLength(500)]],
+      // shortDescription: [
+      //   '',
+      //   [
+      //     Validators.required,
+      //     Validators.minLength(10),
+      //     Validators.maxLength(100),
+      //   ],
+      // ],
+      // longDescription: ['', [Validators.maxLength(500)]],
     });
   }
+
+
+  // Removed duplicate import and constructor for NavController
+
+  goBack() {
+    this.navCtrl.back();
+  }
+
 
   async presentImageSourceActionSheet() {
     const actionSheet = await this.actionSheetController.create({

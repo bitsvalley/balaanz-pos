@@ -179,14 +179,14 @@ ion-note {
 }
 
 // Required field indicators for specific fields
-ion-item:nth-child(2) ion-label::after,  // Product Name
-ion-item:nth-child(3) ion-label::after,  // Unit Price
-ion-item:nth-child(4) ion-label::after,  // Purchase Price
-ion-item:nth-child(6) ion-label::after,  // Barcode
-ion-item:nth-child(7) ion-label::after,  // Category
-ion-item:nth-child(8) ion-label::after,  // Stock Amount
-ion-item:nth-child(9) ion-label::after {
-  // Short Description
+ion-item:nth-child(1) ion-label::after,  // Product Name
+// ion-item:nth-child(3) ion-label::after,  // Unit Price
+// ion-item:nth-child(4) ion-label::after,  // Purchase Price
+// ion-item:nth-child(6) ion-label::after,  // Barcode
+ion-item:nth-child(6) ion-label::after   // Category
+// ion-item:nth-child(8) ion-label::after,  // Stock Amount
+// ion-item:nth-child(9) ion-label::after // Short Description
+{
   content: " *";
   color: #eb445a;
   font-weight: bold;
