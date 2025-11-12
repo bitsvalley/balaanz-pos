@@ -70,6 +70,13 @@ export class AccountService implements OnDestroy {
     this._global.token = "";
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
+
+    localStorage.removeItem('tables');
+    localStorage.removeItem('selectedTable');
+    localStorage.removeItem('restauMode');
+    localStorage.removeItem('cart');
+    localStorage.removeItem('selectedChair');
+
     this._nav.navigateForward('home');
   }
 

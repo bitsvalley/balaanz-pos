@@ -32,6 +32,10 @@ export class GlobalService {
   public internetStatus: any = this._internetStatus.asObservable();
   cartUpdates: any;
 
+  public restauMode: number = environment.restauMode;
+  public selectedTable: any = {};
+  public selectedChair: any = {};
+
   constructor(private _user: UserService, private _toast: ToastrService) { }
 
   private cartList: any = [];
@@ -112,47 +116,90 @@ export class GlobalService {
   retriveCart(userId: any) {
     this.cartList = [];
     this.cartData = JSON.parse(localStorage.getItem('cart'));
-    if (this.cartData[userId]) {
-      Object.keys(this.cartData[userId]).forEach((key: any) => {
-        this.cartList.push(this.cartData[userId][key]);
-      });
+
+    if (this.restauMode === 1 && this.selectedTable.TableId) { 
+      if (this.cartData?.[userId]?.[this.selectedTable.TableId]) {
+        Object.keys(this.cartData[userId][this.selectedTable.TableId]).forEach((key: any) => {
+          this.cartList.push(this.cartData[userId][this.selectedTable.TableId][key]);
+        });
+      }
+    } else {
+      if (this.cartData[userId]) {
+        Object.keys(this.cartData[userId]).forEach((key: any) => {
+          this.cartList.push(this.cartData[userId][key]);
+        });
+      }
     }
+    
+    
     return {list: this.cartList, data: this.cartData};
   }
 
   emptyCart(userId) {
     this.cartData =  JSON.parse(localStorage.getItem('cart'));
-    if (this.cartData[userId]) {
-      this.cartData[userId] = {};
-      this.storeCart(userId);
+    if (this.selectedTable.TableId && this.restauMode === 1) {
+      if (this.cartData[userId][this.selectedTable.TableId]) {
+        this.cartData[userId][this.selectedTable.TableId] = {};
+        this.storeCart(userId);
+      }
+    } else {
+      if (this.cartData[userId]) {
+        this.cartData[userId] = {};
+        this.storeCart(userId);
+      }
     }
     return {list: this.cartList, data: this.cartData};
   }
 
   addToCart(product: any, userId: any) {
-    // console.log(product);
-    if (this.cartData[userId][product.id]) {
-      this.cartData[userId][product.id].quantity += 1;
+    if (this.selectedTable.TableId && this.restauMode === 1) {
+      if (this.cartData[userId][this.selectedTable.TableId][product.id]) {
+        this.cartData[userId][this.selectedTable.TableId][product.id].quantity += 1;
+      } else {
+        this.cartData[userId][this.selectedTable.TableId][product.id] = {...product, quantity: 1}
+      }
+      this.storeCart(userId);
     } else {
-      this.cartData[userId][product.id] = {...product, quantity: 1}
+      if (this.cartData[userId][product.id]) {
+        this.cartData[userId][product.id].quantity += 1;
+      } else {
+        this.cartData[userId][product.id] = {...product, quantity: 1}
+      }
+      this.storeCart(userId);
     }
-    this.storeCart(userId);
+    
     return {list: this.cartList, data: this.cartData};
   }
 
   addQuantity(product: any, userId: any) {
-    this.cartData[userId][product.id].quantity += 1;
-    this.storeCart(userId);
+    if (this.selectedTable.TableId && this.restauMode === 1) {
+      this.cartData[userId][this.selectedTable.TableId][product.id].quantity += 1;
+      this.storeCart(userId);
+    } else {
+      this.cartData[userId][product.id].quantity += 1;
+      this.storeCart(userId);
+    }
     return {list: this.cartList, data: this.cartData};
   }
 
   removeQuantity(product: any, userId: any) {
-    if (this.cartData[userId][product.id].quantity > 1) {
-      this.cartData[userId][product.id].quantity -= 1;
+    if (this.selectedTable.TableId && this.restauMode === 1) {
+      if (this.cartData[userId][this.selectedTable.TableId][product.id].quantity > 1) {
+        this.cartData[userId][this.selectedTable.TableId][product.id].quantity -= 1;
+      } else {
+        delete this.cartData[userId][this.selectedTable.TableId][product.id];
+      }
+      this.storeCart(userId);
     } else {
-      delete this.cartData[userId][product.id];
+      if (this.cartData[userId][product.id].quantity > 1) {
+        this.cartData[userId][product.id].quantity -= 1;
+      } else {
+        delete this.cartData[userId][product.id];
+      }
+      this.storeCart(userId);
     }
-    this.storeCart(userId);
+
+    
     return {list: this.cartList, data: this.cartData};
   }
 
@@ -172,11 +219,34 @@ export class GlobalService {
   }
 
   initCart(userId: any) {
-    this.retriveCart(userId);
-    if (!this.cartData[userId]) {
-      this.cartData[userId] = {};
-      this.storeCart(userId);
+    this.restauMode = JSON.parse(localStorage.getItem('restauMoode')) || environment.restauMode;
+    this.selectedTable = JSON.parse(localStorage.getItem('selectedTable'));
+    this.selectedChair = JSON.parse(localStorage.getItem('selectedChair'));
+
+    if (this.restauMode === 1 && this.selectedTable.TableId) { 
+      this.retriveCart(userId);
+      if (this.cartData[userId] && !this.cartData[userId][this.selectedTable.TableId]) {
+        this.cartData[userId][this.selectedTable.TableId]  = {};
+        this.storeCart(userId);
+      } else if (!this.cartData[userId]) {
+        this.cartData[userId] = {};
+        if (!this.cartData[userId][this.selectedTable.TableId]) {
+          this.cartData[userId][this.selectedTable.TableId]  = {};
+        }
+        this.storeCart(userId);
+      }
+    } else {
+      this.retriveCart(userId);
+      if (!this.cartData[userId]) {
+        this.cartData[userId] = {};
+        this.storeCart(userId);
+      }
     }
+    
+  }
+
+  switchCart() {
+    this.cartList = [];
   }
 
   setPaymentData(data:  any) {

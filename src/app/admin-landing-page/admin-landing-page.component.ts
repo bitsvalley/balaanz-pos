@@ -42,6 +42,12 @@ export class AdminLandingPageComponent  implements OnInit {
     Logout() {
       console.log("User logged out!");
       localStorage.removeItem('userName');
+      localStorage.removeItem('restauMode');
+
+      // Clear Cart, Table and Chair on Logout
+      localStorage.removeItem('cart');
+      localStorage.removeItem('selectedTable');
+      localStorage.removeItem('selectedChair');
       this.router.navigate(['/admin-login']); 
     }
   }

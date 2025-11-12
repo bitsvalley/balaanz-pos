@@ -148,6 +148,7 @@ export class TableComponent implements OnInit {
     this.saveTableDataToLocalStorage();
 
     localStorage.setItem('selectedTable', JSON.stringify(table));
+    localStorage.setItem('selectedChair', JSON.stringify(chair));
     this.router.navigateByUrl('/dashboard').then(() => {
       window.location.reload();
     });

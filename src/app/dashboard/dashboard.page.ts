@@ -98,6 +98,9 @@ export class DashboardPage implements OnDestroy {
     
       localStorage.removeItem('tables');
       localStorage.removeItem('selectedTable');
+      localStorage.removeItem('restauMode');
+      localStorage.removeItem('cart');
+      localStorage.removeItem('selectedChair');
     
     this._global.setLoader(true);
     const logoutApi = this._user.logout(this.userDetails.id).subscribe((response: any) => {
@@ -294,6 +297,11 @@ export class DashboardPage implements OnDestroy {
 
   ngOnDestroy(): void {
     this.apiSubscription.unsubscribe();    
+  }
+
+  showAllTable() {
+    this._global.switchCart();
+    this._nav.navigateForward('tablemodule');
   }
 
 }

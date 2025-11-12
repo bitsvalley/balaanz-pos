@@ -10,6 +10,7 @@ import { IonRouterOutlet, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { IonContent } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -44,7 +45,16 @@ export class HomePage implements OnDestroy {
   }
 
   goToDashboard() {
-    this._nav.navigateForward('dashboard');
+    this._account.runTimePropObservable.subscribe((response: any) => {
+      // localStorage.setItem('restauMode', JSON.stringify(response.restauMode));
+      localStorage.setItem('restauMode', JSON.stringify(environment.restauMode));
+      if (response.restauMode === 1 || environment.restauMode === 1) {
+        this._nav.navigateForward('tablemodule');
+      } else {
+        this._nav.navigateForward('dashboard');
+      }
+    });
+    
   }
 
   ionViewWillEnter() {
