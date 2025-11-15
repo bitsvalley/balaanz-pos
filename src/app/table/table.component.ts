@@ -143,7 +143,7 @@ export class TableComponent implements OnInit {
       return;
     }
 
-    chair.status = 'reserved';
+    // chair.status = 'reserved';
 
     this.saveTableDataToLocalStorage();
 
@@ -155,6 +155,7 @@ export class TableComponent implements OnInit {
   }
 
   checkIfAnyChairSelected(table: Table): boolean {
-    return table.chairs.some((chair) => chair.status === 'reserved');
+    // return table.chairs.some((chair) => chair.status === 'reserved');
+    return false
   }
 }

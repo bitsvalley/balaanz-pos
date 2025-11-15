@@ -250,10 +250,16 @@
         background: rgba($color-primary, 0.1);
         border-radius: 8px;
         gap: 5px;
+        cursor: pointer;
 
         &.reserved {
           background: rgba(red, 0.1);
           color: red;
+        }
+
+        &.active {
+          background: rgba($color-primary, 0.2);
+          border: 2px solid $color-primary;
         }
 
         .material-symbols-outlined {
