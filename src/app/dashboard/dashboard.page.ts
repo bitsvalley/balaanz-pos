@@ -100,6 +100,7 @@ export class DashboardPage implements OnDestroy {
       localStorage.removeItem('selectedTable');
       localStorage.removeItem('restauMode');
       localStorage.removeItem('cart');
+      localStorage.removeItem('billChair');
       localStorage.removeItem('selectedChair');
     
     this._global.setLoader(true);

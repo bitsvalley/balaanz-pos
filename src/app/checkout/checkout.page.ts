@@ -31,6 +31,7 @@ export class CheckoutPage implements OnInit {
   public statusCycle: any = 0;
   public isPaymentTimeout: boolean =  false;
   public paymentRequest: any = null;
+  public restauMode: number = environment.restauMode;
 
   public paymentMethods: any = [
     {
@@ -83,8 +84,15 @@ export class CheckoutPage implements OnInit {
       this.userDetails = response;
       console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      this.cartSummary =  this._global.getCartSummary();
+      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+      if (billChair.length > 1 && this.restauMode === 1) {
+        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
+        this.cartSummary =  this._global.getCartSummary(this.cartList);
+      } else {
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
+        this.cartSummary =  this._global.getCartSummary();
+      }
       this.checkCart();
     });
 
@@ -103,7 +111,6 @@ export class CheckoutPage implements OnInit {
         this._nav.navigateBack('dashboard');
       }
     }, 1000);
-    
   }
 
   // updateDiscount() {
@@ -143,8 +150,15 @@ export class CheckoutPage implements OnInit {
     this.apiSubscription = new Subscription();
     this.generateForm();
     if (this.userDetails.id) {
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      this.cartSummary =  this._global.getCartSummary();
+      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+      if (billChair.length > 1 && this.restauMode === 1) {
+        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
+        this.cartSummary =  this._global.getCartSummary(this.cartList);
+      } else {
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
+        this.cartSummary =  this._global.getCartSummary();
+      }
       this.checkCart();
     }
   }

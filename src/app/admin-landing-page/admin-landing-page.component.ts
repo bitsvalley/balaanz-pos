@@ -46,6 +46,7 @@ export class AdminLandingPageComponent  implements OnInit {
 
       // Clear Cart, Table and Chair on Logout
       localStorage.removeItem('cart');
+      localStorage.removeItem('billChair');
       localStorage.removeItem('selectedTable');
       localStorage.removeItem('selectedChair');
       this.router.navigate(['/admin-login']); 

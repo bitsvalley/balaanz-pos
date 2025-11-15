@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { UserService } from 'src/app/shared/services/user.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
-import { ToastrService } from 'ngx-toastr';
-import { IonRouterOutlet, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
 import { Router } from '@angular/router'; 
 import { App } from '@capacitor/app';
@@ -28,8 +26,6 @@ export class CartPage implements OnInit {
 
   constructor(
     private _nav: NavController,
-    private _user: UserService,
-    private _toastr: ToastrService,
     private _global: GlobalService,
     private _platform: Platform,
     private _route: Router,
@@ -46,9 +42,10 @@ export class CartPage implements OnInit {
       this.userDetails = response;
       // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
-      const billChair = JSON.parse(localStorage.getItem('billChair')) || 'null';
+      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
       if (billChair.length > 1 && this.restauMode === 1) {
-        this.cartList = this._global.mergeCart(billChair, this.userDetails.id);
+        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
         this.cartSummary =  this._global.getCartSummary(this.cartList);
       } else {
         this.cartList = this._global.retriveCart(this.userDetails.id).list;
@@ -106,9 +103,10 @@ export class CartPage implements OnInit {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
     if (this.userDetails.id) {
-      const billChair = JSON.parse(localStorage.getItem('billChair')) || 'null';
+      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
       if (billChair.length > 1) {
-        this.cartList = this._global.mergeCart(billChair, this.userDetails.id);
+        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
         this.cartSummary =  this._global.getCartSummary(this.cartList);
       } else {
         this.cartList = this._global.retriveCart(this.userDetails.id).list;
