@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chair, Table } from './table.model';
 import { ToastController } from '@ionic/angular';
+import { UserService } from '../shared/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnDestroy {
+  public apiSubscription: any = new Subscription();
   tables: Table[] = [
     {
       TableId: 'T001',
@@ -58,11 +61,24 @@ export class TableComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private _user: UserService
   ) {}
 
   ngOnInit() {
-    this.loadTableDataFromLocalStorage();
+    this.getTablesFromServer();
+  }
+
+  ionViewWillEnter() {
+    this.getTablesFromServer();
+  };
+
+  getTablesFromServer() {
+    const tablesApi = this._user.getTables().subscribe((response: any) => {
+      console.log('Tables from server:', response);
+      // Process and update this.tables as needed
+    });
+    this.apiSubscription.add(tablesApi);
   }
 
   loadTableDataFromLocalStorage() {
@@ -157,5 +173,13 @@ export class TableComponent implements OnInit {
   checkIfAnyChairSelected(table: Table): boolean {
     // return table.chairs.some((chair) => chair.status === 'reserved');
     return false
+  }
+
+  ngOnDestroy() {
+    this.apiSubscription.unsubscribe();
+  }
+
+  ionViewWillLeave() {
+    this.apiSubscription.unsubscribe();
   }
 }

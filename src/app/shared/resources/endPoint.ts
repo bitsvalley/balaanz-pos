@@ -32,5 +32,6 @@ export const endpoints = {
     userInfo: 'api/v1/user/',
     productList: 'api/v1/pos/products',
     payment: "api/v1/payment/pay",
-    paymentStatus: "api/v1/payment/status/"
+    paymentStatus: "api/v1/payment/status/",
+    getTables: "warmload/getTableSetup"
 }

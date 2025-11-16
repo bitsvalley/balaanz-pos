@@ -24,6 +24,8 @@ export class PurchasesDashboardComponent  implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   public isAllProducts: boolean = false;
+  public selectedTabel: any = JSON.parse(localStorage.getItem('selectedTable')) || null;
+  public selectedChair: any = JSON.parse(localStorage.getItem('selectedChair')) || null;
 
   trendingProducts: Product[] = [];
   loading: boolean = false;
@@ -163,6 +165,12 @@ export class PurchasesDashboardComponent  implements OnInit {
       product.barcode?.toLowerCase() === searchTerm ||
       product.code?.toLowerCase() === searchTerm
     );
+  }
+
+
+  showAllTable() {
+    this._global.switchCart();
+    this.navCtrl.navigateForward('tablemodule');
   }
 
 }

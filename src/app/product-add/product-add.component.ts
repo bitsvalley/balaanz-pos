@@ -25,6 +25,8 @@ export class ProductAddComponent implements OnInit, OnDestroy {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   public isAllProducts: boolean = false;
+  public selectedTabel: any = JSON.parse(localStorage.getItem('selectedTable')) || null;
+  public selectedChair: any = JSON.parse(localStorage.getItem('selectedChair')) || null;
 
   trendingProducts: Product[] = [];
   loading: boolean = false;
@@ -180,6 +182,11 @@ export class ProductAddComponent implements OnInit, OnDestroy {
       product.barcode?.toLowerCase() === searchTerm ||
       product.code?.toLowerCase() === searchTerm
     );
+  }
+
+  showAllTable() {
+    this._global.switchCart();
+    this.navCtrl.navigateForward('tablemodule');
   }
   
 }

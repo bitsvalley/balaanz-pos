@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-title>Table Reservation</ion-title>
+    <ion-title>Select table</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -22,7 +22,7 @@
           class="table-image"
         />
         <div class="table-info">
-          <h3>{{ table.TableId }} - {{ table.level }}</h3>
+          <h3>{{ table.TableId }}</h3>
           <div
             class="status-badge"
             [ngClass]="{
@@ -49,7 +49,7 @@
               <ion-icon name="close-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title>{{ selectedTable?.TableId }} Details</ion-title>
+          <ion-title>Select chair</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content *ngIf="selectedTable">
@@ -60,7 +60,7 @@
             class="detail-image"
           />
           <div class="table-details-content">
-            <h2>{{ selectedTable.level }} Table</h2>
+            <h2>Table: {{ selectedTable?.TableId }}</h2>
             <p>Assigned Waiter: {{ selectedTable.AssignedWaiterName }}</p>
             <div class="chairs-section">
               <h3>Chairs</h3>

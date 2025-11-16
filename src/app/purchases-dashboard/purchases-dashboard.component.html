@@ -133,6 +133,9 @@
           </span>
         </li>
       </ul>
+      <div class="nav-title">
+        Table/Chair: {{selectedTabel.TableId}}/{{selectedChair.ChairId}} <button class="btn btn-small btn-primary" (click)="showAllTable()">Change</button>
+      </div>
     </div>
     <div class="nav-bottom">
       <button class="btn btn-primary btn-full" (click)="closeNav()">CLOSE</button>

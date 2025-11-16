@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PurchasesDashboardComponent } from './purchases-dashboard.component';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PurchasesDashboardRoutingModule } from './purchases-dashboard-routing.module';
+import { GlobalService } from '../shared/services/global.service';
 
 
 
@@ -17,4 +18,7 @@ import { PurchasesDashboardRoutingModule } from './purchases-dashboard-routing.m
     PurchasesDashboardRoutingModule
   ]
 })
-export class PurchasesDashboardModule { }
+export class PurchasesDashboardModule { 
+
+  
+}

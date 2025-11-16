@@ -33,6 +33,8 @@ export class DashboardPage implements OnDestroy {
   public cartList: any = [];
   public isAllProducts: boolean = false;
   public selelctedCategory: any = null;
+  public selectedTabel: any = JSON.parse(localStorage.getItem('selectedTable')) || null;
+  public selectedChair: any = JSON.parse(localStorage.getItem('selectedChair')) || null;
   public searchProductField: any = "";
   public cartAnimation: boolean = false;
   selectedProductIds: any[] = [];

@@ -234,4 +234,9 @@ export class UserService {
     const url = `${environment.restApiHost}${endpoints.paymentStatus}${resId}`;
     return this._http.get(url);
   }
+
+  getTables() {
+    const url = `${environment.restApiHost}${endpoints.getTables}`;
+    return this._http.get(url);
+  }
 }
