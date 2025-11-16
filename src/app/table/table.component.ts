@@ -66,11 +66,13 @@ export class TableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.getTablesFromServer();
+    this.loadTableDataFromLocalStorage();
+    // this.getTablesFromServer();
   }
 
   ionViewWillEnter() {
-    this.getTablesFromServer();
+    this.loadTableDataFromLocalStorage();
+    // this.getTablesFromServer();
   };
 
   getTablesFromServer() {
