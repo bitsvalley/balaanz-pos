@@ -65,8 +65,6 @@ export class CartPage implements OnInit {
     const storedTable = localStorage.getItem('selectedTable');
     if (storedTable) {
       const table = JSON.parse(storedTable);
-      console.log('Selected Table:', table); 
-      console.log(table);
       this.tables = [table];
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       this.tables[0].chairs.forEach((item: any) => {
