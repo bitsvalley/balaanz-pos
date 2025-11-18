@@ -9,24 +9,24 @@
       </div>
       <div class="cart-body">
         <div class="table-section" *ngIf="tables.length > 0 && restauMode === 1">
-          <div class="section-title">Selected Table</div>
+          <!-- <div class="section-title">Selected Table</div> -->
           <div class="table-info-card" *ngFor="let table of tables">
             <div class="table-header">
               <div class="table-id">Table {{table.TableId}}</div>
-              <div class="table-level">{{table.level}}</div>
+              <!-- <div class="table-level">{{table.level}}</div> -->
             </div>
             <div class="table-details">
-              <div class="table-image">
+              <!-- <div class="table-image">
                 <img
                   [src]="table.image || 'assets/images/default-table.png'"
                   [alt]="'Table ' + table.TableId"
                 />
-              </div>
+              </div> -->
               <div class="table-content">
-                <div class="waiter-info">
+                <!-- <div class="waiter-info">
                   <span class="material-symbols-outlined">person</span>
                   <span>{{table.AssignedWaiterName}}</span>
-                </div>
+                </div> -->
                 <div class="chair-grid">
                   <div class="chair-item" *ngFor="let chair of table.chairs" (click)="mergeCart(chair)">
                     <div

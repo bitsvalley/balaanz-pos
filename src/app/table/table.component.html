@@ -16,14 +16,14 @@
         [ngClass]="table.level.toLowerCase()"
         (click)="selectTable(table)"
       >
-        <img
+        <!-- <img
           [src]="table.image"
           [alt]="table.level + ' Table'"
           class="table-image"
-        />
+        /> -->
         <div class="table-info">
           <h3>{{ table.TableId }}</h3>
-          <div
+          <!-- <div
             class="status-badge"
             [ngClass]="{
               'badge-open': table.status === 'open',
@@ -31,7 +31,7 @@
             }"
           >
             {{ table.status | uppercase }}
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -49,29 +49,26 @@
               <ion-icon name="close-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title>Select chair</ion-title>
+          <ion-title>Table: {{ selectedTable?.TableId }}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content *ngIf="selectedTable">
         <div class="table-details">
-          <img
+          <!-- <img
             [src]="selectedTable.image"
             [alt]="selectedTable.level + ' Table'"
             class="detail-image"
-          />
+          /> -->
           <div class="table-details-content">
-            <h2>Table: {{ selectedTable?.TableId }}</h2>
-            <p>Assigned Waiter: {{ selectedTable.AssignedWaiterName }}</p>
+            <!-- <p>Assigned Waiter: {{ selectedTable.AssignedWaiterName }}</p> -->
             <div class="chairs-section">
               <h3>Chairs</h3>
               <div class="chair-grid">
-                <ion-button
-                  *ngFor="let chair of selectedTable.chairs"
-                  [color]="getChairColor(chair.status)"
-                  (click)="selectChairAndNavigate(chair, selectedTable)"
-                >
-                  {{ chair.ChairId }} - {{ chair.status | uppercase }}
-                </ion-button>
+                <div class="chair-block" *ngFor="let chair of selectedTable.chairs"
+                  (click)="selectChairAndNavigate(chair, selectedTable)">
+                  <h4>{{ chair.ChairId }}</h4>
+                  <h2>12,000 frs</h2>
+                </div>
               </div>
             </div>
 

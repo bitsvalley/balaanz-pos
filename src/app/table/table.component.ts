@@ -141,13 +141,8 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   selectTable(table: Table) {
-    if (this.checkIfAllChairsReserved(table)) {
-      this.selectedTable = null;
-      alert('This table is fully reserved and cannot be opened.');
-    } else {
-      this.selectedTable = table;
-      localStorage.setItem('selectedTable', JSON.stringify(table));
-    }
+    this.selectedTable = table;
+    localStorage.setItem('selectedTable', JSON.stringify(table));
   }
 
   closeTableDetails() {
@@ -156,13 +151,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   selectChairAndNavigate(chair: Chair, table: Table) {
-    if (chair.status === 'reserved') {
-      this.presentToast(`Chair ${chair.ChairId} is already reserved.`);
-      return;
-    }
-
-    // chair.status = 'reserved';
-
+    chair.status = 'reserved';
     this.saveTableDataToLocalStorage();
 
     localStorage.setItem('selectedTable', JSON.stringify(table));

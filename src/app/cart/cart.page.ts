@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, ToastController } from '@ionic/angular';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { Platform } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
@@ -29,7 +29,8 @@ export class CartPage implements OnInit {
     private _global: GlobalService,
     private _platform: Platform,
     private _route: Router,
-    private _account: AccountService
+    private _account: AccountService,
+    private toastController: ToastController,
     
   ) { 
     this._platform.backButton.subscribeWithPriority(-1, () => {
@@ -86,12 +87,27 @@ export class CartPage implements OnInit {
     if (selectedChair.ChairId === this.selectedChair?.ChairId) {
       return;
     } else {
+      const cart = JSON.parse(localStorage.getItem('cart')) || null;
+      const selectedTable = JSON.parse(localStorage.getItem('selectedTable')) || null;
+      if (!cart[this.userDetails.id]?.[selectedTable.TableId]?.[selectedChair.ChairId] || Object.keys(cart[this.userDetails.id]?.[selectedTable.TableId]?.[selectedChair.ChairId]).length === 0) { 
+        this.presentToast(`No Cart Item added to Chair ${selectedChair.ChairId}.`);
+        return;
+      }
       selectedChair.isSelected = !selectedChair.isSelected;
       const allChair = this.tables[0].chairs.filter((item: any) => item.isSelected);
       this.cartList = this._global.mergeCart(allChair, this.userDetails.id);
       localStorage.setItem('billChair', JSON.stringify(allChair));
       this.cartSummary =  this._global.getCartSummary(this.cartList);
     }
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: 'danger',
+    });
+    toast.present();
   }
   
 
