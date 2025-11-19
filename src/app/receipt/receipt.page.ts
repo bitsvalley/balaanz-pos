@@ -10,6 +10,7 @@ import { App } from '@capacitor/app';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { SunmiPrinterService } from 'src/app/shared/services/sunmi.printer';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-receipt',
@@ -19,6 +20,7 @@ import { SunmiPrinterService } from 'src/app/shared/services/sunmi.printer';
 export class ReceiptPage implements OnInit {
 
   public userDetails: any = null;
+  public restauMode: number = environment.restauMode;
   public cartList: any = [];
   public runTimeProps: any = null;
   public cartSummary: any =  {};
@@ -53,8 +55,15 @@ export class ReceiptPage implements OnInit {
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
       this._global.initCart(this.userDetails.id);
-      this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      this.cartSummary =  this._global.getCartSummary();
+      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+      if (billChair.length > 1 && this.restauMode === 1) {
+        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
+        this.cartSummary =  this._global.getCartSummary(this.cartList);
+      } else {
+        this.cartList = this._global.retriveCart(this.userDetails.id).list;
+        this.cartSummary =  this._global.getCartSummary();
+      }
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -84,9 +93,18 @@ export class ReceiptPage implements OnInit {
       this._toastr.success("Payment has been successfully done.", "Payment Successful");
       this.receiptCartList = [...this.cartList];
       this.receiptCartSummary = {...this.cartSummary};
-      this._global.emptyCart(this.userDetails.id);
+      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+      if (billChair.length > 1 && this.restauMode === 1) {
+        this._global.emptyCart(this.userDetails.id, billChair);
+      } else {
+        this._global.emptyCart(this.userDetails.id);
+      }
     } else {
-      this._nav.navigateBack('dashboard');
+      if (this.restauMode === 1) {
+        this._nav.navigateBack('tablemodule');
+      } else {
+        this._nav.navigateBack('dashboard');
+      }
     }
   }
 
@@ -110,7 +128,11 @@ export class ReceiptPage implements OnInit {
 
   back() {
     this._global.setServerErr(false);
-    this._nav.navigateBack('dashboard');
+    if (this.restauMode === 1) {
+      this._nav.navigateBack('tablemodule');
+    } else {
+      this._nav.navigateBack('dashboard');
+    }
   }
 
   printReceipt() {
@@ -122,7 +144,11 @@ export class ReceiptPage implements OnInit {
 
     }
     this._sunmi.print({ownerInfo:ownerInfo,cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
-    this._nav.navigateBack('dashboard');
+    if (this.restauMode === 1) {
+      this._nav.navigateBack('tablemodule');
+    } else {
+      this._nav.navigateBack('dashboard');
+    }
   }
   
 

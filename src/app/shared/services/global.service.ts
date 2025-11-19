@@ -147,11 +147,24 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
-  emptyCart(userId) {
+  emptyCart(userId, billChair?: Array<any>) {
     this.cartData =  JSON.parse(localStorage.getItem('cart'));
     if (this.selectedTable.TableId && this.restauMode === 1) {
       if (this.cartData[userId][this.selectedTable.TableId]) {
-        this.cartData[userId][this.selectedTable.TableId][this.selectedChair.ChairId] = {};
+        if (billChair?.length > 1) { 
+          billChair.forEach((chair: any) => {
+            this.cartData[userId][this.selectedTable.TableId][chair.ChairId] = {};  
+          });
+          localStorage.removeItem('billChair');
+          localStorage.removeItem('tables');
+          localStorage.removeItem('selectedTable');
+          localStorage.removeItem('selectedChair');
+        } else {
+          this.cartData[userId][this.selectedTable.TableId][this.selectedChair.ChairId] = {};
+          localStorage.removeItem('tables');
+          localStorage.removeItem('selectedTable');
+          localStorage.removeItem('selectedChair');
+        }
         this.storeCart(userId);
       }
     } else {

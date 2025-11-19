@@ -241,29 +241,14 @@ export class CheckoutPage implements OnInit {
       } else {
         this._global.setLoader(false);
         this._global.setPaymentData(this.paymentForm.value);
-        // this.clearCart();
         this._nav.navigateForward('receipt/0');
       }
     }, (error: any) => {
       this._global.setLoader(false);
       this._toastr.error("Invalid Session", "Authorization!");
       this._account.logout();
-    })
-    
-    
+    }) 
   }
-
-  // clearCart() {
-  //   const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
-  //   const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
-  //   if (this.restauMode === 1 && billChair.length > 1) {
-  //     const updatedBillChair = billChair.filter((itm) => itm.ChairId !== selectedChair.ChairId);
-  //     localStorage.setItem('billChair', JSON.stringify(updatedBillChair));
-  //   } else {
-  //     localStorage.removeItem('billChair');
-  //   }
-  //   this._global.clearCart(this.userDetails.id);
-  // }
 
   // retryPayment() {
   //   this.isPaymentTimeout = false;

@@ -154,7 +154,6 @@ export class DashboardPage implements OnDestroy {
     if (this.userDetails.id) {
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      
     }
 
     this.selectedProductIds =[];
@@ -280,6 +279,13 @@ export class DashboardPage implements OnDestroy {
   }
 
   addToCart(product) {
+
+    if (!this.selectedTabel?.TableId || !this.selectedChair?.ChairId) {
+      this.toaster.error('Please select a table and chair before adding products to the cart.', 'Table/Chair Not Selected', {
+        timeOut: 3000,
+      });
+      return;
+    }
     
       this.selectedProductIds.push(product.id);
     

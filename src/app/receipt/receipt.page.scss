@@ -4,6 +4,7 @@
 .receipt-screen {
     background-color: $color-bg-light-gray;
     min-height: 100%;
+    overflow: auto;
 }
 
 .receipt-body {
