@@ -15,52 +15,54 @@ export class TableComponent implements OnInit, OnDestroy {
   public apiSubscription: any = new Subscription();
   public runTimeProps: any = null;
   public tableData: any = null;
-  tables: Table[] = [
-    {
-      TableId: 'T001',
-      AssignedWaiterName: 'John Doe',
-      status: 'open',
-      level: 'VIP',
-      chairs: [
-        { ChairId: 'C001', status: 'open' },
-        { ChairId: 'C002', status: 'open' },
-        { ChairId: 'C003', status: 'open' },
-        { ChairId: 'C004', status: 'open' },
-      ],
-      image:
-        'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
-    },
-    {
-      TableId: 'T002',
-      AssignedWaiterName: 'Jane Smith',
-      status: 'open',
-      level: 'Classic',
-      chairs: [
-        { ChairId: 'C001', status: 'open' },
-        { ChairId: 'C002', status: 'open' },
-        { ChairId: 'C003', status: 'open' },
-        { ChairId: 'C004', status: 'open' },
-      ],
-      image:
-        'https://img.freepik.com/free-psd/kitchen-table-isolated-transparent-background_191095-13975.jpg',
-    },
-    {
-      TableId: 'T003',
-      AssignedWaiterName: 'Alice Cooper',
-      status: 'open',
-      level: 'Premium',
-      chairs: [
-        { ChairId: 'C001', status: 'open' },
-        { ChairId: 'C002', status: 'open' },
-        { ChairId: 'C003', status: 'open' },
-        { ChairId: 'C004', status: 'open' },
-      ],
-      image:
-        'https://png.pngtree.com/element_our/20190528/ourmid/pngtree-modern-solid-wood-dining-table-chair-image_1161648.jpg',
-    },
-  ];
+  // tables: Table[] = [
+  //   {
+  //     TableId: 'T001',
+  //     AssignedWaiterName: 'John Doe',
+  //     status: 'open',
+  //     level: 'VIP',
+  //     chairs: [
+  //       { ChairId: 'C001', status: 'open' },
+  //       { ChairId: 'C002', status: 'open' },
+  //       { ChairId: 'C003', status: 'open' },
+  //       { ChairId: 'C004', status: 'open' },
+  //     ],
+  //     image:
+  //       'https://png.pngtree.com/element_our/20200609/ourmid/pngtree-simulation-restaurant-table-image_2233375.jpg',
+  //   },
+  //   {
+  //     TableId: 'T002',
+  //     AssignedWaiterName: 'Jane Smith',
+  //     status: 'open',
+  //     level: 'Classic',
+  //     chairs: [
+  //       { ChairId: 'C001', status: 'open' },
+  //       { ChairId: 'C002', status: 'open' },
+  //       { ChairId: 'C003', status: 'open' },
+  //       { ChairId: 'C004', status: 'open' },
+  //     ],
+  //     image:
+  //       'https://img.freepik.com/free-psd/kitchen-table-isolated-transparent-background_191095-13975.jpg',
+  //   },
+  //   {
+  //     TableId: 'T003',
+  //     AssignedWaiterName: 'Alice Cooper',
+  //     status: 'open',
+  //     level: 'Premium',
+  //     chairs: [
+  //       { ChairId: 'C001', status: 'open' },
+  //       { ChairId: 'C002', status: 'open' },
+  //       { ChairId: 'C003', status: 'open' },
+  //       { ChairId: 'C004', status: 'open' },
+  //     ],
+  //     image:
+  //       'https://png.pngtree.com/element_our/20190528/ourmid/pngtree-modern-solid-wood-dining-table-chair-image_1161648.jpg',
+  //   },
+  // ];
 
-  selectedTable: Table | null = null;
+  selectedTable: any = null;
+  public userDetails: any = null;
+  public loadTable: boolean = false;
 
   constructor(
     private router: Router,
@@ -69,14 +71,26 @@ export class TableComponent implements OnInit, OnDestroy {
     private _account: AccountService, 
   ) {
 
-    this._account.runTimePropObservable.subscribe((response: any) => {
+    const userSub = this._account.userDetailsObservable.subscribe((response: any) => {
+      this.userDetails = response;
+    });
+
+    this.apiSubscription.add(userSub);
+    
+    const runtimeSub = this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
-      console.log(response);
       const bid: any = this.runTimeProps.find(item => item.property_name === 'bid');
-      if (bid && !this.tableData) {
+      const tableD = JSON.parse(localStorage.getItem('tables') || 'null');
+      if (bid && !tableD) {
         this.getTablesFromServer(bid.property_value);
+      } else {
+        this.tableData = tableD;
+        if (!this.loadTable) {
+          //this.calculateChairTableTotal();
+        }
       }
     });
+    this.apiSubscription.add(runtimeSub);
   }
 
   ngOnInit() {
@@ -89,30 +103,66 @@ export class TableComponent implements OnInit, OnDestroy {
   ionViewWillEnter() {
     // this.loadTableDataFromLocalStorage();
     // if (this.runTimeProps) {
-    //   this.getTablesFromServer();
+    //   const bid: any = this.runTimeProps.find(item => item.property_name === 'bid');
+    //   const tableD = JSON.parse(localStorage.getItem('tables') || 'null');
+    //   if (bid && !tableD) {
+    //     this.getTablesFromServer(bid.property_value);
+    //   } else {
+    //     this.tableData = tableD;
+    //     if (!this.loadTable) {
+    //       //this.calculateChairTableTotal();
+    //     }
+    //   }
     // }
   };
 
   getTablesFromServer(bid: any) {
+    this.loadTable = true;
     const tablesApi = this._user.getTables(bid).subscribe((response: any) => {
-      console.log('Tables from server:', response);
+      response.forEach((table: any) => {
+        table.status = 'open';
+        table.total = 0;
+        table.chairs.forEach((chair: any) => (chair.status = 'open', chair.total = 0));
+      });
       this.tableData = response;
+      localStorage.setItem('tables', JSON.stringify(this.tableData));
+      //this.calculateChairTableTotal();
+      setTimeout(() => {
+        this.loadTable = false;
+      }, 1000);
       // Process and update this.tables as needed
     });
     this.apiSubscription.add(tablesApi);
   }
 
-  loadTableDataFromLocalStorage() {
-    const storedTables = localStorage.getItem('tables');
-    if (storedTables) {
-      this.tables = JSON.parse(storedTables);
-    } else {
-      this.resetToOpenStatus();
-    }
+  calculateChairTableTotal() {
+    console.log(this.userDetails);
+    const cart = JSON.parse(localStorage.getItem('cart') || 'null');
+    
+    this.tableData.forEach((tbl: any) => {
+      tbl.chairs.forEach((chair: any) => {
+        if (cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid] && Object.keys(cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid]).length > 0) {
+          Object.keys(cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid]).forEach((key: any) => {
+            const cartItem = cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid][key];
+            chair.total += cartItem.quantity * cartItem.unitPrice;
+          });
+        }
+      });
+    });
+    
+    console.log(this.tableData);
   }
+  // loadTableDataFromLocalStorage() {
+  //   const storedTables = localStorage.getItem('tables');
+  //   if (storedTables) {
+  //     this.tables = JSON.parse(storedTables);
+  //   } else {
+  //     this.resetToOpenStatus();
+  //   }
+  // }
 
   resetToOpenStatus() {
-    this.tables.forEach((table) => {
+    this.tableData.forEach((table) => {
       table.status = 'open';
       table.chairs.forEach((chair) => (chair.status = 'open'));
     });
@@ -120,7 +170,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   saveTableDataToLocalStorage() {
-    localStorage.setItem('tables', JSON.stringify(this.tables));
+    localStorage.setItem('tables', JSON.stringify(this.tableData));
   }
 
   async presentToast(message: string) {
@@ -172,7 +222,6 @@ export class TableComponent implements OnInit, OnDestroy {
   selectChairAndNavigate(chair: Chair, table: Table) {
     chair.status = 'reserved';
     this.saveTableDataToLocalStorage();
-
     localStorage.setItem('selectedTable', JSON.stringify(table));
     localStorage.setItem('selectedChair', JSON.stringify(chair));
     this.router.navigateByUrl('/dashboard').then(() => {

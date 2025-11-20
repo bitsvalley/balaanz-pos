@@ -11,27 +11,12 @@
   <div class="tables-container">
     <div class="table-grid">
       <div
-        *ngFor="let table of tables"
+        *ngFor="let table of tableData"
         class="table-card"
-        [ngClass]="table.level.toLowerCase()"
         (click)="selectTable(table)"
       >
-        <!-- <img
-          [src]="table.image"
-          [alt]="table.level + ' Table'"
-          class="table-image"
-        /> -->
         <div class="table-info">
-          <h3>{{ table.TableId }}</h3>
-          <!-- <div
-            class="status-badge"
-            [ngClass]="{
-              'badge-open': table.status === 'open',
-              'badge-reserved': table.status === 'reserve'
-            }"
-          >
-            {{ table.status | uppercase }}
-          </div> -->
+          <h3>{{ table.name }}</h3>
         </div>
       </div>
     </div>
@@ -49,25 +34,19 @@
               <ion-icon name="close-outline"></ion-icon>
             </ion-button>
           </ion-buttons>
-          <ion-title>Table: {{ selectedTable?.TableId }}</ion-title>
+          <ion-title>Table: {{ selectedTable?.name }}</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content *ngIf="selectedTable">
         <div class="table-details">
-          <!-- <img
-            [src]="selectedTable.image"
-            [alt]="selectedTable.level + ' Table'"
-            class="detail-image"
-          /> -->
           <div class="table-details-content">
-            <!-- <p>Assigned Waiter: {{ selectedTable.AssignedWaiterName }}</p> -->
             <div class="chairs-section">
               <h3>Chairs</h3>
               <div class="chair-grid">
                 <div class="chair-block" *ngFor="let chair of selectedTable.chairs"
                   (click)="selectChairAndNavigate(chair, selectedTable)">
-                  <h4>{{ chair.ChairId }}</h4>
-                  <h2>12,000 frs</h2>
+                  <h4>{{ chair?.name }}</h4>
+                  <h2>{{chair.total}} frs</h2>
                 </div>
               </div>
             </div>

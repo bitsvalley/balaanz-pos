@@ -61,7 +61,6 @@ export class DashboardPage implements OnDestroy {
       console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
-      
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -280,7 +279,7 @@ export class DashboardPage implements OnDestroy {
 
   addToCart(product) {
 
-    if (!this.selectedTabel?.TableId || !this.selectedChair?.ChairId) {
+    if (!this.selectedTabel?.uuid || !this.selectedChair?.uuid) {
       this.toaster.error('Please select a table and chair before adding products to the cart.', 'Table/Chair Not Selected', {
         timeOut: 3000,
       });

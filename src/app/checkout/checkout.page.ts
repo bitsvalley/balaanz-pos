@@ -198,7 +198,7 @@ export class CheckoutPage implements OnInit {
       this.paymentForm.get('value').setValue("");
     }
     if (this.paymentForm.get('method').value === 'MOMO' || this.paymentForm.get('method').value === 'ACCOUNT') {
-      this.paymentForm.get('value').setValidators([Validators.required, Validators.pattern(/^\d{9}$/)]);
+      this.paymentForm.get('value').setValidators([Validators.required, Validators.pattern(/^\d{3,22}$/)]);
       this.paymentForm.get('value').updateValueAndValidity();
     } else if (this.paymentForm.get('method').value === 'CASH') {
       this.paymentForm.get('value').setValidators(null);

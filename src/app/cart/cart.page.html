@@ -12,7 +12,7 @@
           <!-- <div class="section-title">Selected Table</div> -->
           <div class="table-info-card" *ngFor="let table of tables">
             <div class="table-header">
-              <div class="table-id">Table {{table.TableId}}</div>
+              <div class="table-id">Table {{table.name}}</div>
               <!-- <div class="table-level">{{table.level}}</div> -->
             </div>
             <div class="table-details">
@@ -34,7 +34,7 @@
                       [class.active]="chair.isSelected"
                     >
                       <span class="material-symbols-outlined">chair</span>
-                      <span class="chair-id">{{chair.ChairId}}</span>
+                      <span class="chair-id">{{chair.name}}</span>
                       <!-- <span class="status-text">{{chair.status}}</span> -->
                     </div>
                   </div>

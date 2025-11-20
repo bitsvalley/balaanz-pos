@@ -69,10 +69,10 @@ export class CartPage implements OnInit {
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       this.tables[0].chairs.forEach((item: any) => {
         item.isSelected = false;
-        if (item.ChairId === this.selectedChair?.ChairId) {
+        if (item.uuid === this.selectedChair?.uuid) {
           item.isSelected = true;
         }
-        if (billChair?.find((itm) => itm.ChairId === item.ChairId)) {
+        if (billChair?.find((itm) => itm.uuid === item.uuid)) {
           item.isSelected = true;
         }
       });
@@ -82,13 +82,13 @@ export class CartPage implements OnInit {
   }
 
   mergeCart(selectedChair: any) {
-    if (selectedChair.ChairId === this.selectedChair?.ChairId) {
+    if (selectedChair.uuid === this.selectedChair?.uuid) {
       return;
     } else {
       const cart = JSON.parse(localStorage.getItem('cart')) || null;
       const selectedTable = JSON.parse(localStorage.getItem('selectedTable')) || null;
-      if (!cart[this.userDetails.id]?.[selectedTable.TableId]?.[selectedChair.ChairId] || Object.keys(cart[this.userDetails.id]?.[selectedTable.TableId]?.[selectedChair.ChairId]).length === 0) { 
-        this.presentToast(`No Cart Item added to Chair ${selectedChair.ChairId}.`);
+      if (!cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid] || Object.keys(cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid]).length === 0) { 
+        this.presentToast(`No Cart Item added to Chair ${selectedChair.uuid}.`);
         return;
       }
       selectedChair.isSelected = !selectedChair.isSelected;
