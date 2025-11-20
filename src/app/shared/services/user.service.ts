@@ -235,8 +235,8 @@ export class UserService {
     return this._http.get(url);
   }
 
-  getTables() {
-    const url = `${environment.restApiHost}${endpoints.getTables}`;
+  getTables(bid: any) {
+    const url = `${environment.restApiHost}${endpoints.getTables}${bid}`;
     return this._http.get(url);
   }
 }

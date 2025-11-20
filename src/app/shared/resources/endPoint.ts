@@ -33,5 +33,5 @@ export const endpoints = {
     productList: 'api/v1/pos/products',
     payment: "api/v1/payment/pay",
     paymentStatus: "api/v1/payment/status/",
-    getTables: "warmload/getTableSetup"
+    getTables: "warmload/getTSU/"
 }

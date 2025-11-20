@@ -4,6 +4,7 @@ import { Chair, Table } from './table.model';
 import { ToastController } from '@ionic/angular';
 import { UserService } from '../shared/services/user.service';
 import { Subscription } from 'rxjs';
+import { AccountService } from '../shared/services/account.service';
 
 @Component({
   selector: 'app-table',
@@ -12,6 +13,8 @@ import { Subscription } from 'rxjs';
 })
 export class TableComponent implements OnInit, OnDestroy {
   public apiSubscription: any = new Subscription();
+  public runTimeProps: any = null;
+  public tableData: any = null;
   tables: Table[] = [
     {
       TableId: 'T001',
@@ -62,22 +65,38 @@ export class TableComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private toastController: ToastController,
-    private _user: UserService
-  ) {}
+    private _user: UserService,
+    private _account: AccountService, 
+  ) {
+
+    this._account.runTimePropObservable.subscribe((response: any) => {
+      this.runTimeProps = response;
+      console.log(response);
+      const bid: any = this.runTimeProps.find(item => item.property_name === 'bid');
+      if (bid && !this.tableData) {
+        this.getTablesFromServer(bid.property_value);
+      }
+    });
+  }
 
   ngOnInit() {
-    this.loadTableDataFromLocalStorage();
-    // this.getTablesFromServer();
+    // this.loadTableDataFromLocalStorage();
+    // if (this.runTimeProps) {
+    //   this.getTablesFromServer();
+    // }
   }
 
   ionViewWillEnter() {
-    this.loadTableDataFromLocalStorage();
-    // this.getTablesFromServer();
+    // this.loadTableDataFromLocalStorage();
+    // if (this.runTimeProps) {
+    //   this.getTablesFromServer();
+    // }
   };
 
-  getTablesFromServer() {
-    const tablesApi = this._user.getTables().subscribe((response: any) => {
+  getTablesFromServer(bid: any) {
+    const tablesApi = this._user.getTables(bid).subscribe((response: any) => {
       console.log('Tables from server:', response);
+      this.tableData = response;
       // Process and update this.tables as needed
     });
     this.apiSubscription.add(tablesApi);
