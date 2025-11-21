@@ -126,13 +126,15 @@ export class TableComponent implements OnInit, OnDestroy {
 
   calculateChairTableTotal() {
     const cart = JSON.parse(localStorage.getItem('cart') || 'null');
+    console.log(cart);
     this.tableData.forEach((tbl: any) => {
       tbl.chairs.forEach((chair: any) => {
-        if (cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid] && Object.keys(cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid]).length > 0) {
-          Object.keys(cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid]).forEach((key: any) => {
-            const cartItem = cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid][key];
+        if (cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid] && Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).length > 0) {
+          Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).forEach((key: any) => {
+            const cartItem = cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid][key];
             chair.total += cartItem.quantity * cartItem.unitPrice;
           });
+          tbl.total += chair.total
         }
       });
     });
