@@ -148,7 +148,6 @@ export class DashboardPage implements OnDestroy {
     this.selelctedCategory = null;
     this.cartAnimation = false;
     this.getProductList();
-    this.loadProducts();
 
 
     if (this.userDetails.id) {
@@ -160,10 +159,7 @@ export class DashboardPage implements OnDestroy {
     console.log(this.cartList)
     this.cartList.map(x => this.selectedProductIds.push(x.id));
   }
-  loadProducts() {
-    throw new Error('Method not implemented.');
   
-  }
 
   ionViewWillLeave() {
     this.apiSubscription.unsubscribe();

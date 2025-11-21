@@ -195,6 +195,31 @@
             object-fit: cover;
         }
     }
+
+    .app-nav-chair {
+        display: flex;
+        position: relative;
+        margin-top: -20px;
+        
+        .material-symbols-outlined {
+            font-size: 30px;
+        }
+
+        .chair-label {
+            position: absolute;
+            background: rgba(255,255,255,0.9);
+            color: #000000;
+            border: 1px solid #333333;
+            border-radius: 3px;
+            padding: 2px 5px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            left: 50%;
+            top: 20px;
+            transform: translate(-50%, 0);
+        }
+    }
 }
 
 
