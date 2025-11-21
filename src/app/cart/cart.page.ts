@@ -66,6 +66,7 @@ export class CartPage implements OnInit {
     if (storedTable) {
       const table = JSON.parse(storedTable);
       this.tables = [table];
+      this.calculateChairTableTotal();
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       this.tables[0].chairs.forEach((item: any) => {
         item.isSelected = false;
@@ -88,7 +89,7 @@ export class CartPage implements OnInit {
       const cart = JSON.parse(localStorage.getItem('cart')) || null;
       const selectedTable = JSON.parse(localStorage.getItem('selectedTable')) || null;
       if (!cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid] || Object.keys(cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid]).length === 0) { 
-        this.presentToast(`No Cart Item added to Chair ${selectedChair.uuid}.`);
+        this.presentToast(`No Cart Item added to ${selectedChair.name}.`);
         return;
       }
       selectedChair.isSelected = !selectedChair.isSelected;
@@ -128,6 +129,23 @@ export class CartPage implements OnInit {
       }
     }
     
+  }
+
+  calculateChairTableTotal() {
+    const cart = JSON.parse(localStorage.getItem('cart') || 'null');
+    this.tables.forEach((tbl: any) => {
+      tbl.total = 0;
+      tbl.chairs.forEach((chair: any) => {
+        chair.total  = 0;
+        if (cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid] && Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).length > 0) {
+          Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).forEach((key: any) => {
+            const cartItem = cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid][key];
+            chair.total += cartItem.quantity * cartItem.unitPrice;
+          });
+          tbl.total += chair.total
+        }
+      });
+    });
   }
 
   openCheckout(){

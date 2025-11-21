@@ -128,7 +128,9 @@ export class TableComponent implements OnInit, OnDestroy {
     const cart = JSON.parse(localStorage.getItem('cart') || 'null');
     console.log(cart);
     this.tableData.forEach((tbl: any) => {
+      tbl.total = 0;
       tbl.chairs.forEach((chair: any) => {
+        chair.total  = 0;
         if (cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid] && Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).length > 0) {
           Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).forEach((key: any) => {
             const cartItem = cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid][key];
@@ -198,12 +200,12 @@ export class TableComponent implements OnInit, OnDestroy {
 
   selectTable(table: Table) {
     this.selectedTable = table;
-    localStorage.setItem('selectedTable', JSON.stringify(table));
+    // localStorage.setItem('selectedTable', JSON.stringify(table));
   }
 
   closeTableDetails() {
     this.selectedTable = null;
-    localStorage.removeItem('selectedTable');
+    // localStorage.removeItem('selectedTable');
   }
 
   selectChairAndNavigate(chair: Chair, table: Table) {

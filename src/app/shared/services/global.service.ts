@@ -181,7 +181,7 @@ export class GlobalService {
       if (this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id]) {
         this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity += 1;
       } else {
-        this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id] = {...product, quantity: 1}
+        this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id] = {...product, quantity: 1, orderStatus: "PLACED"}
       }
       this.storeCart(userId);
     } else {

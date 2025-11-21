@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/dashboard"></ion-back-button>
     </ion-buttons>
@@ -17,7 +17,7 @@
       >
         <div class="table-info">
           <h3>{{ table.name }}</h3>
-          <h2>{{ table.total }} frs</h2>
+          <h2>{{ table.total | number }} frs</h2>
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
                 <div class="chair-block" [ngClass]="{'occupied': chair.total > 0}" *ngFor="let chair of selectedTable.chairs"
                   (click)="selectChairAndNavigate(chair, selectedTable)">
                   <h4>{{ chair?.name }}</h4>
-                  <h2>{{ chair.total }} frs</h2>
+                  <h2>{{ chair.total | number }} frs</h2>
                 </div>
               </div>
             </div>
