@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { UserService } from '../shared/services/user.service';
 import { Subscription } from 'rxjs';
 import { AccountService } from '../shared/services/account.service';
+import { GlobalService } from '../shared/services/global.service';
 
 @Component({
   selector: 'app-table',
@@ -15,6 +16,7 @@ export class TableComponent implements OnInit, OnDestroy {
   public apiSubscription: any = new Subscription();
   public runTimeProps: any = null;
   public tableData: any = null;
+  public calDebounch
   // tables: Table[] = [
   //   {
   //     TableId: 'T001',
@@ -69,28 +71,8 @@ export class TableComponent implements OnInit, OnDestroy {
     private toastController: ToastController,
     private _user: UserService,
     private _account: AccountService, 
+    private _global: GlobalService
   ) {
-
-    const userSub = this._account.userDetailsObservable.subscribe((response: any) => {
-      this.userDetails = response;
-    });
-
-    this.apiSubscription.add(userSub);
-    
-    const runtimeSub = this._account.runTimePropObservable.subscribe((response: any) => {
-      this.runTimeProps = response;
-      const bid: any = this.runTimeProps.find(item => item.property_name === 'bid');
-      const tableD = JSON.parse(localStorage.getItem('tables') || 'null');
-      if (bid && !tableD) {
-        this.getTablesFromServer(bid.property_value);
-      } else {
-        this.tableData = tableD;
-        if (!this.loadTable) {
-          //this.calculateChairTableTotal();
-        }
-      }
-    });
-    this.apiSubscription.add(runtimeSub);
   }
 
   ngOnInit() {
@@ -101,19 +83,26 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    // this.loadTableDataFromLocalStorage();
-    // if (this.runTimeProps) {
-    //   const bid: any = this.runTimeProps.find(item => item.property_name === 'bid');
-    //   const tableD = JSON.parse(localStorage.getItem('tables') || 'null');
-    //   if (bid && !tableD) {
-    //     this.getTablesFromServer(bid.property_value);
-    //   } else {
-    //     this.tableData = tableD;
-    //     if (!this.loadTable) {
-    //       //this.calculateChairTableTotal();
-    //     }
-    //   }
-    // }
+    const userSub = this._account.userDetailsObservable.subscribe((response: any) => {
+      this.userDetails = response;
+    });
+
+    this.apiSubscription.add(userSub);
+    
+    const runtimeSub = this._account.runTimePropObservable.subscribe((response: any) => {
+      this.runTimeProps = response;
+      if (this.runTimeProps.length > 0) {
+        const bid: any = this.runTimeProps.find(item => item.property_name === 'bid');
+        const tableD = JSON.parse(localStorage.getItem('tables') || 'null');
+        if (bid && !tableD) {
+          this.getTablesFromServer(bid.property_value);
+        } else {
+          this.tableData = tableD;
+          this._global.debounce(this.calculateChairTableTotal(), 500);
+        }
+      }
+    });
+    this.apiSubscription.add(runtimeSub);
   };
 
   getTablesFromServer(bid: any) {
@@ -126,7 +115,7 @@ export class TableComponent implements OnInit, OnDestroy {
       });
       this.tableData = response;
       localStorage.setItem('tables', JSON.stringify(this.tableData));
-      //this.calculateChairTableTotal();
+      this._global.debounce(this.calculateChairTableTotal(), 500);
       setTimeout(() => {
         this.loadTable = false;
       }, 1000);
@@ -136,9 +125,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   calculateChairTableTotal() {
-    console.log(this.userDetails);
     const cart = JSON.parse(localStorage.getItem('cart') || 'null');
-    
     this.tableData.forEach((tbl: any) => {
       tbl.chairs.forEach((chair: any) => {
         if (cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid] && Object.keys(cart?.[this.userDetails]?.[tbl.uuid]?.[chair.uuid]).length > 0) {
@@ -149,8 +136,6 @@ export class TableComponent implements OnInit, OnDestroy {
         }
       });
     });
-    
-    console.log(this.tableData);
   }
   // loadTableDataFromLocalStorage() {
   //   const storedTables = localStorage.getItem('tables');

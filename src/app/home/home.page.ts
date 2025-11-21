@@ -21,7 +21,7 @@ export class HomePage implements OnDestroy {
 
   @ViewChild(IonContent, { static: false }) content: IonContent;
   @ViewChild('loginButton', { static: false }) loginButton: any;
-
+  public userDetails: any = null;
   public loginFrm: FormGroup = new FormGroup({});
   public loginError: Boolean = false;
   public apiSubscription: Subscription = new Subscription();
@@ -64,7 +64,7 @@ export class HomePage implements OnDestroy {
     if (localStorage.getItem("token")) {
       this.toaster.success("Redirecting to Dashboard since you are already logged in.", "Already Logged In!", {
         timeOut: 5000
-      })
+      });
       this.goToDashboard();
     }
   }
@@ -85,7 +85,14 @@ export class HomePage implements OnDestroy {
         }
         localStorage.setItem('token', response.token.refresh.token);
         console.log(response);
-        this.goToDashboard();
+        const userSub = this._account.userDetailsObservable.subscribe((response: any) => {
+          this.userDetails = response;
+          setTimeout(() => {
+            this.goToDashboard();
+          },0);
+          
+        });
+        this.apiSubscription.add(userSub);
       } else if (response.status === 'failed') {
         if (response.message === 'User is not active') {
           this.toaster.error("User is Inactive. Please reach out to organization to get Active", "User is not Active!", {

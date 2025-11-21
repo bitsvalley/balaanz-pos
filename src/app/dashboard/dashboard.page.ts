@@ -74,10 +74,11 @@ export class DashboardPage implements OnDestroy {
     this.selectedProductIds =[];
     this.cartList.map(x => this.selectedProductIds.push(x.id));
   }
-  ionViewDidEnter() {
-    // Refresh product list when returning to this page
-    this.getProductList();
-  }
+
+  // ionViewDidEnter() {
+  //   // Refresh product list when returning to this page
+  //   this.getProductList();
+  // }
 
   toggleNav() {
     this.isNavOpen = !this.isNavOpen;
