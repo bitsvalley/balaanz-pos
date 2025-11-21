@@ -26,6 +26,10 @@
   padding: 20px;
   border: 1px solid #cdcdcd;
 
+  &.occupied {
+    border-left: 7px solid #ff2f00;
+  }
+
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(0,0,0,0.15);
@@ -145,6 +149,10 @@
   align-items: center;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &.occupied {
+    border-left: 7px solid #ff2f00;
+  }
 
   &:hover {
     transform: scale(1.05);

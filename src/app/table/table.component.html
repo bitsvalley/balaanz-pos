@@ -12,7 +12,7 @@
     <div class="table-grid">
       <div
         *ngFor="let table of tableData"
-        class="table-card"
+        class="table-card" [ngClass]="{'occupied': table.total > 0}"
         (click)="selectTable(table)"
       >
         <div class="table-info">
@@ -44,10 +44,10 @@
             <div class="chairs-section">
               <h3>Chairs</h3>
               <div class="chair-grid">
-                <div class="chair-block" *ngFor="let chair of selectedTable.chairs"
+                <div class="chair-block" [ngClass]="{'occupied': chair.total > 0}" *ngFor="let chair of selectedTable.chairs"
                   (click)="selectChairAndNavigate(chair, selectedTable)">
                   <h4>{{ chair?.name }}</h4>
-                  <h2>{{chair.total}} frs</h2>
+                  <h2>{{ chair.total }} frs</h2>
                 </div>
               </div>
             </div>
