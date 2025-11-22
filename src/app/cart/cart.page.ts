@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
-
+import { SunmiPrinterService } from '../shared/services/sunmi.printer';
+import * as moment from 'moment';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -23,6 +24,7 @@ export class CartPage implements OnInit {
   public tables: any = [];
   public selectedChair: any = null;
   public restauMode: number = environment.restauMode;
+  public currentDate: any = moment().format('DD/MMM/YYYY HH:mm:ss');
 
   constructor(
     private _nav: NavController,
@@ -31,7 +33,7 @@ export class CartPage implements OnInit {
     private _route: Router,
     private _account: AccountService,
     private toastController: ToastController,
-    
+    private _sunmi: SunmiPrinterService
   ) { 
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
@@ -178,6 +180,17 @@ export class CartPage implements OnInit {
 
   handleRefresh(event: any) {
     
+  }
+
+  printCart() {
+    const telProp = this.runTimeProps.find(item => item.property_name === 'telephone1');
+    let ownerInfo ={
+      Name: this.runTimeProps[0].property_value,
+      Location : this.runTimeProps[3].property_value,
+      Tel : telProp?.property_value || '',
+      Slogan : this.runTimeProps[2].property_value
+    }
+    this._sunmi.print({ownerInfo:ownerInfo,cartList: this.cartList, cartSummary: this.cartSummary, currentDate: this.currentDate, userDetails: this.userDetails});
   }
 
 }
