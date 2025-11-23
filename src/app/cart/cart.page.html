@@ -68,7 +68,7 @@
             No Products in Cart
           </div>
           <div class="cart-product-item" *ngFor="let product of cartList">
-            <div class="order-status" [ngClass]="{'orange': product.orderStatus !=  'PLACED'}" title="{{ product.orderStatus }}">
+            <div class="order-status" *ngIf="product.orderStatus !=  'PLACED'" [ngClass]="{'orange': product.orderStatus !=  'PLACED'}" title="{{ product.orderStatus }}">
               <span class="material-symbols-outlined" *ngIf="product.orderStatus ==  'PLACED'">
                 dining
               </span>

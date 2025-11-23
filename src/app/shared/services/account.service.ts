@@ -41,7 +41,7 @@ export class AccountService implements OnDestroy {
           this._userDetailsObservable.next(this.userDetails);
           resolve(this.userDetails);
         }, (error: any) => {
-          if(error.error.statusCode === 401) {
+          if(error?.error?.statusCode === 401) {
             this.toaster.error('Kindly re-login using username and password to continue.', 'Not Authorized',{
               timeOut: 5000,
             });
