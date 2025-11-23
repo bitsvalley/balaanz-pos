@@ -85,23 +85,31 @@ export class SunmiPrinterService implements OnDestroy {
         // await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
         // await Sunmi.normal();
         await Sunmi.align({ direction: "LEFT"});
-        await Sunmi.text({text: this.formatLines(data.ownerInfo.Slogan)});
-        await Sunmi.text({text: this.formatLines(data.ownerInfo.Location)});
-        await Sunmi.text({text: this.formatLines(`Tel: ${data.ownerInfo.Tel}`)});
+        await Sunmi.line({ text: `${data.ownerInfo.Slogan}`, wrap: true });
+        await Sunmi.line({ text: `${data.ownerInfo.Location}`, wrap: true });
+        await Sunmi.line({ text: `Tel: ${data.ownerInfo.Tel}`, wrap: true });
+        // await Sunmi.text({text: this.formatLines(data.ownerInfo.Slogan)});
+        // await Sunmi.text({text: this.formatLines(data.ownerInfo.Location)});
+        // await Sunmi.text({text: this.formatLines(`Tel: ${data.ownerInfo.Tel}`)});
         await Sunmi.text({text: this.dashedBorder()});
         // Show Customer Name
-        await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
-        await Sunmi.text({text: this.formatLines("Order Type: SALE")});
+        await Sunmi.line({ text: `Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`, wrap: true });
+        await Sunmi.line({ text: `Order Type: SALE`, wrap: true });
+        // await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
+        // await Sunmi.text({text: this.formatLines("Order Type: SALE")});
         if (data?.paymentData) {
-          await Sunmi.text({text: this.formatLines(`Payment Method: ${data.paymentData.method}`)});
+          await Sunmi.line({ text: `Payment Method: ${data.paymentData.method}`, wrap: true });
+          // await Sunmi.text({text: this.formatLines(`Payment Method: ${data.paymentData.method}`)});
           if (data.paymentData.method !== 'CASH') {
-            await Sunmi.text({text: this.formatLines(`Account: ${data.paymentData.value}`)});
+            await Sunmi.line({ text: `Account: ${data.paymentData.value}`, wrap: true });
+            // await Sunmi.text({text: this.formatLines(`Account: ${data.paymentData.value}`)});
           }
         }
       
         // Show Customer Name
         await Sunmi.text({text: this.addEmptyLine()});
-        await Sunmi.text({text: this.formatLines("Product List")});
+        await Sunmi.line({ text: `Product List`, wrap: true });
+        // await Sunmi.text({text: this.formatLines("Product List")});
         await Sunmi.text({text: this.dashedBorder()});
 
         // Show Customer Name

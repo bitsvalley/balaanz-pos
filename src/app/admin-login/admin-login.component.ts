@@ -7,6 +7,7 @@ import { AccountService } from '../shared/services/account.service';
 import { GlobalService } from '../shared/services/global.service';
 import { UserService } from '../shared/services/user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-login',
@@ -18,7 +19,7 @@ export class AdminLoginComponent  implements OnInit {
   loginForm: FormGroup;
   isSubmitted = false;
   loginError: boolean;
-  apiSubscription: any;
+  apiSubscription: any = new Subscription();
 
   constructor(
     private _nav: NavController,

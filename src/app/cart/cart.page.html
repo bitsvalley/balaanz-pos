@@ -49,6 +49,7 @@
                     <div
                       class="chair-status"
                       [class.active]="chair.isSelected"
+                      [class.default]="selectedChair.uuid === chair.uuid"
                     >
                       <span class="material-symbols-outlined">chair</span>
                       <span class="chair-id">{{chair.name}}</span>
