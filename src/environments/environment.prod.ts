@@ -14,5 +14,7 @@ export const environment = {
   // org: 13,
   // org: 15,
   currency: 'FRS',
-  momoCurrency: 'XAF'
+  restauMode: 1,
+  momoCurrency: 'XAF',
+  apiBaseUrl: 'https://nkwen22.balaanz.com/',
 };
