@@ -4,7 +4,7 @@
 
 .btn {
     height: 50px;
-    @include border-radius(25px);
+    @include border-radius(5px);
     font-size: 18px; 
     background: $color-white; 
     padding: 10px 20px;
@@ -32,6 +32,22 @@
         height: 35px;
         padding: 7px 15px;
         font-size: 14px;
+    }
+
+    &.btn-round {
+        border-radius: 100%;
+        width: 40px;
+        height: 40px;
+        padding: 0px;
+        margin: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .material-symbols-outlined {
+            font-size: 20px;
+        }
+        
     }
     
 }
