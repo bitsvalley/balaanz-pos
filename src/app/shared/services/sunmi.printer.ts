@@ -71,7 +71,7 @@ export class SunmiPrinterService implements OnDestroy {
         // Default Settings
         await Sunmi.start();
         await Sunmi.align({ direction: "LEFT" });
-        
+        await Sunmi.fontSize({size: 1});
 
         // Title and Addressawait         
         // await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
