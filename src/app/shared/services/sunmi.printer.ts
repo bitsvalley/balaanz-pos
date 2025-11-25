@@ -29,11 +29,11 @@ export class SunmiPrinterService implements OnDestroy {
     }
 
     dashedBorder() {
-      return `-----------------------------`;
+      return `-------------------------------`;
     }
 
     formatLines(text: any, align: any = 'left') {
-      const isSingleString = text.length > 29? false : true;
+      const isSingleString = text.length > 31? false : true;
       if (isSingleString) {
         return this.fillSpace(text,  align);
       } else {
@@ -42,7 +42,7 @@ export class SunmiPrinterService implements OnDestroy {
     }
 
     addEmptyLine() {
-      return `                             `;
+      return `                               `;
     }
 
     formatColumn2(colText1, colText2) {
@@ -70,7 +70,6 @@ export class SunmiPrinterService implements OnDestroy {
 
         // Default Settings
         await Sunmi.start();
-        await Sunmi.fontSize({ size: 24 });
         await Sunmi.align({ direction: "LEFT" });
         
 
