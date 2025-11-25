@@ -70,6 +70,7 @@ export class SunmiPrinterService implements OnDestroy {
 
         // Default Settings
         await Sunmi.start();
+        await Sunmi.fontSize({ size: 24 });
         await Sunmi.align({ direction: "LEFT" });
         
 
