@@ -12,12 +12,12 @@
               print
             </span>
           </button>
-          <button class="btn btn-primary btn-round">
+          <button class="btn btn-primary btn-round" *ngIf="!isMultiChairSelected">
             <span class="material-symbols-outlined">
               microwave
             </span>
           </button>
-          <button class="btn btn-primary btn-round">
+          <button class="btn btn-primary btn-round" (click)="saveCart()"  *ngIf="!isMultiChairSelected">
             <span class="material-symbols-outlined">
               save
             </span>
