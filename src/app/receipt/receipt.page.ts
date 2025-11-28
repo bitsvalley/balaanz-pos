@@ -32,7 +32,8 @@ export class ReceiptPage implements OnInit {
   public paymentData: any = this._global.getPaymentData();
   public businessName: string = '';
   public telephone: string = '';
-
+  public selectedTable: any = JSON.parse(localStorage.getItem('selectedTable'));
+  public selectedChair: any = JSON.parse(localStorage.getItem('selectedChair'));
 
   constructor(
     private _nav: NavController,
@@ -56,7 +57,7 @@ export class ReceiptPage implements OnInit {
       this.userDetails = response;
       this._global.initCart(this.userDetails.id);
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
-      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+      const selectedChair = this.selectedChair || {};
       if (billChair.length > 1 && this.restauMode === 1) {
         this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
         this.cartSummary =  this._global.getCartSummary(this.cartList);
@@ -96,8 +97,12 @@ export class ReceiptPage implements OnInit {
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       if (billChair.length > 1 && this.restauMode === 1) {
         this._global.emptyCart(this.userDetails.id, billChair);
+        billChair.forEach((chair) => {
+          this.deleteOrder(chair.uuid);
+        });
       } else {
         this._global.emptyCart(this.userDetails.id);
+        this.deleteOrder(this.selectedChair.uuid);
       }
     } else {
       if (this.restauMode === 1) {
@@ -106,6 +111,12 @@ export class ReceiptPage implements OnInit {
         this._nav.navigateBack('dashboard');
       }
     }
+  }
+
+  deleteOrder(chairname) {
+    this._user.deleteOrder(this.userDetails.org_id, this.userDetails.branch_id, this.selectedTable.uuid, chairname).subscribe((response: any) => {
+      console.log(response);
+    });
   }
 
   ionViewWillEnter() {

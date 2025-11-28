@@ -239,4 +239,25 @@ export class UserService {
     const url = `${environment.restApiHost}${endpoints.getTables}${bid}`;
     return this._http.get(url);
   }
+
+  saveCart(payload: any) {
+    const url = `${environment.restApiHost}${endpoints.saveOrder}`;
+    return this._http.post(url, payload);
+  }
+
+  getOrder(orgId,  branchId, tableId, chairId) {
+    const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
+    return this._http.get(url);
+  }
+
+  getAllOrder(orgId,  branchId) {
+    const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}`;
+    return this._http.get(url);
+  }
+
+  deleteOrder(orgId,  branchId, tableId, chairId) {
+    const url = `${environment.restApiHost}${endpoints.deleteOrder}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
+    return this._http.delete(url);
+  }
+  
 }

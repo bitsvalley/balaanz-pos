@@ -8,6 +8,7 @@ import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { SunmiPrinterService } from '../shared/services/sunmi.printer';
+import { UserService } from 'src/app/shared/services/user.service';
 import * as moment from 'moment';
 @Component({
   selector: 'app-cart',
@@ -23,8 +24,10 @@ export class CartPage implements OnInit {
   public apiSubscription: any = new Subscription();
   public tables: any = [];
   public selectedChair: any = null;
+  public selectedTable: any = null;
   public restauMode: number = environment.restauMode;
   public currentDate: any = moment().format('DD/MMM/YYYY HH:mm:ss');
+  public isMultiChairSelected: boolean = false;
 
   constructor(
     private _nav: NavController,
@@ -33,7 +36,8 @@ export class CartPage implements OnInit {
     private _route: Router,
     private _account: AccountService,
     private toastController: ToastController,
-    private _sunmi: SunmiPrinterService
+    private _sunmi: SunmiPrinterService,
+    private _user: UserService
   ) { 
     this._platform.backButton.subscribeWithPriority(-1, () => {
       if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
@@ -65,6 +69,7 @@ export class CartPage implements OnInit {
 
   ngOnInit() {
     const storedTable = localStorage.getItem('selectedTable');
+    this.selectedTable = JSON.parse(storedTable);
     if (storedTable) {
       const table = JSON.parse(storedTable);
       this.tables = [table];
@@ -96,6 +101,11 @@ export class CartPage implements OnInit {
       }
       selectedChair.isSelected = !selectedChair.isSelected;
       const allChair = this.tables[0].chairs.filter((item: any) => item.isSelected);
+      if (allChair.length > 1) {
+        this.isMultiChairSelected = true;
+      } else {
+        this.isMultiChairSelected = false;
+      }
       this.cartList = this._global.mergeCart(allChair, this.userDetails.id);
       localStorage.setItem('billChair', JSON.stringify(allChair));
       this.cartSummary =  this._global.getCartSummary(this.cartList);
@@ -191,6 +201,34 @@ export class CartPage implements OnInit {
       Slogan : this.runTimeProps[2].property_value
     }
     this._sunmi.print({ownerInfo:ownerInfo,cartList: this.cartList, cartSummary: this.cartSummary, currentDate: this.currentDate, userDetails: this.userDetails});
+  }
+
+  saveCart() {
+    console.log(this.userDetails);
+    const payload = {
+      "orgId": this.userDetails.org_id,
+      "branchId": this.userDetails.branch_id,
+      "primaryReference": this.selectedTable.uuid,
+      "secondaryReference": this.selectedChair.uuid,
+      "jsonOrderData": JSON.stringify({cartData: this.cartList}),
+      "createdById": this.userDetails.id,
+      "lastUpdatedById": this.userDetails.id,
+      "createdDate": moment().format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+      "lastUpdatedDate": moment().format("YYYY-MM-DD[T]HH:mm:ss.SSS")
+    }
+    console.log(payload);
+    this._user.saveCart(payload).subscribe((response: any) => {
+      console.log(response);
+      this.getOrder();
+    }, (error: any) => {
+      this.getOrder();
+    });
+  }
+
+  getOrder() {
+    this._user.getOrder(this.userDetails.org_id, this.userDetails.branch_id, this.selectedTable.uuid, this.selectedChair.uuid).subscribe((response: any) => {
+      console.log(response);
+    });
   }
 
 }

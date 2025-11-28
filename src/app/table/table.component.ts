@@ -124,6 +124,12 @@ export class TableComponent implements OnInit, OnDestroy {
     this.apiSubscription.add(tablesApi);
   }
 
+  getServerCart() {
+    this._user.getAllOrder(this.userDetails.org_id, this.userDetails.branch_id).subscribe((response: any) => {
+      console.log(response);
+    })
+  }
+
   calculateChairTableTotal() {
     const cart = JSON.parse(localStorage.getItem('cart') || 'null');
     console.log(cart);
@@ -140,6 +146,7 @@ export class TableComponent implements OnInit, OnDestroy {
         }
       });
     });
+    this.getServerCart();
   }
   // loadTableDataFromLocalStorage() {
   //   const storedTables = localStorage.getItem('tables');
