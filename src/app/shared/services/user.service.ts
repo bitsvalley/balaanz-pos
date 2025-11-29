@@ -245,19 +245,23 @@ export class UserService {
     return this._http.post(url, payload);
   }
 
-  getOrder(orgId,  branchId, tableId, chairId) {
+  getOrder(orgId, branchId, tableId, chairId) {
     const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
     return this._http.get(url);
   }
 
-  getAllOrder(orgId,  branchId) {
+  sendToCashier(orgId, branchId, tableId, chairId) {
+    const url = `${environment.restApiHost}${endpoints.sendToCashier}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
+    return this._http.post(url, '');
+  }
+
+  getAllOrder(orgId, branchId) {
     const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}`;
     return this._http.get(url);
   }
 
-  deleteOrder(orgId,  branchId, tableId, chairId) {
+  deleteOrder(orgId, branchId, tableId, chairId) {
     const url = `${environment.restApiHost}${endpoints.deleteOrder}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
     return this._http.delete(url);
   }
-  
 }

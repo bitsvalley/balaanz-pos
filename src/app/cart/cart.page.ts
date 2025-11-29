@@ -3,7 +3,7 @@ import { NavController, ToastController } from '@ionic/angular';
 import { GlobalService } from 'src/app/shared/services/global.service';
 import { Platform } from '@ionic/angular';
 import { AccountService } from 'src/app/shared/services/account.service';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
@@ -16,11 +16,10 @@ import * as moment from 'moment';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-
   public userDetails: any = null;
   public cartList: any = [];
   public runTimeProps: any = null;
-  public cartSummary: any =  {};
+  public cartSummary: any = {};
   public apiSubscription: any = new Subscription();
   public tables: any = [];
   public selectedChair: any = null;
@@ -38,25 +37,33 @@ export class CartPage implements OnInit {
     private toastController: ToastController,
     private _sunmi: SunmiPrinterService,
     private _user: UserService
-  ) { 
+  ) {
     this._platform.backButton.subscribeWithPriority(-1, () => {
-      if (this._route.url && this._route.url.search('dashboard') > 0 && localStorage.getItem('token')) {
+      if (
+        this._route.url &&
+        this._route.url.search('dashboard') > 0 &&
+        localStorage.getItem('token')
+      ) {
         App.exitApp();
       }
     });
-    
+
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
       // console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
-      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+      const selectedChair =
+        JSON.parse(localStorage.getItem('selectedChair')) || {};
       if (billChair.length > 1 && this.restauMode === 1) {
-        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
-        this.cartSummary =  this._global.getCartSummary(this.cartList);
+        this.cartList = this._global.mergeCart(
+          billChair || [selectedChair],
+          this.userDetails.id
+        );
+        this.cartSummary = this._global.getCartSummary(this.cartList);
       } else {
         this.cartList = this._global.retriveCart(this.userDetails.id).list;
-        this.cartSummary =  this._global.getCartSummary();
+        this.cartSummary = this._global.getCartSummary();
       }
     });
 
@@ -64,7 +71,9 @@ export class CartPage implements OnInit {
       this.runTimeProps = response;
     });
 
-    this.selectedChair = JSON.parse(localStorage.getItem('selectedChair') || 'null');
+    this.selectedChair = JSON.parse(
+      localStorage.getItem('selectedChair') || 'null'
+    );
   }
 
   ngOnInit() {
@@ -94,13 +103,23 @@ export class CartPage implements OnInit {
       return;
     } else {
       const cart = JSON.parse(localStorage.getItem('cart')) || null;
-      const selectedTable = JSON.parse(localStorage.getItem('selectedTable')) || null;
-      if (!cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid] || Object.keys(cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid]).length === 0) { 
+      const selectedTable =
+        JSON.parse(localStorage.getItem('selectedTable')) || null;
+      if (
+        !cart[this.userDetails.id]?.[selectedTable.uuid]?.[
+          selectedChair.uuid
+        ] ||
+        Object.keys(
+          cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid]
+        ).length === 0
+      ) {
         this.presentToast(`No Cart Item added to ${selectedChair.name}.`);
         return;
       }
       selectedChair.isSelected = !selectedChair.isSelected;
-      const allChair = this.tables[0].chairs.filter((item: any) => item.isSelected);
+      const allChair = this.tables[0].chairs.filter(
+        (item: any) => item.isSelected
+      );
       if (allChair.length > 1) {
         this.isMultiChairSelected = true;
       } else {
@@ -108,7 +127,7 @@ export class CartPage implements OnInit {
       }
       this.cartList = this._global.mergeCart(allChair, this.userDetails.id);
       localStorage.setItem('billChair', JSON.stringify(allChair));
-      this.cartSummary =  this._global.getCartSummary(this.cartList);
+      this.cartSummary = this._global.getCartSummary(this.cartList);
     }
   }
 
@@ -120,10 +139,9 @@ export class CartPage implements OnInit {
     });
     toast.present();
   }
-  
 
   checkIfAnyChairOpen(table: any): boolean {
-    return table.chairs.some(chair => chair.status === 'open');
+    return table.chairs.some((chair) => chair.status === 'open');
   }
 
   ionViewWillEnter() {
@@ -131,16 +149,19 @@ export class CartPage implements OnInit {
     this.apiSubscription = new Subscription();
     if (this.userDetails.id) {
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
-      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+      const selectedChair =
+        JSON.parse(localStorage.getItem('selectedChair')) || {};
       if (billChair.length > 1) {
-        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
-        this.cartSummary =  this._global.getCartSummary(this.cartList);
+        this.cartList = this._global.mergeCart(
+          billChair || [selectedChair],
+          this.userDetails.id
+        );
+        this.cartSummary = this._global.getCartSummary(this.cartList);
       } else {
         this.cartList = this._global.retriveCart(this.userDetails.id).list;
-        this.cartSummary =  this._global.getCartSummary();  
+        this.cartSummary = this._global.getCartSummary();
       }
     }
-    
   }
 
   calculateChairTableTotal() {
@@ -148,21 +169,28 @@ export class CartPage implements OnInit {
     this.tables.forEach((tbl: any) => {
       tbl.total = 0;
       tbl.chairs.forEach((chair: any) => {
-        chair.total  = 0;
-        if (cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid] && Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).length > 0) {
-          Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]).forEach((key: any) => {
-            const cartItem = cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid][key];
+        chair.total = 0;
+        if (
+          cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid] &&
+          Object.keys(cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid])
+            .length > 0
+        ) {
+          Object.keys(
+            cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid]
+          ).forEach((key: any) => {
+            const cartItem =
+              cart?.[this.userDetails.id]?.[tbl.uuid]?.[chair.uuid][key];
             chair.total += cartItem.quantity * cartItem.unitPrice;
           });
-          tbl.total += chair.total
+          tbl.total += chair.total;
         }
       });
     });
   }
 
-  openCheckout(){
+  openCheckout() {
     if (this.cartList.length) {
-      this._nav.navigateForward("checkout");
+      this._nav.navigateForward('checkout');
     }
   }
 
@@ -177,58 +205,89 @@ export class CartPage implements OnInit {
   }
 
   remove(product: any) {
-    this.cartList = this._global.removeQuantity(product, this.userDetails.id).list;
-    this.cartSummary =  this._global.getCartSummary();
+    this.cartList = this._global.removeQuantity(
+      product,
+      this.userDetails.id
+    ).list;
+    this.cartSummary = this._global.getCartSummary();
     this.calculateChairTableTotal();
   }
 
   add(product: any) {
     this.cartList = this._global.addQuantity(product, this.userDetails.id).list;
-    this.cartSummary =  this._global.getCartSummary();
+    this.cartSummary = this._global.getCartSummary();
     this.calculateChairTableTotal();
   }
 
-  handleRefresh(event: any) {
-    
-  }
+  handleRefresh(event: any) {}
 
   printCart() {
-    const telProp = this.runTimeProps.find(item => item.property_name === 'telephone1');
-    let ownerInfo ={
+    const telProp = this.runTimeProps.find(
+      (item) => item.property_name === 'telephone1'
+    );
+    let ownerInfo = {
       Name: this.runTimeProps[0].property_value,
-      Location : this.runTimeProps[3].property_value,
-      Tel : telProp?.property_value || '',
-      Slogan : this.runTimeProps[2].property_value
-    }
-    this._sunmi.print({ownerInfo:ownerInfo,cartList: this.cartList, cartSummary: this.cartSummary, currentDate: this.currentDate, userDetails: this.userDetails});
+      Location: this.runTimeProps[3].property_value,
+      Tel: telProp?.property_value || '',
+      Slogan: this.runTimeProps[2].property_value,
+    };
+    this._sunmi.print({
+      ownerInfo: ownerInfo,
+      cartList: this.cartList,
+      cartSummary: this.cartSummary,
+      currentDate: this.currentDate,
+      userDetails: this.userDetails,
+    });
   }
 
   saveCart() {
     console.log(this.userDetails);
     const payload = {
-      "orgId": this.userDetails.org_id,
-      "branchId": this.userDetails.branch_id,
-      "primaryReference": this.selectedTable.uuid,
-      "secondaryReference": this.selectedChair.uuid,
-      "jsonOrderData": JSON.stringify({cartData: this.cartList}),
-      "createdById": this.userDetails.id,
-      "lastUpdatedById": this.userDetails.id,
-      "createdDate": moment().format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-      "lastUpdatedDate": moment().format("YYYY-MM-DD[T]HH:mm:ss.SSS")
-    }
+      orgId: this.userDetails.org_id,
+      branchId: this.userDetails.branch_id,
+      primaryReference: this.selectedTable.uuid,
+      secondaryReference: this.selectedChair.uuid,
+      jsonOrderData: JSON.stringify({ cartData: this.cartList }),
+      createdById: this.userDetails.id,
+      lastUpdatedById: this.userDetails.id,
+      createdDate: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+      lastUpdatedDate: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
+    };
     console.log(payload);
-    this._user.saveCart(payload).subscribe((response: any) => {
-      console.log(response);
-      this.getOrder();
-    }, (error: any) => {
-      this.getOrder();
-    });
+    this._user.saveCart(payload).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.getOrder();
+      },
+      (error: any) => {
+        this.getOrder();
+      }
+    );
   }
 
   getOrder() {
-    this._user.getOrder(this.userDetails.org_id, this.userDetails.branch_id, this.selectedTable.uuid, this.selectedChair.uuid).subscribe((response: any) => {
-      console.log(response);
-    });
+    this._user
+      .getOrder(
+        this.userDetails.org_id,
+        this.userDetails.branch_id,
+        this.selectedTable.uuid,
+        this.selectedChair.uuid
+      )
+      .subscribe((response: any) => {
+        console.log(response);
+      });
   }
 
+  sendToCashier() {
+    this._user
+      .sendToCashier(
+        this.userDetails.org_id,
+        this.userDetails.branch_id,
+        this.selectedTable.uuid,
+        this.selectedChair.uuid
+      )
+      .subscribe((response: any) => {
+        console.log(response);
+      });
+  }
 }

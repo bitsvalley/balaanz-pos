@@ -2,30 +2,35 @@
   <div class="cart-screen">
     <div class="cart-container">
       <div class="app-header">
-        <div class="back-page" style="margin-right: 10px;" (click)="back()">
+        <div class="back-page" style="margin-right: 10px" (click)="back()">
           <span class="material-symbols-outlined"> arrow_back </span>
         </div>
-        <div class="app-page-title" style="margin-left: 0px;">My Cart</div>
+        <div class="app-page-title" style="margin-left: 0px">My Cart</div>
         <div class="header-actions">
           <button class="btn btn-primary btn-round" (click)="printCart()">
-            <span class="material-symbols-outlined">
-              print
-            </span>
+            <span class="material-symbols-outlined"> print </span>
           </button>
-          <button class="btn btn-primary btn-round" *ngIf="!isMultiChairSelected">
-            <span class="material-symbols-outlined">
-              microwave
-            </span>
+          <button
+            class="btn btn-primary btn-round"
+            (click)="sendToCashier()"
+            *ngIf="!isMultiChairSelected"
+          >
+            <span class="material-symbols-outlined"> microwave </span>
           </button>
-          <button class="btn btn-primary btn-round" (click)="saveCart()"  *ngIf="!isMultiChairSelected">
-            <span class="material-symbols-outlined">
-              save
-            </span>
+          <button
+            class="btn btn-primary btn-round"
+            (click)="saveCart()"
+            *ngIf="!isMultiChairSelected"
+          >
+            <span class="material-symbols-outlined"> save </span>
           </button>
         </div>
       </div>
       <div class="cart-body">
-        <div class="table-section" *ngIf="tables.length > 0 && restauMode === 1">
+        <div
+          class="table-section"
+          *ngIf="tables.length > 0 && restauMode === 1"
+        >
           <!-- <div class="section-title">Selected Table</div> -->
           <div class="table-info-card" *ngFor="let table of tables">
             <div class="table-header">
@@ -45,7 +50,11 @@
                   <span>{{table.AssignedWaiterName}}</span>
                 </div> -->
                 <div class="chair-grid">
-                  <div class="chair-item" *ngFor="let chair of table.chairs" (click)="mergeCart(chair)">
+                  <div
+                    class="chair-item"
+                    *ngFor="let chair of table.chairs"
+                    (click)="mergeCart(chair)"
+                  >
                     <div
                       class="chair-status"
                       [class.active]="chair.isSelected"
@@ -68,11 +77,22 @@
             No Products in Cart
           </div>
           <div class="cart-product-item" *ngFor="let product of cartList">
-            <div class="order-status" *ngIf="product.orderStatus !=  'PLACED'" [ngClass]="{'orange': product.orderStatus !=  'PLACED'}" title="{{ product.orderStatus }}">
-              <span class="material-symbols-outlined" *ngIf="product.orderStatus ==  'PLACED'">
+            <div
+              class="order-status"
+              *ngIf="product.orderStatus !=  'PLACED'"
+              [ngClass]="{'orange': product.orderStatus !=  'PLACED'}"
+              title="{{ product.orderStatus }}"
+            >
+              <span
+                class="material-symbols-outlined"
+                *ngIf="product.orderStatus ==  'PLACED'"
+              >
                 dining
               </span>
-              <span class="material-symbols-outlined" *ngIf="product.orderStatus !=  'PLACED'">
+              <span
+                class="material-symbols-outlined"
+                *ngIf="product.orderStatus !=  'PLACED'"
+              >
                 skillet
               </span>
             </div>
