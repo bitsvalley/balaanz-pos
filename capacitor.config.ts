@@ -1,17 +1,17 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.BJComplexPOS',
-  appName: 'BJComplex POS',
+  appId: 'io.ionic.MaduroPOS',
+  appName: 'MADURO POS',
   webDir: 'www',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
   },
   plugins: {
     SunmiPrinter: {
-      bindOnLoad: true
-    }
-  }
+      bindOnLoad: true,
+    },
+  },
 };
 
 export default config;

@@ -1,4 +1,4 @@
-package io.ionic.BJComplexPOS;
+package io.ionic.MaduroPOS;
 
 import com.getcapacitor.BridgeActivity;
 
