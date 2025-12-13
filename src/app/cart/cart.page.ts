@@ -240,38 +240,56 @@ export class CartPage implements OnInit {
     });
   }
 
-  saveCart() {
-    console.log(this.userDetails);
-    const payload = {
-      orgId: this.userDetails.org_id,
-      branchId: this.userDetails.branch_id,
-      primaryReference: this.selectedTable.uuid,
-      secondaryReference: this.selectedChair.uuid,
-      jsonOrderData: JSON.stringify({ cartData: this.cartList }),
-      createdById: this.userDetails.id,
-      lastUpdatedById: this.userDetails.id,
-      createdDate: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-      lastUpdatedDate: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSS'),
-    };
-    console.log(payload);
-    this._user.saveCart(payload).subscribe(
-      (response: any) => {
-        console.log(response);
-        this.getOrder();
-      },
-      (error: any) => {
-        this.getOrder();
-      }
-    );
+    saveCart() {
+    if (!this.cartList || this.cartList.length === 0) {
+      this.presentToast('No items in cart to save.');
+      return;
+    }
+
+    console.log(this.selectedChair);
+
+    let pending = this.cartList.length;
+    this.cartList.forEach((product: any) => {
+      const payload = {
+        orgId: this.userDetails.org_id,
+        branchId: this.userDetails.branch_id,
+        tableChairUserId: this.selectedChair.id,
+        shopProductId: product.id,
+        unitPrice: product.unitPrice,
+        quantity: product.quantity,
+        createdById: this.userDetails.id,
+        lastUpdatedById: this.userDetails.id,
+      };
+
+      console.log('saving cart item payload', payload);
+      this._user.saveCart(payload).subscribe(
+        (response: any) => {
+          console.log('saveCart response', response);
+          pending--;
+          //if (pending === 0) {
+            this.getOrder(product.id);
+          //}
+        },
+        (error: any) => {
+          console.error('saveCart error', error);
+          pending--;
+          //if (pending === 0) {
+            this.getOrder(product.id);
+          //}
+        }
+      );
+    });
   }
 
-  getOrder() {
+  getOrder(productId) {
+    console.log("getOrder - productId: " + productId);
+
     this._user
       .getOrder(
         this.userDetails.org_id,
         this.userDetails.branch_id,
-        this.selectedTable.uuid,
-        this.selectedChair.uuid
+        this.selectedChair.id,
+        productId
       )
       .subscribe((response: any) => {
         console.log(response);
@@ -283,8 +301,8 @@ export class CartPage implements OnInit {
       .sendToCashier(
         this.userDetails.org_id,
         this.userDetails.branch_id,
-        this.selectedTable.uuid,
-        this.selectedChair.uuid
+        this.selectedChair.id,
+        this.userDetails.id
       )
       .subscribe((response: any) => {
         console.log(response);

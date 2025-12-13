@@ -245,23 +245,23 @@ export class UserService {
     return this._http.post(url, payload);
   }
 
-  getOrder(orgId, branchId, tableId, chairId) {
-    const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
+  getOrder(orgId, branchId, chairId, productId) {
+    const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}&shopProductId=${productId}`;
     return this._http.get(url);
   }
 
-  sendToCashier(orgId, branchId, tableId, chairId) {
-    const url = `${environment.restApiHost}${endpoints.sendToCashier}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
+  sendToCashier(orgId, branchId, chairId, userId) {
+    const url = `${environment.restApiHost}${endpoints.sendToCashier}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}&lastUpdatedById=${userId}`;
     return this._http.post(url, '');
   }
 
   getAllOrder(orgId, branchId) {
-    const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}`;
+    const url = `${environment.restApiHost}${endpoints.getAllOrders}orgId=${orgId}&branchId=${branchId}`;
     return this._http.get(url);
   }
 
-  deleteOrder(orgId, branchId, tableId, chairId) {
-    const url = `${environment.restApiHost}${endpoints.deleteOrder}orgId=${orgId}&branchId=${branchId}&primaryReference=${tableId}&secondaryReference=${chairId}`;
+  deleteOrder(orgId, branchId, chairId) {
+    const url = `${environment.restApiHost}${endpoints.deleteOrder}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}`;
     return this._http.delete(url);
   }
 }

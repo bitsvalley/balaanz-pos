@@ -98,11 +98,11 @@ export class ReceiptPage implements OnInit {
       if (billChair.length > 1 && this.restauMode === 1) {
         this._global.emptyCart(this.userDetails.id, billChair);
         billChair.forEach((chair) => {
-          this.deleteOrder(chair.uuid);
+          this.deleteOrder(chair.id);
         });
       } else {
         this._global.emptyCart(this.userDetails.id);
-        this.deleteOrder(this.selectedChair.uuid);
+        this.deleteOrder(this.selectedChair.id);
       }
     } else {
       if (this.restauMode === 1) {
@@ -113,8 +113,8 @@ export class ReceiptPage implements OnInit {
     }
   }
 
-  deleteOrder(chairname) {
-    this._user.deleteOrder(this.userDetails.org_id, this.userDetails.branch_id, this.selectedTable.uuid, chairname).subscribe((response: any) => {
+  deleteOrder(chairId) {
+    this._user.deleteOrder(this.userDetails.org_id, this.userDetails.branch_id, chairId).subscribe((response: any) => {
       console.log(response);
     });
   }
@@ -124,12 +124,10 @@ export class ReceiptPage implements OnInit {
     this.apiSubscription = new Subscription();
     this.clearCart();
 
-    
       this._account.runTimePropObservable.subscribe((response: any) => {
         console.log("Runtime Props Received:", response);
         this.runTimeProps = response;
       });
-
   }
 
   ionViewWillLeave() {
@@ -161,6 +159,4 @@ export class ReceiptPage implements OnInit {
       this._nav.navigateBack('dashboard');
     }
   }
-  
-
 }
