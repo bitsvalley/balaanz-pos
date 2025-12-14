@@ -146,7 +146,9 @@ export class TableComponent implements OnInit, OnDestroy {
         }
       });
     });
-    this.getServerCart();
+    
+    //TODO: the server cart was called but was never user to synchronize the cart.
+    //this.getServerCart();
   }
   // loadTableDataFromLocalStorage() {
   //   const storedTables = localStorage.getItem('tables');

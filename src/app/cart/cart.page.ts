@@ -113,7 +113,7 @@ export class CartPage implements OnInit {
           cart[this.userDetails.id]?.[selectedTable.uuid]?.[selectedChair.uuid]
         ).length === 0
       ) {
-        this.presentToast(`No Cart Item added to ${selectedChair.name}.`);
+        this.presentErrorToast(`No Cart Item added to ${selectedChair.name}.`);
         return;
       }
       selectedChair.isSelected = !selectedChair.isSelected;
@@ -131,12 +131,23 @@ export class CartPage implements OnInit {
     }
   }
 
-  async presentToast(message: string) {
+  async presentErrorToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
       duration: 2000,
       color: 'danger',
     });
+  
+    toast.present();
+  }
+
+    async presentSuccessToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: 'success',
+    });
+   
     toast.present();
   }
 
@@ -240,9 +251,9 @@ export class CartPage implements OnInit {
     });
   }
 
-    saveCart() {
+    saveCartold() {
     if (!this.cartList || this.cartList.length === 0) {
-      this.presentToast('No items in cart to save.');
+      this.presentErrorToast('No items in cart to save.');
       return;
     }
 
@@ -307,5 +318,127 @@ export class CartPage implements OnInit {
       .subscribe((response: any) => {
         console.log(response);
       });
+
+      this.presentSuccessToast('Successfully sent order to the Cashier');
+  }
+
+saveCart() {
+  if (!this.cartList || this.cartList.length === 0) {
+    this.presentErrorToast('No items in cart to save.');
+    return;
+  }
+
+  console.log(this.selectedChair);
+
+  this.cartList.forEach((product: any) => {
+    const payload = {
+      orgId: this.userDetails.org_id,
+      branchId: this.userDetails.branch_id,
+      tableChairUserId: this.selectedChair.id,
+      shopProductId: product.id,
+      unitPrice: product.unitPrice,
+      quantity: product.quantity,
+      createdById: this.userDetails.id,
+      lastUpdatedById: this.userDetails.id,
+    };
+
+    console.log('saving cart item payload', payload);
+
+    // Check order status first
+    this._user
+      .getOrder(
+        this.userDetails.org_id,
+        this.userDetails.branch_id,
+        this.selectedChair.id,
+        product.id
+      )
+      .subscribe(
+        (response: any) => {
+          console.log("getOrder response:", response);
+
+          if (response.orderStatus === 'CASHIER' || response.orderStatus === 'SIGNED') {
+            this.presentErrorToast('Cannot save the order as the cashier has already processed the order');
+            return;
+          }
+
+          // Safe to save
+          this.doSaveCart(payload);
+        },
+        (error: any) => {
+          if (error.status === 404) {
+            // Order not found → safe to create new one
+            console.log('Order not found, creating new one');
+            this.doSaveCart(payload);
+          } else {
+            console.error('getOrder error', error);
+            this.presentErrorToast('Error checking order status');
+          }
+        }
+      );
+  });
+}
+
+// helper function: single place where saveCart is actually called
+private doSaveCart(payload: any) {
+  this._user.saveCart(payload).subscribe(
+    (saveResponse: any) => {
+      console.log('saveCart response', saveResponse);
+            
+      this.presentSuccessToast('Cart saved successfully');
+    },
+    (saveError: any) => {
+      console.error('saveCart error', saveError);
+      this.presentErrorToast('Error saving cart');
+    }
+  );
+}
+
+//TODO: this method is not in use as it has to be adapted
+sendToCashier_new() {
+  this._user
+    .getOrder(
+      this.userDetails.org_id,
+      this.userDetails.branch_id,
+      this.selectedChair.id,
+      /* if you want to send all products, you may need to loop here */
+      null // or productId if required
+    )
+    .subscribe(
+      (response: any) => {
+        console.log("getOrder response:", response);
+
+        if (response.orderStatus === 'PLACED') {
+          this._user
+            .sendToCashier(
+              this.userDetails.org_id,
+              this.userDetails.branch_id,
+              this.selectedChair.id,
+              this.userDetails.id
+            )
+            .subscribe(
+              (cashierResponse: any) => {
+                console.log(cashierResponse);
+                this.presentSuccessToast('Successfully sent order to the Cashier');
+              },
+              (error: any) => {
+                console.error('sendToCashier error', error);
+                this.presentErrorToast('Error sending order to Cashier');
+              }
+            );
+        } else {
+          this.presentErrorToast(
+            `Cashier has already processed the order. Current status is ${response.orderStatus}`
+          );
+        }
+      },
+      (error: any) => {
+        if (error.status === 404) {
+          this.presentErrorToast('No order found to send to cashier');
+        } else {
+          console.error('getOrder error', error);
+          this.presentErrorToast('Error checking order status');
+        }
+      }
+    );
   }
 }
