@@ -238,12 +238,10 @@ export class CartPage implements OnInit {
   }
 
   remove(product: any) {
-    this.cartList = this._global.removeQuantity(
-      product,
-      this.userDetails.id
-    ).list;
+    this.cartList = this._global.removeQuantity(product, this.userDetails.id, this.userDetails.org_id, this.userDetails.branch_id).list;
     this.cartSummary = this._global.getCartSummary();
     this.calculateChairTableTotal();
+    this.presentSuccessToast('Updated the cart successfully');
   }
 
   add(product: any) {

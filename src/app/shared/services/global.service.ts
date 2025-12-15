@@ -207,12 +207,18 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
-  removeQuantity(product: any, userId: any) {
+  removeQuantity(product: any, userId: any, orgId, branchId) {
     if (this.selectedTable?.uuid && this.restauMode === 1) {
       if (this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity > 1) {
         this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity -= 1;
       } else {
         delete this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id];
+
+        // Call backend delete for this product
+        this._user.deleteOrderProduct(orgId, branchId, this.selectedChair.id, product.id)
+        .subscribe((response: any) => {
+          console.log('deleteOrder response', response);
+        });
       }
       this.storeCart(userId);
     } else {
@@ -220,11 +226,16 @@ export class GlobalService {
         this.cartData[userId][product.id].quantity -= 1;
       } else {
         delete this.cartData[userId][product.id];
+
+        // Call backend delete for this product
+        this._user.deleteOrderProduct(orgId, branchId, this.selectedChair.id, product.id)
+        .subscribe((response: any) => {
+          console.log('deleteOrder response', response);
+        });
       }
       this.storeCart(userId);
     }
 
-    
     return {list: this.cartList, data: this.cartData};
   }
 

@@ -265,6 +265,11 @@ export class UserService {
     return this._http.delete(url);
   }
  
+  deleteOrderProduct(orgId, branchId, chairId, productId) {
+    const url = `${environment.restApiHost}${endpoints.deleteOrderProduct}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}&shopProductId=${productId}`;
+    return this._http.delete(url);
+  }
+ 
   getOrderStatuses(orgId, branchId, chairId) {
     const url = `${environment.restApiHost}${endpoints.getOrderStatuses}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}`;
     return this._http.get(url);
