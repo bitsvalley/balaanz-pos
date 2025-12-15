@@ -41,23 +41,25 @@ export class CheckoutPage implements OnInit {
       isSelected: false,
       placeholder: null,
       navVal: 'CASH'
-    }, 
-    {
-      title: "MOMO",
-      id: 2,
-      userInput: true,
-      isSelected: false,
-      placeholder: "Enter MOMO Number",
-      navVal: 'MOMO'
-    },
-    {
-      title: "BALAANZ ACCOUNT",
-      id: 3,
-      userInput: true,
-      isSelected: false,
-      placeholder: "Enter Account Number",
-      navVal: 'ACCOUNT'
-    }
+    } 
+
+    //TODO: enable when other payment methods are supported
+    // {
+    //   title: "MOMO",
+    //   id: 2,
+    //   userInput: true,
+    //   isSelected: false,
+    //   placeholder: "Enter MOMO Number",
+    //   navVal: 'MOMO'
+    // },
+    // {
+    //   title: "BALAANZ ACCOUNT",
+    //   id: 3,
+    //   userInput: true,
+    //   isSelected: false,
+    //   placeholder: "Enter Account Number",
+    //   navVal: 'ACCOUNT'
+    // }
   ]
 
 
@@ -210,7 +212,11 @@ export class CheckoutPage implements OnInit {
   }
 
   processPayment() {
-    console.log(this.paymentForm.value);
+    if (this.paymentForm.value.method == "") {
+      this._toastr.error("Please select a valid payment method");
+
+      return;
+    }
     
     if (this.discount > this.cartSummary.totalAmount)  {
       return;

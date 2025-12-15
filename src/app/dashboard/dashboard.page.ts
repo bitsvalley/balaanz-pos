@@ -66,7 +66,6 @@ export class DashboardPage implements OnDestroy {
     this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
       console.log(response);
-      console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     });
     
   }
