@@ -274,28 +274,65 @@ export class DashboardPage implements OnDestroy {
 
   }
 
-  addToCart(product) {
+  async presentErrorToast(message: string) {
+    const toast = await this.toaster.error(message);
+  }
 
+  addToCart(product) {
     if (!this.selectedTabel?.uuid || !this.selectedChair?.uuid) {
-      this.toaster.error('Please select a table and chair before adding products to the cart.', 'Table/Chair Not Selected', {
-        timeOut: 3000,
-      });
-      return;
+      this.presentErrorToast('Please select a table and chair before adding products to the cart.');
     }
-    
-      this.selectedProductIds.push(product.id);
-    
+
+    this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+    .subscribe(
+      (response: any) => {
+        console.log("getOrderStatus response:", response);
+
+        if (response.includes('CASHIER')) {
+          this.presentErrorToast('Order(s) already sent to the cashier. Cannot add more products.');
+          return;
+        }
+
+        if (response.includes('SIGNED')) {
+          this.presentErrorToast('Order(s) already signed by cashier. Cannot add more products.');
+          return;
+        }
+
+        if (response.length === 1 && response.includes('PLACED')) {
+          this.performAddToCart(product);
+          return;
+        }
+
+        this.presentErrorToast(`Unknown status(es): ${response.join(', ')}. Cannot add products.`);
+      },
+      (error: any) => {
+        if (error.status === 404) {
+          this.performAddToCart(product);
+          return;
+        }
+
+        console.error('getOrderStatus error', error);
+        this.presentErrorToast('Error checking order status. Cannot add product.');
+      }
+    );
+  }
+
+  // helper method: encapsulates the repeated add-to-cart logic
+  private performAddToCart(product: any) {
+    this.selectedProductIds.push(product.id);
+
     this.cartAnimation = false;
     setTimeout(() => {
       this.cartList = this._global.addToCart(product, this.userDetails.id).list;
       this.cartAnimation = true;
 
-      this.toaster.success(`${product.name} has been added to your cart!`, 'Product Added', {
-        timeOut: 3000, 
-      });
+      this.toaster.success(
+        `${product.name} has been added to your cart!`,
+        'Product Added',
+        { timeOut: 3000 }
+      );
     }, 0);
   }
-
   openCart() {
     this._nav.navigateForward("cart");
   }
