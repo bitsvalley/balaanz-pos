@@ -200,9 +200,31 @@ export class CartPage implements OnInit {
   }
 
   openCheckout() {
-    if (this.cartList.length) {
-      this._nav.navigateForward('checkout');
-    }
+    this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+    .subscribe(
+      (response: any) => {
+        console.log("getOrderStatus response:", response);
+        if (response.length === 1 && response.includes('SIGNED')) {
+          if (this.cartList.length) {
+            this._nav.navigateForward('checkout');
+          }
+
+          return;
+        }
+
+        this.presentErrorToast(`All order(s) must be signed by the Cashier before checkout`);
+      },
+      (error: any) => {
+        if (error.status === 404) {
+          this.presentErrorToast(`Please save the order(s) before checkout`);
+          
+          return;
+        }
+
+        console.error('getOrderStatus error', error);
+        this.presentErrorToast('Error checking order status. Cannot checkout.');
+      }
+    );
   }
 
   ionViewWillLeave() {
