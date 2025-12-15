@@ -379,7 +379,7 @@ sendToCashier() {
       },
       (error: any) => {
         if (error.status === 404) {
-          this.presentErrorToast('No order(s) found to send to cashier');
+          this.presentErrorToast('Please save order(s) before sending to the Cashier');
         } else {
           console.error('getOrder error', error);
           this.presentErrorToast('Error checking order(s) status');
