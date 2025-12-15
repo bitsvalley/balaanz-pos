@@ -258,7 +258,7 @@ saveCart() {
     return;
   }
 
-  this._user.getOrderStatus(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+  this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
   .subscribe(
     (response: any) => {
       console.log("getOrderStatus response:", response);
@@ -328,17 +328,8 @@ private doSaveCart() {
   );
 }
 
-
-
-
-
-
-
-
-
-
 sendToCashier() {
-  this._user.getOrderStatus(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+  this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
     .subscribe(
       (response: any) => {
         console.log("getOrder response:", response);
