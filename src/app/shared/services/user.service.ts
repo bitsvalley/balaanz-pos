@@ -264,4 +264,9 @@ export class UserService {
     const url = `${environment.restApiHost}${endpoints.deleteOrder}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}`;
     return this._http.delete(url);
   }
+ 
+  getOrderStatus(orgId, branchId, chairId) {
+    const url = `${environment.restApiHost}${endpoints.getOrderStatus}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}`;
+    return this._http.get(url);
+  }  
 }

@@ -6,7 +6,7 @@ import { AccountService } from 'src/app/shared/services/account.service';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { environment } from 'src/environments/environment';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 import { SunmiPrinterService } from '../shared/services/sunmi.printer';
 import { UserService } from 'src/app/shared/services/user.service';
 import * as moment from 'moment';
@@ -251,86 +251,56 @@ export class CartPage implements OnInit {
     });
   }
 
-    saveCartold() {
-    if (!this.cartList || this.cartList.length === 0) {
-      this.presentErrorToast('No items in cart to save.');
-      return;
-    }
-
-    console.log(this.selectedChair);
-
-    let pending = this.cartList.length;
-    this.cartList.forEach((product: any) => {
-      const payload = {
-        orgId: this.userDetails.org_id,
-        branchId: this.userDetails.branch_id,
-        tableChairUserId: this.selectedChair.id,
-        shopProductId: product.id,
-        unitPrice: product.unitPrice,
-        quantity: product.quantity,
-        createdById: this.userDetails.id,
-        lastUpdatedById: this.userDetails.id,
-      };
-
-      console.log('saving cart item payload', payload);
-      this._user.saveCart(payload).subscribe(
-        (response: any) => {
-          console.log('saveCart response', response);
-          pending--;
-          //if (pending === 0) {
-            this.getOrder(product.id);
-          //}
-        },
-        (error: any) => {
-          console.error('saveCart error', error);
-          pending--;
-          //if (pending === 0) {
-            this.getOrder(product.id);
-          //}
-        }
-      );
-    });
-  }
-
-  getOrder(productId) {
-    console.log("getOrder - productId: " + productId);
-
-    this._user
-      .getOrder(
-        this.userDetails.org_id,
-        this.userDetails.branch_id,
-        this.selectedChair.id,
-        productId
-      )
-      .subscribe((response: any) => {
-        console.log(response);
-      });
-  }
-
-  sendToCashier() {
-    this._user
-      .sendToCashier(
-        this.userDetails.org_id,
-        this.userDetails.branch_id,
-        this.selectedChair.id,
-        this.userDetails.id
-      )
-      .subscribe((response: any) => {
-        console.log(response);
-      });
-
-      this.presentSuccessToast('Successfully sent order to the Cashier');
-  }
-
 saveCart() {
   if (!this.cartList || this.cartList.length === 0) {
     this.presentErrorToast('No items in cart to save.');
+
     return;
   }
 
-  console.log(this.selectedChair);
+  this._user.getOrderStatus(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+  .subscribe(
+    (response: any) => {
+      console.log("getOrderStatus response:", response);
 
-  this.cartList.forEach((product: any) => {
+      if (response.includes('CASHIER')) {
+        this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
+        
+        return;
+      }
+
+      if (response.includes('SIGNED')) {
+        this.presentErrorToast(`Order(s) already signed by cashier. Please print receipt and checkout.`);
+        
+        return;
+      }
+
+      if (response.includes('PLACED')) {
+        // Safe to update existing order
+        console.log('Order(s) already placed, updating...');
+        this.doSaveCart();
+        
+        return;
+      }
+
+      // Unknown status fallback
+      this.presentErrorToast(`Unknown status detected`);
+    },
+    (error: any) => {
+      if (error.status === 404) {
+        // No order found → safe to create new one
+        console.log('No existing order found, creating new one');
+        this.doSaveCart();
+      } else {
+        console.error('getOrderStatus error', error);
+        this.presentErrorToast('Unknown error has occurred while checking the status');
+      }
+    }
+  );
+}
+
+private doSaveCart() {
+  const requests = this.cartList.map((product: any) => {
     const payload = {
       orgId: this.userDetails.org_id,
       branchId: this.userDetails.branch_id,
@@ -343,100 +313,63 @@ saveCart() {
     };
 
     console.log('saving cart item payload', payload);
-
-    // Check order status first
-    this._user
-      .getOrder(
-        this.userDetails.org_id,
-        this.userDetails.branch_id,
-        this.selectedChair.id,
-        product.id
-      )
-      .subscribe(
-        (response: any) => {
-          console.log("getOrder response:", response);
-
-          if (response.orderStatus === 'CASHIER' || response.orderStatus === 'SIGNED') {
-            this.presentErrorToast('Cannot save the order as the cashier has already processed the order');
-            return;
-          }
-
-          // Safe to save
-          this.doSaveCart(payload);
-        },
-        (error: any) => {
-          if (error.status === 404) {
-            // Order not found → safe to create new one
-            console.log('Order not found, creating new one');
-            this.doSaveCart(payload);
-          } else {
-            console.error('getOrder error', error);
-            this.presentErrorToast('Error checking order status');
-          }
-        }
-      );
+    return this._user.saveCart(payload);
   });
-}
 
-// helper function: single place where saveCart is actually called
-private doSaveCart(payload: any) {
-  this._user.saveCart(payload).subscribe(
-    (saveResponse: any) => {
-      console.log('saveCart response', saveResponse);
-            
-      this.presentSuccessToast('Cart saved successfully');
+  forkJoin(requests).subscribe(
+    (responses: any[]) => {
+      console.log('All saveCart responses', responses);
+      this.presentSuccessToast('All cart order(s) saved successfully');
     },
-    (saveError: any) => {
-      console.error('saveCart error', saveError);
-      this.presentErrorToast('Error saving cart');
+    (error: any) => {
+      console.error('Error saving cart', error);
+      this.presentErrorToast('Unknown error has occurred while saving the cart items');
     }
   );
 }
 
-//TODO: this method is not in use as it has to be adapted
-sendToCashier_new() {
-  this._user
-    .getOrder(
-      this.userDetails.org_id,
-      this.userDetails.branch_id,
-      this.selectedChair.id,
-      /* if you want to send all products, you may need to loop here */
-      null // or productId if required
-    )
+
+
+
+
+
+
+
+
+
+sendToCashier() {
+  this._user.getOrderStatus(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
     .subscribe(
       (response: any) => {
         console.log("getOrder response:", response);
 
-        if (response.orderStatus === 'PLACED') {
-          this._user
-            .sendToCashier(
-              this.userDetails.org_id,
-              this.userDetails.branch_id,
-              this.selectedChair.id,
-              this.userDetails.id
-            )
+        if (response.includes('PLACED')) {
+          this._user.sendToCashier(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id, this.userDetails.id)
             .subscribe(
               (cashierResponse: any) => {
                 console.log(cashierResponse);
-                this.presentSuccessToast('Successfully sent order to the Cashier');
+                this.presentSuccessToast('Order(s) sent to cashier. Proceed with payment.');
               },
               (error: any) => {
                 console.error('sendToCashier error', error);
-                this.presentErrorToast('Error sending order to Cashier');
+                this.presentErrorToast('Error sending order(s) to Cashier');
               }
             );
+        } else if (response.includes('CASHIER')) {
+          this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
+        } else if (response.includes('SIGNED')) {
+          this.presentErrorToast(`Order(s) already signed by cashier. Please print receipt and checkout.`);
         } else {
-          this.presentErrorToast(
-            `Cashier has already processed the order. Current status is ${response.orderStatus}`
-          );
+          console.log("Unknown status detected - " + response);
+          this.presentErrorToast(`Unknown status detected.`);
         }
       },
       (error: any) => {
         if (error.status === 404) {
-          this.presentErrorToast('No order found to send to cashier');
+          this.presentErrorToast('No order(s) found to send to cashier');
         } else {
           console.error('getOrder error', error);
-          this.presentErrorToast('Error checking order status');
+          this.presentErrorToast('Error checking order(s) status');
         }
       }
     );
