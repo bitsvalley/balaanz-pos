@@ -208,6 +208,7 @@ export class GlobalService {
   }
 
   removeQuantity(product: any, userId: any, orgId, branchId) {
+    // caller must check the order status before calling this method
     if (this.selectedTable?.uuid && this.restauMode === 1) {
       if (this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity > 1) {
         this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity -= 1;

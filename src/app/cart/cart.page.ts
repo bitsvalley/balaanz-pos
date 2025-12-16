@@ -238,16 +238,88 @@ export class CartPage implements OnInit {
   }
 
   remove(product: any) {
-    this.cartList = this._global.removeQuantity(product, this.userDetails.id, this.userDetails.org_id, this.userDetails.branch_id).list;
-    this.cartSummary = this._global.getCartSummary();
-    this.calculateChairTableTotal();
-    this.presentSuccessToast('Updated the cart successfully');
+    this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+    .subscribe(
+      (response: any) => {
+        console.log("getOrderStatus response:", response);
+
+        if (response.includes('CASHIER')) {
+          this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
+          
+          return;
+        }
+
+        if (response.includes('SIGNED')) {
+          this.presentErrorToast(`Order(s) already signed by cashier. Proceed with the checkout.`);
+          
+          return;
+        }
+
+        if (response.includes('PLACED')) {
+          this.cartList = this._global.removeQuantity(product, this.userDetails.id, this.userDetails.org_id, this.userDetails.branch_id).list;
+          this.cartSummary = this._global.getCartSummary();
+          this.calculateChairTableTotal();
+          this.presentSuccessToast('Updated the cart successfully');
+          
+          return;
+        }
+
+        // Unknown status fallback
+        this.presentErrorToast(`Unknown status detected`);
+      },
+      (error: any) => {
+        if (error.status === 404) {
+          // No order found → safe to create new one
+          console.log('No existing order found, creating new one');
+          this.doSaveCart();
+        } else {
+          console.error('getOrderStatus error', error);
+          this.presentErrorToast('Unknown error has occurred while checking the status');
+        }
+      }
+    );
   }
 
   add(product: any) {
-    this.cartList = this._global.addQuantity(product, this.userDetails.id).list;
-    this.cartSummary = this._global.getCartSummary();
-    this.calculateChairTableTotal();
+    this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+    .subscribe(
+      (response: any) => {
+        console.log("getOrderStatus response:", response);
+
+        if (response.includes('CASHIER')) {
+          this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
+          
+          return;
+        }
+
+        if (response.includes('SIGNED')) {
+          this.presentErrorToast(`Order(s) already signed by cashier. Proceed with the checkout.`);
+          
+          return;
+        }
+
+        if (response.includes('PLACED')) {
+          this.cartList = this._global.addQuantity(product, this.userDetails.id).list;
+          this.cartSummary = this._global.getCartSummary();
+          this.calculateChairTableTotal();
+          
+          return;
+        }
+
+        // Unknown status fallback
+        this.presentErrorToast(`Unknown status detected`);
+      },
+      (error: any) => {
+        if (error.status === 404) {
+          // No order found → safe to create new one
+          console.log('No existing order found, creating new one');
+          this.doSaveCart();
+        } else {
+          console.error('getOrderStatus error', error);
+          this.presentErrorToast('Unknown error has occurred while checking the status');
+        }
+      }
+    );
   }
 
   handleRefresh(event: any) {}
@@ -290,7 +362,7 @@ saveCart() {
       }
 
       if (response.includes('SIGNED')) {
-        this.presentErrorToast(`Order(s) already signed by cashier. Please print receipt and checkout.`);
+        this.presentErrorToast(`Order(s) already signed by cashier. Proceed with the checkout.`);
         
         return;
       }
@@ -369,7 +441,7 @@ sendToCashier() {
         } else if (response.includes('CASHIER')) {
           this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
         } else if (response.includes('SIGNED')) {
-          this.presentErrorToast(`Order(s) already signed by cashier. Please print receipt and checkout.`);
+          this.presentErrorToast(`Order(s) already signed by cashier. Proceed with the checkout.`);
         } else {
           console.log("Unknown status detected - " + response);
           this.presentErrorToast(`Unknown status detected.`);
