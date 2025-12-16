@@ -322,7 +322,7 @@ export class DashboardPage implements OnDestroy {
 
     this.cartAnimation = false;
     setTimeout(() => {
-      this.cartList = this._global.addToCart(product, this.userDetails.id).list;
+      this.cartList = this._global.addToCart(product, this.userDetails).list;
       this.cartAnimation = true;
 
       this.toaster.success(

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserService } from 'src/app/shared/services/user.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin } from 'rxjs';
 // import * as CryptoJS from 'crypto-js';
 import { environment } from 'src/environments/environment';
 import * as moment from 'moment';
@@ -176,14 +176,24 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
-  addToCart(product: any, userId: any) {
+  addToCart(product: any, userDetails: any) {
+    const userId = userDetails.id;
+
     if (this.selectedTable?.uuid && this.restauMode === 1) {
+      let quantity = 1;
+
       if (this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id]) {
-        this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity += 1;
+        quantity = this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity;
+        quantity += 1;
+
+        this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity = quantity;
       } else {
+
         this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id] = {...product, quantity: 1, orderStatus: "PLACED"}
       }
       this.storeCart(userId);
+
+      this.doSaveCart(product, userDetails, quantity);
     } else {
       if (this.cartData[userId][product.id]) {
         this.cartData[userId][product.id].quantity += 1;
@@ -196,45 +206,74 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
-  addQuantity(product: any, userId: any) {
+  doSaveCart(product, userDetails, newQuantity) {
+    console.log('doSaveCart called');
+
+    const payload = {
+      orgId: userDetails.org_id,
+      branchId: userDetails.branch_id,
+      tableChairUserId: this.selectedChair.id,
+      shopProductId: product.id,
+      unitPrice: product.unitPrice,
+      quantity: newQuantity,
+      createdById: userDetails.id,
+      lastUpdatedById: userDetails.id,
+    };
+
+    console.log('saving cart item payload', payload);
+    this._user.saveCart(payload).subscribe((response: any) => {
+          console.log('saved order from the new method', response);
+        });;
+  }
+
+  addQuantity(product: any, userDetails: any) {
+    const userId = userDetails.id;
+
     if (this.selectedTable?.uuid && this.restauMode === 1) {
-      this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity += 1;
+      let currentQuantity = this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity;
+      currentQuantity += 1;
+
+      this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity = currentQuantity;
+      
+      this.doSaveCart(product, userDetails, currentQuantity);
       this.storeCart(userId);
     } else {
       this.cartData[userId][product.id].quantity += 1;
       this.storeCart(userId);
     }
+
+
     return {list: this.cartList, data: this.cartData};
   }
 
-  removeQuantity(product: any, userId: any, orgId, branchId) {
+  removeQuantity(product: any, userDetails: any) {
     // caller must check the order status before calling this method
     if (this.selectedTable?.uuid && this.restauMode === 1) {
-      if (this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity > 1) {
-        this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity -= 1;
-      } else {
-        delete this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][product.id];
+      if (this.cartData[userDetails.id][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity > 1) {
+        let currentQuantity = this.cartData[userDetails.id][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity;
+        
+        currentQuantity--;
 
+        this.cartData[userDetails.id][this.selectedTable.uuid][this.selectedChair.uuid][product.id].quantity = currentQuantity;
+
+        this.doSaveCart(product, userDetails, currentQuantity);
+      } else {
+        delete this.cartData[userDetails.id][this.selectedTable.uuid][this.selectedChair.uuid][product.id];
         // Call backend delete for this product
-        this._user.deleteOrderProduct(orgId, branchId, this.selectedChair.id, product.id)
+        this._user.deleteOrderProduct(userDetails.org_id, userDetails.branch_id, this.selectedChair.id, product.id)
         .subscribe((response: any) => {
           console.log('deleteOrder response', response);
         });
       }
-      this.storeCart(userId);
+      this.storeCart(userDetails.id);
     } else {
-      if (this.cartData[userId][product.id].quantity > 1) {
-        this.cartData[userId][product.id].quantity -= 1;
+      if (this.cartData[userDetails.id][product.id].quantity > 1) {
+        this.cartData[userDetails.id][product.id].quantity -= 1;
       } else {
-        delete this.cartData[userId][product.id];
-
-        // Call backend delete for this product
-        this._user.deleteOrderProduct(orgId, branchId, this.selectedChair.id, product.id)
-        .subscribe((response: any) => {
-          console.log('deleteOrder response', response);
-        });
+        delete this.cartData[userDetails.id][product.id];
       }
-      this.storeCart(userId);
+
+      this.storeCart(userDetails.id);
     }
 
     return {list: this.cartList, data: this.cartData};

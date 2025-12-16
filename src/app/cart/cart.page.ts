@@ -256,7 +256,7 @@ export class CartPage implements OnInit {
         }
 
         if (response.includes('PLACED')) {
-          this.cartList = this._global.removeQuantity(product, this.userDetails.id, this.userDetails.org_id, this.userDetails.branch_id).list;
+          this.cartList = this._global.removeQuantity(product, this.userDetails).list;
           this.cartSummary = this._global.getCartSummary();
           this.calculateChairTableTotal();
           this.presentSuccessToast('Updated the cart successfully');
@@ -299,7 +299,7 @@ export class CartPage implements OnInit {
         }
 
         if (response.includes('PLACED')) {
-          this.cartList = this._global.addQuantity(product, this.userDetails.id).list;
+          this.cartList = this._global.addQuantity(product, this.userDetails).list;
           this.cartSummary = this._global.getCartSummary();
           this.calculateChairTableTotal();
           
