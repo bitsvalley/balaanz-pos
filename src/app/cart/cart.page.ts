@@ -215,12 +215,6 @@ export class CartPage implements OnInit {
         this.presentErrorToast(`All order(s) must be signed by the Cashier before checkout`);
       },
       (error: any) => {
-        if (error.status === 404) {
-          this.presentErrorToast(`Please save the order(s) before checkout`);
-          
-          return;
-        }
-
         console.error('getOrderStatus error', error);
         this.presentErrorToast('Error checking order status. Cannot checkout.');
       }
@@ -268,14 +262,8 @@ export class CartPage implements OnInit {
         this.presentErrorToast(`Unknown status detected`);
       },
       (error: any) => {
-        if (error.status === 404) {
-          // No order found → safe to create new one
-          console.log('No existing order found, creating new one');
-          this.doSaveCart();
-        } else {
-          console.error('getOrderStatus error', error);
-          this.presentErrorToast('Unknown error has occurred while checking the status');
-        }
+        console.error('getOrderStatus error', error);
+        this.presentErrorToast('Unknown error has occurred while checking the status');
       }
     );
   }
@@ -314,10 +302,13 @@ export class CartPage implements OnInit {
           // No order found → safe to create new one
           console.log('No existing order found, creating new one');
           this.doSaveCart();
-        } else {
-          console.error('getOrderStatus error', error);
-          this.presentErrorToast('Unknown error has occurred while checking the status');
-        }
+
+          return;
+        } 
+        
+        console.error('getOrderStatus error', error);
+        this.presentErrorToast('Error checking order status. Cannot add a product.');
+        
       }
     );
   }
@@ -383,10 +374,12 @@ saveCart() {
         // No order found → safe to create new one
         console.log('No existing order found, creating new one');
         this.doSaveCart();
-      } else {
-        console.error('getOrderStatus error', error);
-        this.presentErrorToast('Unknown error has occurred while checking the status');
+
+        return;
       }
+      
+      console.error('getOrderStatus error', error);
+      this.presentErrorToast('Error checking order status. Cannot save cart.');
     }
   );
 }
@@ -452,7 +445,7 @@ sendToCashier() {
           this.presentErrorToast('Please save order(s) before sending to the Cashier');
         } else {
           console.error('getOrder error', error);
-          this.presentErrorToast('Error checking order(s) status');
+          this.presentErrorToast('Error checking order status. Cannot send order to Cashier.');
         }
       }
     );
