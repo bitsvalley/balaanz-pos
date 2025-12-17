@@ -263,7 +263,7 @@ export class CartPage implements OnInit {
       },
       (error: any) => {
         console.error('getOrderStatus error', error);
-        this.presentErrorToast('Unknown error has occurred while checking the status');
+        this.presentErrorToast('Error checking order status. Cannot remove a product.');
       }
     );
   }
@@ -290,6 +290,7 @@ export class CartPage implements OnInit {
           this.cartList = this._global.addQuantity(product, this.userDetails).list;
           this.cartSummary = this._global.getCartSummary();
           this.calculateChairTableTotal();
+          this.presentSuccessToast('Updated the cart successfully');
           
           return;
         }
@@ -297,18 +298,9 @@ export class CartPage implements OnInit {
         // Unknown status fallback
         this.presentErrorToast(`Unknown status detected`);
       },
-      (error: any) => {
-        if (error.status === 404) {
-          // No order found → safe to create new one
-          console.log('No existing order found, creating new one');
-          this.doSaveCart();
-
-          return;
-        } 
-        
+      (error: any) => {        
         console.error('getOrderStatus error', error);
         this.presentErrorToast('Error checking order status. Cannot add a product.');
-        
       }
     );
   }
@@ -441,12 +433,8 @@ sendToCashier() {
         }
       },
       (error: any) => {
-        if (error.status === 404) {
-          this.presentErrorToast('Please save order(s) before sending to the Cashier');
-        } else {
-          console.error('getOrder error', error);
-          this.presentErrorToast('Error checking order status. Cannot send order to Cashier.');
-        }
+        console.error('getOrder error', error);
+        this.presentErrorToast('Error checking order status. Cannot send order to Cashier.');
       }
     );
   }
