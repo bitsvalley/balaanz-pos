@@ -255,8 +255,8 @@ export class UserService {
     return this._http.post(url, '');
   }
 
-  getAllOrder(orgId, branchId) {
-    const url = `${environment.restApiHost}${endpoints.getAllOrders}orgId=${orgId}&branchId=${branchId}`;
+  getAllActiveOrderProductDtos(orgId, branchId, userId) {
+    const url = `${environment.restApiHost}${endpoints.getAllActiveOrderProductDtos}orgId=${orgId}&branchId=${branchId}&userId=${userId}`;
     return this._http.get(url);
   }
 

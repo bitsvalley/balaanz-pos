@@ -76,10 +76,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.loadTableDataFromLocalStorage();
-    // if (this.runTimeProps) {
-    //   this.getTablesFromServer();
-    // }
+    // commented code was removed! Not sure if this inbuilt method can be removed
   }
 
   ionViewWillEnter() {
@@ -124,15 +121,9 @@ export class TableComponent implements OnInit, OnDestroy {
     this.apiSubscription.add(tablesApi);
   }
 
-  getServerCart() {
-    this._user.getAllOrder(this.userDetails.org_id, this.userDetails.branch_id).subscribe((response: any) => {
-      console.log(response);
-    })
-  }
-
   calculateChairTableTotal() {
     const cart = JSON.parse(localStorage.getItem('cart') || 'null');
-    console.log(cart);
+
     this.tableData.forEach((tbl: any) => {
       tbl.total = 0;
       tbl.chairs.forEach((chair: any) => {
@@ -146,9 +137,6 @@ export class TableComponent implements OnInit, OnDestroy {
         }
       });
     });
-    
-    //TODO: the server cart was called but was never user to synchronize the cart.
-    //this.getServerCart();
   }
   // loadTableDataFromLocalStorage() {
   //   const storedTables = localStorage.getItem('tables');
@@ -190,13 +178,12 @@ export class TableComponent implements OnInit, OnDestroy {
 
   toggleChairStatus(chair: Chair, table: Table) {
     chair.status = chair.status === 'open' ? 'reserved' : 'open';
-    console.log(table.chairs);
 
     if (this.checkIfAllChairsReserved(table)) {
-      console.log('All chairs reserved, setting table to reserved.');
+      // All chairs reserved, setting table to reserved
       table.status = 'reserved';
     } else {
-      console.log('Some chairs are still open, table stays open.');
+      // Some chairs are still open, table stays open
       table.status = 'open';
     }
 

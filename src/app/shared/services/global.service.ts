@@ -84,17 +84,15 @@ export class GlobalService {
       }
     });
     return obj;
-  }
-
-  
+  }  
 
   async getCurrentLocation () {
     return new Promise(async(resolve, reject) => {
       let permission = await Geolocation.checkPermissions();
-      // console.log(permission);
+
       if (permission?.location === "denied") {
         permission = await Geolocation.requestPermissions();
-        // console.log(permission);
+
         if (permission?.location === "denied") {
           this._toast.error("App required location access to perform transactions.", "Location Permission Denied!");
           resolve({});
@@ -102,10 +100,8 @@ export class GlobalService {
         }
       }
       const location = await Geolocation.getCurrentPosition();
-      // console.log(location);
       resolve(JSON.parse(JSON.stringify(location.coords)));
     })
-    
   };
 
   storeCart(userId: any) {
@@ -176,6 +172,27 @@ export class GlobalService {
     return {list: this.cartList, data: this.cartData};
   }
 
+  buildCart(allActiveOrderProductDtos: Array<any>, userDetails: any) {
+    const userId = userDetails.id;
+    this.cartData[userId] = {};
+
+    allActiveOrderProductDtos.forEach(activeOrderProductDto => {
+      this.cartList.push(activeOrderProductDto);
+
+      if (!(activeOrderProductDto.tableUserUuid in this.cartData[userId])) {
+        this.cartData[userId][activeOrderProductDto.tableUserUuid] = {};
+      }
+
+      if (!(activeOrderProductDto.tableChairUserUuid in this.cartData[userId][activeOrderProductDto.tableUserUuid])) {
+        this.cartData[userId][activeOrderProductDto.tableUserUuid][activeOrderProductDto.tableChairUserUuid] = {};
+      }
+
+      this.cartData[userId][activeOrderProductDto.tableUserUuid][activeOrderProductDto.tableChairUserUuid][activeOrderProductDto.id] = activeOrderProductDto;
+    });
+
+    this.storeCart(userId);
+  }
+
   addToCart(product: any, userDetails: any) {
     const userId = userDetails.id;
 
@@ -207,8 +224,6 @@ export class GlobalService {
   }
 
   doSaveCart(product, userDetails, newQuantity) {
-    console.log('doSaveCart called');
-
     const payload = {
       orgId: userDetails.org_id,
       branchId: userDetails.branch_id,
@@ -220,9 +235,8 @@ export class GlobalService {
       lastUpdatedById: userDetails.id,
     };
 
-    console.log('saving cart item payload', payload);
     this._user.saveCart(payload).subscribe((response: any) => {
-          console.log('saved order from the new method', response);
+          // TODO: check the response for errors
         });;
   }
 
@@ -262,7 +276,7 @@ export class GlobalService {
         // Call backend delete for this product
         this._user.deleteOrderProduct(userDetails.org_id, userDetails.branch_id, this.selectedChair.id, product.id)
         .subscribe((response: any) => {
-          console.log('deleteOrder response', response);
+          // TODO: check the response for errors
         });
       }
       this.storeCart(userDetails.id);

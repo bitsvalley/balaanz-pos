@@ -80,18 +80,31 @@ export class HomePage implements OnDestroy {
     const loginApi = this._user.login(this.loginFrm.value).subscribe((response: any) => {
       this._global.setLoader(false);
       if (response.status === 'success') {
-        if (!localStorage.getItem('cart'))  {
-          localStorage.setItem('cart', JSON.stringify({}));
-        }
+        //initialize the cart
+        localStorage.setItem('cart', JSON.stringify({}));
         localStorage.setItem('token', response.token.refresh.token);
-        console.log(response);
         const userSub = this._account.userDetailsObservable.subscribe((response: any) => {
           this.userDetails = response;
+
+          this._user.getAllActiveOrderProductDtos(this.userDetails.org_id, this.userDetails.branch_id, this.userDetails.id)
+          .subscribe(
+            (response: any) => {
+              if (response.length > 0) {
+                this._global.buildCart(response, this.userDetails);
+              }
+            },
+            (error: any) => {
+              this.toaster.error("Failed to synchronize the active order(s)", "Synchronization Failed!", {
+                timeOut: 5000,
+              });
+            }
+          );
+          
           setTimeout(() => {
             this.goToDashboard();
           },0);
-          
         });
+        
         this.apiSubscription.add(userSub);
       } else if (response.status === 'failed') {
         if (response.message === 'User is not active') {
@@ -121,7 +134,6 @@ export class HomePage implements OnDestroy {
   }
 
   onFocus(fieldName: any) {
-    // console.log(fieldName);
     setTimeout(() => {
       this.scrollToLoginButton();
     }, 100);

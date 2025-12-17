@@ -39,7 +39,7 @@ export const endpoints = {
   saveOrder: 'api/v1/activeOrders/createOrUpdate',
   getOrder: 'api/v1/activeOrders/activeOrder?',
   sendToCashier: 'api/v1/activeOrders/sendToCashier?',
-  getAllOrders: 'api/v1/activeOrders/allActiveOrders?',
+  getAllActiveOrderProductDtos: 'api/v1/activeOrders/allActiveOrderProductDtos?',
   deleteOrder: 'api/v1/activeOrders/deleteActiveOrder?',
   deleteOrderProduct: 'api/v1/activeOrders/deleteActiveOrderProduct?',
   getOrderStatuses: 'api/v1/activeOrders/activeOrderStatuses?',
