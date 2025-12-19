@@ -23,11 +23,9 @@ export class ReceiptPage implements OnInit {
   public restauMode: number = environment.restauMode;
   public cartList: any = [];
   public runTimeProps: any = null;
-  public cartSummary: any =  {};
   public apiSubscription: any = new Subscription();
   public currentDate: any = moment().format('DD/MMM/YYYY HH:mm:ss');
   public receiptCartList: any = [];
-  public receiptCartSummary: any = [];
   public requestId: any = null;
   public paymentData: any = this._global.getPaymentData();
   public businessName: string = '';
@@ -58,13 +56,28 @@ export class ReceiptPage implements OnInit {
       this._global.initCart(this.userDetails.id);
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       const selectedChair = this.selectedChair || {};
+
+      let selectChairIds: number[] = [selectedChair.id];
+
       if (billChair.length > 1 && this.restauMode === 1) {
-        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
-        this.cartSummary =  this._global.getCartSummary(this.cartList);
+        selectChairIds = billChair.map(item => item.id);
+        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);        
       } else {
         this.cartList = this._global.retriveCart(this.userDetails.id).list;
-        this.cartSummary =  this._global.getCartSummary();
       }
+      
+      this._user.getActiveOrderPaymentDetails(this.userDetails.org_id, this.userDetails.branch_id, selectChairIds)          
+      .subscribe(
+        (response: any) => {
+          // enriching the payment data
+          this.paymentData.subtotalAmount = response.subtotal;
+          this.paymentData.discount = response.discount;
+          this.paymentData.totalAmount = response.total;
+        },
+        (error: any) => {
+          this._toastr.error("Payment details cannot be retrieved");
+        }
+      );
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -82,7 +95,6 @@ export class ReceiptPage implements OnInit {
       const telProp = response.find(item => item.property_name === 'telephone1');
       this.telephone = telProp?.property_value || '';
     });
-
   }
 
   ngOnInit() {
@@ -93,10 +105,11 @@ export class ReceiptPage implements OnInit {
     if (this.cartList.length) {
       this._toastr.success("Payment has been successfully done.", "Payment Successful");
       this.receiptCartList = [...this.cartList];
-      this.receiptCartSummary = {...this.cartSummary};
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+
       if (billChair.length > 1 && this.restauMode === 1) {
         this._global.emptyCart(this.userDetails.id, billChair);
+
         billChair.forEach((chair) => {
           this.deleteOrder(chair.id);
         });
@@ -125,7 +138,6 @@ export class ReceiptPage implements OnInit {
     this.clearCart();
 
       this._account.runTimePropObservable.subscribe((response: any) => {
-        console.log("Runtime Props Received:", response);
         this.runTimeProps = response;
       });
   }
@@ -137,6 +149,7 @@ export class ReceiptPage implements OnInit {
 
   back() {
     this._global.setServerErr(false);
+
     if (this.restauMode === 1) {
       this._nav.navigateBack('tablemodule');
     } else {
@@ -152,7 +165,8 @@ export class ReceiptPage implements OnInit {
       Slogan : this.runTimeProps[2].property_value
 
     }
-    this._sunmi.print({ownerInfo:ownerInfo,cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
+    this._sunmi.print({ownerInfo:ownerInfo,cartList: this.receiptCartList, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
+
     if (this.restauMode === 1) {
       this._nav.navigateBack('tablemodule');
     } else {

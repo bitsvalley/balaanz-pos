@@ -43,4 +43,5 @@ export const endpoints = {
   deleteOrder: 'api/v1/activeOrders/deleteActiveOrder?',
   deleteOrderProduct: 'api/v1/activeOrders/deleteActiveOrderProduct?',
   getOrderStatuses: 'api/v1/activeOrders/activeOrderStatuses?',
+  getActiveOrderPaymentDetails: 'api/v1/activeOrders/activeOrderPaymentDetails?'
 };

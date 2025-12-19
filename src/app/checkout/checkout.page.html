@@ -14,22 +14,15 @@
       <div class="checkout-summery">
         <div class="checkout-summery-item half-width">
           <label>Subtotal:</label>
-          <span>{{cartSummary.totalAmount}}</span>
+          <span>{{subtotalAmount}}</span>
         </div>
         <div class="checkout-summery-item half-width">
           <label>Discount (-) :</label>
-          <div class="checkout-discount">
-            <input type="number" [ngClass]="{'error-field': discount > cartSummary.totalAmount}" (input)="updateDiscount()" [(ngModel)]="discount" class="form-field" placeholder="Enter Discount" />
-            <span *ngIf="discount > cartSummary.totalAmount" class="error-highlight">Discount can not be more then amount</span>
-          </div>
+          <span>{{discount}}</span>
         </div>
-        <div class="checkout-summery-item align-center" *ngIf="discount <= cartSummary.totalAmount">
+        <div class="checkout-summery-item align-center">
           <label>Total</label>
-          <h2>{{cartSummary.totalAmount - discount | number}} <span>frs</span></h2>
-        </div>
-        <div class="checkout-summery-item align-center" *ngIf="discount > cartSummary.totalAmount">
-          <label>Total</label>
-          <h2>{{0 | number}} <span>frs</span></h2>
+          <h2>{{totalAmount}} <span>frs</span></h2>
         </div>
       </div>
       <div class="payment-method-block">
@@ -55,14 +48,11 @@
       </div> 
     </div> 
     <div class="checkout-bottom">
-      <div class="checkout-btn" [ngClass]="{'disabled': paymentForm.invalid || !cartList.length || discount > cartSummary.totalAmount}" (click)="processPayment()">
+      <div class="checkout-btn" [ngClass]="{'disabled': paymentForm.invalid || !cartList.length || discount > totalAmount}" (click)="processPayment()">
         <label>Pay</label>
-        <div class="checkout-btn-right"> 
-          <ng-container *ngIf="discount <= cartSummary.totalAmount">
-            {{cartSummary.totalAmount - discount | number}} frs
-          </ng-container>
-          <ng-container *ngIf="discount > cartSummary.totalAmount">
-            0 frs
+        <div class="checkout-btn-right">
+          <ng-container>
+            {{totalAmount}} frs
           </ng-container>
           <span class="material-symbols-outlined">
             chevron_right
@@ -72,15 +62,3 @@
     </div> 
   </div>
 </div>
-
-<!-- <div class="dialog" *ngIf="isPaymentTimeout">
-  <div class="dialog-overlay"></div>
-  <div class="retry-payment">
-    <h2>Payment Timeout!</h2>
-    <p>Payment has been timeout.</p>
-    <div class="dialog-action">
-      <button class="btn btn-primary" (click)="retryPayment()">Retry</button>
-      <button class="btn btn-secondary" (click)="closePayment()">Close</button>
-    </div>
-  </div>
-</div> -->

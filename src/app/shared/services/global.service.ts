@@ -329,7 +329,6 @@ export class GlobalService {
         this.storeCart(userId);
       }
     }
-    
   }
 
   switchCart() {

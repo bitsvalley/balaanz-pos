@@ -285,8 +285,6 @@ export class DashboardPage implements OnDestroy {
     this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
     .subscribe(
       (response: any) => {
-        console.log("getOrderStatus response:", response);
-
         if (response.includes('CASHIER')) {
           this.presentErrorToast('Order(s) already sent to the cashier. Cannot add more products.');
           return;

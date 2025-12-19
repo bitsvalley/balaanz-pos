@@ -203,7 +203,6 @@ export class CartPage implements OnInit {
     this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
     .subscribe(
       (response: any) => {
-        console.log("getOrderStatus response:", response);
         if (response.length === 1 && response.includes('SIGNED')) {
           if (this.cartList.length) {
             this._nav.navigateForward('checkout');
@@ -235,8 +234,6 @@ export class CartPage implements OnInit {
     this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
     .subscribe(
       (response: any) => {
-        console.log("getOrderStatus response:", response);
-
         if (response.includes('CASHIER')) {
           this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
           
@@ -272,8 +269,6 @@ export class CartPage implements OnInit {
     this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
     .subscribe(
       (response: any) => {
-        console.log("getOrderStatus response:", response);
-
         if (response.includes('CASHIER')) {
           this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
           
@@ -336,8 +331,6 @@ saveCart() {
   this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
   .subscribe(
     (response: any) => {
-      console.log("getOrderStatus response:", response);
-
       if (response.includes('CASHIER')) {
         this.presentErrorToast(`Order(s) already sent to the cashier. Proceed with the payment.`);
         

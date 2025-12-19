@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
+import { each } from 'chart.js/dist/helpers/helpers.core';
 
 @Component({
   selector: 'app-checkout',
@@ -26,6 +27,8 @@ export class CheckoutPage implements OnInit {
   public apiSubscription: any = new Subscription();
   public paymentSelected: any = null;
   public discount: any = 0;
+  public subtotalAmount: any = 0;
+  public totalAmount: any = 0;
 
   public statusMaxCycle: any = 3;
   public statusCycle: any = 0;
@@ -84,18 +87,7 @@ export class CheckoutPage implements OnInit {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
-      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
-      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
-      if (billChair.length > 1 && this.restauMode === 1) {
-        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
-        this.cartSummary =  this._global.getCartSummary(this.cartList);
-      } else {
-        this.cartList = this._global.retriveCart(this.userDetails.id).list;
-        this.cartSummary =  this._global.getCartSummary();
-      }
-      this.checkCart();
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
@@ -115,38 +107,6 @@ export class CheckoutPage implements OnInit {
     }, 1000);
   }
 
-  // updateDiscount() {
-  //   this.paymentForm.get('discount').setValue(this.discount || 0);
-  // }
-
-
-  async updateDiscount() {
-    if (this.discount < 0) {
-      this.discount = 0; // Reset to zero
-  
-      // Show alert notification
-      const alert = await this.alertController.create({
-        header: 'Invalid Discount',
-        message: 'Negative Discount Not Allowed',
-        buttons: ['OK']
-      });
-  
-      await alert.present();
-    }
-  
-    this.paymentForm.get('discount').setValue(this.discount);
-  }
-  
-
-
-  // updateDiscount() {
-  //   if (this.discount < 0) {
-  //     this.discount = 0; // Prevent negative values
-  //   }
-  //   this.paymentForm.get('discount').setValue(this.discount);
-  // }
-  
-
   ionViewWillEnter() {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
@@ -154,13 +114,28 @@ export class CheckoutPage implements OnInit {
     if (this.userDetails.id) {
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+
+      let selectChairIds: number[] = [selectedChair.id];
+
       if (billChair.length > 1 && this.restauMode === 1) {
-        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);
-        this.cartSummary =  this._global.getCartSummary(this.cartList);
+        selectChairIds = billChair.map(item => item.id);
+        this.cartList = this._global.mergeCart(billChair || [selectedChair], this.userDetails.id);        
       } else {
         this.cartList = this._global.retriveCart(this.userDetails.id).list;
-        this.cartSummary =  this._global.getCartSummary();
       }
+
+      this._user.getActiveOrderPaymentDetails(this.userDetails.org_id, this.userDetails.branch_id, selectChairIds)          
+      .subscribe(
+        (response: any) => {
+          this.subtotalAmount = response.subtotal;
+          this.discount = response.discount;
+          this.totalAmount = response.total;
+        },
+        (error: any) => {
+          this._toastr.error("Payment details cannot be retrieved");
+        }
+      );
+
       this.checkCart();
     }
   }
@@ -218,7 +193,7 @@ export class CheckoutPage implements OnInit {
       return;
     }
     
-    if (this.discount > this.cartSummary.totalAmount)  {
+    if (this.discount > this.totalAmount)  {
       return;
     }
     const payload = {
@@ -255,19 +230,4 @@ export class CheckoutPage implements OnInit {
       this._account.logout();
     }) 
   }
-
-  // retryPayment() {
-  //   this.isPaymentTimeout = false;
-  //   this.statusCycle = 0;
-  //   this._global.setLoader(true);
-  //   this.checkStatus(this.paymentRequest);
-  //   this.paymentRequest = null;
-  // }
-
-  // closePayment() {
-  //   this.isPaymentTimeout = false;
-  //   this.statusCycle = 0;
-  //   this.paymentRequest = null;
-  // }
-
 }
