@@ -65,6 +65,7 @@ export class TableComponent implements OnInit, OnDestroy {
   selectedTable: any = null;
   public userDetails: any = null;
   public loadTable: boolean = false;
+  public waiterFirstname="";
 
   constructor(
     private router: Router,
@@ -82,6 +83,7 @@ export class TableComponent implements OnInit, OnDestroy {
   ionViewWillEnter() {
     const userSub = this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
+      this.waiterFirstname = this.userDetails.first_name;
     });
 
     this.apiSubscription.add(userSub);

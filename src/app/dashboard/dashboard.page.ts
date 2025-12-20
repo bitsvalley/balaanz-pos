@@ -38,6 +38,7 @@ export class DashboardPage implements OnDestroy {
   public searchProductField: any = "";
   public cartAnimation: boolean = false;
   selectedProductIds: any[] = [];
+  public waiterFirstname = "";
 
   constructor( 
     private _nav: NavController, 
@@ -58,6 +59,7 @@ export class DashboardPage implements OnDestroy {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
+      this.waiterFirstname = this.userDetails.first_name;
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
     });
