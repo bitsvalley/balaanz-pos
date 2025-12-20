@@ -58,14 +58,12 @@ export class DashboardPage implements OnDestroy {
     
     this._account.userDetailsObservable.subscribe((response: any) => {
       this.userDetails = response;
-      console.log(this.userDetails);
       this._global.initCart(this.userDetails.id);
       this.cartList = this._global.retriveCart(this.userDetails.id).list;
     });
 
     this._account.runTimePropObservable.subscribe((response: any) => {
       this.runTimeProps = response;
-      console.log(response);
     });
     
   }
@@ -155,7 +153,6 @@ export class DashboardPage implements OnDestroy {
     }
 
     this.selectedProductIds =[];
-    console.log(this.cartList)
     this.cartList.map(x => this.selectedProductIds.push(x.id));
   }
   
@@ -192,10 +189,10 @@ export class DashboardPage implements OnDestroy {
 
   fetchProducts(event?: any) {
     this._user.productList().subscribe((response: any) => {
-      // console.log(response);
       this._global.productData = response;
       this.productData = response;
       this.processProducts(response);
+
       if (event) {
         event.target.complete();
       }
@@ -280,9 +277,13 @@ export class DashboardPage implements OnDestroy {
   addToCart(product) {
     if (!this.selectedTabel?.uuid || !this.selectedChair?.uuid) {
       this.presentErrorToast('Please select a table and chair before adding products to the cart.');
+
+      return;
     }
 
-    this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, this.selectedChair.id)
+    let selectedChairIds: number[] = [this.selectedChair.id];
+
+    this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, selectedChairIds)
     .subscribe(
       (response: any) => {
         if (response.includes('CASHIER')) {
@@ -308,7 +309,6 @@ export class DashboardPage implements OnDestroy {
           return;
         }
 
-        console.error('getOrderStatus error', error);
         this.presentErrorToast('Error checking order status. Cannot add product.');
       }
     );

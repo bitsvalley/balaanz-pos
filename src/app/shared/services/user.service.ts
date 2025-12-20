@@ -270,8 +270,8 @@ export class UserService {
     return this._http.delete(url);
   }
  
-  getOrderStatuses(orgId, branchId, chairId) {
-    const url = `${environment.restApiHost}${endpoints.getOrderStatuses}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}`;
+  getOrderStatuses(orgId, branchId, chairIds) {
+    const url = `${environment.restApiHost}${endpoints.getOrderStatuses}orgId=${orgId}&branchId=${branchId}&tableChairUserIds=${chairIds}`;
     return this._http.get(url);
   }  
 
