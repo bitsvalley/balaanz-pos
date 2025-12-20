@@ -86,7 +86,7 @@ export class HomePage implements OnDestroy {
         const userSub = this._account.userDetailsObservable.subscribe((response: any) => {
           this.userDetails = response;
 
-          this._user.getAllActiveOrderProductDtos(this.userDetails.org_id, this.userDetails.branch_id, this.userDetails.id)
+          this._user.getAllActiveOrderProductDtos(this.userDetails.org_id, this.userDetails.branch_id)
           .subscribe(
             (response: any) => {
               if (response.length > 0) {
