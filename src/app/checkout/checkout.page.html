@@ -14,7 +14,7 @@
       <div class="checkout-summery">
         <div class="checkout-summery-item half-width">
           <label>Subtotal:</label>
-          <span>{{subtotalAmount}}</span>
+          <span>{{subtotalAmount | number}}</span>
         </div>
         <div class="checkout-summery-item half-width">
           <label>Discount (-) :</label>
@@ -22,7 +22,7 @@
         </div>
         <div class="checkout-summery-item align-center">
           <label>Total</label>
-          <h2>{{totalAmount}} <span>frs</span></h2>
+          <h2>{{totalAmount | number}} <span>frs</span></h2>
         </div>
       </div>
       <div class="payment-method-block">
@@ -52,7 +52,7 @@
         <label>Pay</label>
         <div class="checkout-btn-right">
           <ng-container>
-            {{totalAmount}} frs
+            {{totalAmount | number}} frs
           </ng-container>
           <span class="material-symbols-outlined">
             chevron_right

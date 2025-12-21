@@ -43,5 +43,6 @@ export const endpoints = {
   deleteOrder: 'api/v1/activeOrders/deleteActiveOrder?',
   deleteOrderProduct: 'api/v1/activeOrders/deleteActiveOrderProduct?',
   getOrderStatuses: 'api/v1/activeOrders/activeOrderStatuses?',
+  validateCheckout: 'api/v1/activeOrders/validateCheckout?',
   getActiveOrderPaymentDetails: 'api/v1/activeOrders/activeOrderPaymentDetails?'
 };
