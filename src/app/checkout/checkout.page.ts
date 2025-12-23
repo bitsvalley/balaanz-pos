@@ -119,7 +119,7 @@ export class CheckoutPage implements OnInit {
     this._nav.back();
   }
 
-  finishCheckout() {
+  finishCheckoutWithoutReceipt() {
     this.clearCart();
 
     this._toastr.success("Checkout completed successfully");
@@ -133,7 +133,6 @@ export class CheckoutPage implements OnInit {
 
   clearCart() {
     if (this.cartList.length) {
-      const receiptCartList = [...this.cartList];
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
 

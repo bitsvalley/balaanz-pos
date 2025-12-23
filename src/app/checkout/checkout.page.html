@@ -31,22 +31,15 @@
       </div>
     </div> 
     <div class="checkout-bottom">
-      <div class="checkout-btn" (click)="finishCheckout()" style="background-color: gray; color: black;">
-        <div class="main-label">
-          <span class="material-symbols-outlined">check</span>
-          <label>Finish</label>
-        </div>
-
-        <div class="sub-label">
-          <label>Without Receipt</label>
-        </div>
-      </div>
-   
-      <div class="checkout-btn" (click)="navigateToReceipt()">
+      <div class="checkout-btn" (click)="navigateToReceipt()" style="width: 100%;">
         <div class="main-label">
           <span class="material-symbols-outlined">print</span>
           <label>Receipt</label>
         </div>
+      </div>
+      <br /><br /><br />
+      <div style="text-align: center;">
+        <a href="javascript:finishCheckoutWithoutReceipt()">Finish without Receipt</a>
       </div>
     </div> 
   </div>
