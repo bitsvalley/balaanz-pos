@@ -73,6 +73,7 @@ export class ReceiptPage implements OnInit {
           this.paymentData.subtotalAmount = response.subtotal;
           this.paymentData.discount = response.discount;
           this.paymentData.totalAmount = response.total;
+          this.paymentData.modeOfPayment = response.modeOfPayment;
         },
         (error: any) => {
           this._toastr.error("Payment details cannot be retrieved");
@@ -103,7 +104,6 @@ export class ReceiptPage implements OnInit {
 
   clearCart() {
     if (this.cartList.length) {
-      this._toastr.success("Payment has been successfully done.", "Payment Successful");
       this.receiptCartList = [...this.cartList];
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
 

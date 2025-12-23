@@ -98,12 +98,8 @@ export class SunmiPrinterService implements OnDestroy {
         // await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
         // await Sunmi.text({text: this.formatLines("Order Type: SALE")});
         if (data?.paymentData) {
-          await Sunmi.line({ text: `Payment Method: ${data.paymentData.method}`, wrap: true });
-          // await Sunmi.text({text: this.formatLines(`Payment Method: ${data.paymentData.method}`)});
-          if (data.paymentData.method !== 'CASH') {
-            await Sunmi.line({ text: `Account: ${data.paymentData.value}`, wrap: true });
-            // await Sunmi.text({text: this.formatLines(`Account: ${data.paymentData.value}`)});
-          }
+          await Sunmi.line({ text: `Payment Method: ${data.paymentData.modeOfPayment}`, wrap: true });
+          // await Sunmi.text({text: this.formatLines(`Payment Method: ${data.paymentData.modeOfPayment}`)});
         }
       
         // Show Customer Name

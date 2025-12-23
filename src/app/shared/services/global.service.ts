@@ -354,5 +354,4 @@ export class GlobalService {
       }, delay);
     };
   }
-
 }

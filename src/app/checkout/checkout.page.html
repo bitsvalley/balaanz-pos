@@ -12,51 +12,40 @@
     </div> 
     <div class="checkout-body"> 
       <div class="checkout-summery">
-        <div class="checkout-summery-item half-width">
+        <div class="checkout-summery-item oneThird-width">
           <label>Subtotal:</label>
           <span>{{subtotalAmount | number}}</span>
         </div>
-        <div class="checkout-summery-item half-width">
+        <div class="checkout-summery-item oneThird-width">
           <label>Discount (-) :</label>
           <span>{{discount}}</span>
         </div>
+        <div class="checkout-summery-item oneThird-width">
+          <label>Payment Method:</label>
+          <span>{{modeOfPayment}}</span>
+        </div>        
         <div class="checkout-summery-item align-center">
           <label>Total</label>
           <h2>{{totalAmount | number}} <span>frs</span></h2>
         </div>
       </div>
-      <div class="payment-method-block">
-        <h4>Payment Method</h4>
-        <form [formGroup]="paymentForm">
-          <ul>
-            <li *ngFor="let method of paymentMethods" (click)="selectMethod(method)" [ngClass]="{'active':  method.isSelected}">
-              <strong>
-                <label>
-                  <i *ngIf="method.title === 'CASH'"><img src="/assets/images/coin.png" /></i>
-                  <i *ngIf="method.title === 'MOMO'"><img src="/assets/images/mtn.png" /></i>
-                  <i *ngIf="method.title === 'BALAANZ ACCOUNT'"><img src="/assets/images/account.png" /></i>
-                  {{method.title}}
-                </label>
-                <span class="radio-symbol">
-                  <span class="radio-symbol-inner"></span>
-                </span>
-              </strong>
-              <input *ngIf="method.userInput && method.isSelected" type="text" class="form-field" formControlName="value" placeholder="{{method.placeholder}}">
-            </li>
-          </ul>
-        </form>
-      </div> 
     </div> 
     <div class="checkout-bottom">
-      <div class="checkout-btn" [ngClass]="{'disabled': paymentForm.invalid || !cartList.length || discount > totalAmount}" (click)="processPayment()">
-        <label>Pay</label>
-        <div class="checkout-btn-right">
-          <ng-container>
-            {{totalAmount | number}} frs
-          </ng-container>
-          <span class="material-symbols-outlined">
-            chevron_right
-          </span>
+      <div class="checkout-btn" (click)="finishCheckout()" style="background-color: gray; color: black;">
+        <div class="main-label">
+          <span class="material-symbols-outlined">check</span>
+          <label>Finish</label>
+        </div>
+
+        <div class="sub-label">
+          <label>Without Receipt</label>
+        </div>
+      </div>
+   
+      <div class="checkout-btn" (click)="navigateToReceipt()">
+        <div class="main-label">
+          <span class="material-symbols-outlined">print</span>
+          <label>Receipt</label>
         </div>
       </div>
     </div> 

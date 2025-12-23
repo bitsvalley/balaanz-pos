@@ -29,44 +29,13 @@ export class CheckoutPage implements OnInit {
   public discount: any = 0;
   public subtotalAmount: any = 0;
   public totalAmount: any = 0;
+  public modeOfPayment: any = null;
 
   public statusMaxCycle: any = 3;
   public statusCycle: any = 0;
   public isPaymentTimeout: boolean =  false;
   public paymentRequest: any = null;
   public restauMode: number = environment.restauMode;
-
-  public paymentMethods: any = [
-    {
-      title: "CASH",
-      id: 1,
-      userInput: false,
-      isSelected: false,
-      placeholder: null,
-      navVal: 'CASH'
-    } 
-
-    //TODO: enable when other payment methods are supported
-    // {
-    //   title: "MOMO",
-    //   id: 2,
-    //   userInput: true,
-    //   isSelected: false,
-    //   placeholder: "Enter MOMO Number",
-    //   navVal: 'MOMO'
-    // },
-    // {
-    //   title: "BALAANZ ACCOUNT",
-    //   id: 3,
-    //   userInput: true,
-    //   isSelected: false,
-    //   placeholder: "Enter Account Number",
-    //   navVal: 'ACCOUNT'
-    // }
-  ]
-
-
-  public paymentForm: any = new FormGroup({})
   
   constructor(
     private _nav: NavController,
@@ -96,7 +65,6 @@ export class CheckoutPage implements OnInit {
   }
 
   ngOnInit() {
-    this.generateForm();
   }
 
   checkCart() {
@@ -110,7 +78,7 @@ export class CheckoutPage implements OnInit {
   ionViewWillEnter() {
     this._global.setServerErr(false);
     this.apiSubscription = new Subscription();
-    this.generateForm();
+  
     if (this.userDetails.id) {
       const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
       const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
@@ -130,6 +98,7 @@ export class CheckoutPage implements OnInit {
           this.subtotalAmount = response.subtotal;
           this.discount = response.discount;
           this.totalAmount = response.total;
+          this.modeOfPayment = response.modeOfPayment;
         },
         (error: any) => {
           this._toastr.error("Payment details cannot be retrieved");
@@ -145,89 +114,56 @@ export class CheckoutPage implements OnInit {
     this._global.setServerErr(false);
   }
 
-  generateForm() {
-    this.paymentForm = this._fb.group({
-      method: ["", [Validators.required]],
-      value: ["", []],
-      discount: [0, []]
-    });
-
-    this.validateForm();
-  }
-
   back() {
     this._global.setServerErr(false);
     this._nav.back();
   }
 
-  selectMethod(method)  {
-    this.paymentMethods.forEach((item: any)  => {
-      item.isSelected = false;
-    });
-    this.paymentSelected = method;
-    method.isSelected = true;
-    this.validateForm();
-  }
+  finishCheckout() {
+    this.clearCart();
 
-  validateForm() {
-    if (this.paymentSelected) {
-      this.paymentForm.get('method').setValue(this.paymentSelected.navVal);
-      this.paymentForm.get('value').setValue("");
-    }
-    if (this.paymentForm.get('method').value === 'MOMO' || this.paymentForm.get('method').value === 'ACCOUNT') {
-      this.paymentForm.get('value').setValidators([Validators.required, Validators.pattern(/^\d{3,22}$/)]);
-      this.paymentForm.get('value').updateValueAndValidity();
-    } else if (this.paymentForm.get('method').value === 'CASH') {
-      this.paymentForm.get('value').setValidators(null);
-      this.paymentForm.get('value').updateValueAndValidity();
+    this._toastr.success("Checkout completed successfully");
+
+    if (this.restauMode === 1) {
+      this._nav.navigateBack('tablemodule');
     } else {
-      this.paymentForm.get('value').setValidators(null);
-      this.paymentForm.get('value').updateValueAndValidity();
+      this._nav.navigateBack('dashboard');
+    }    
+  }
+
+  clearCart() {
+    if (this.cartList.length) {
+      const receiptCartList = [...this.cartList];
+      const billChair = JSON.parse(localStorage.getItem('billChair')) || [];
+      const selectedChair = JSON.parse(localStorage.getItem('selectedChair')) || {};
+
+      if (billChair.length > 1 && this.restauMode === 1) {
+        this._global.emptyCart(this.userDetails.id, billChair);
+
+        billChair.forEach((chair) => {
+          this.deleteOrder(chair.id);
+        });
+      } else {
+        this._global.emptyCart(this.userDetails.id);
+        this.deleteOrder(selectedChair.id);
+      }
     }
   }
 
-  processPayment() {
-    if (this.paymentForm.value.method == "") {
-      this._toastr.error("Please select a valid payment method");
-
-      return;
-    }
-    
-    if (this.discount > this.totalAmount)  {
-      return;
-    }
-    const payload = {
-      "mode": {
-          "type": this.paymentForm.value.method,
-          "identifier": this.paymentForm.value.value
-      },
-      "discount": this.discount,
-      "cartContent": {}
-    };
-    this.cartList.forEach((itm) => {
-      payload.cartContent[itm.id] = {
-          "productId": itm.id,
-          "productName": itm.name,
-          "quantity": itm.quantity,
-          "productPrice": itm.unitPrice
-      }
+  deleteOrder(chairId) {
+    this._user.deleteOrder(this.userDetails.org_id, this.userDetails.branch_id, chairId).subscribe((response: any) => {
+      console.log(response);
     });
+  }
 
-    this._global.setLoader(true);
-    this._user.pay(payload).subscribe((res: any) => {
-      if (this.paymentForm.value.method !== 'CASH') {
-        this._global.setLoader(false);
-        this._global.setPaymentData(this.paymentForm.value);
-        this._nav.navigateForward('paymentStatus/' + res.requestId);
-      } else {
-        this._global.setLoader(false);
-        this._global.setPaymentData(this.paymentForm.value);
-        this._nav.navigateForward('receipt/0');
-      }
-    }, (error: any) => {
-      this._global.setLoader(false);
-      this._toastr.error("Invalid Session", "Authorization!");
-      this._account.logout();
-    }) 
+  navigateToReceipt() {
+    const paymentData: any = {};      
+    paymentData.subtotalAmount = this.subtotalAmount;
+    paymentData.discount = this.discount;
+    paymentData.totalAmount = this.totalAmount;
+    paymentData.modeOfPayment = this.modeOfPayment;
+
+    this._global.setPaymentData(paymentData);
+    this._nav.navigateForward('receipt/0');
   }
 }
