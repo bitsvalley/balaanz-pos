@@ -210,47 +210,45 @@ export class CartPage implements OnInit {
       selectedChairIds = billChair.map(item => item.id);
     }
 
-    let validationSuccess = true;
+    this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, selectedChairIds)
+      .subscribe(
+        (response: any) => {
+          
+          if (response.length === 1 && response.includes('SIGNED')) {
+            if (this.cartList.length) {
+              this._user.validateCheckout(this.userDetails.org_id, this.userDetails.branch_id, selectedChairIds)
+                .subscribe(
+                  (response: any) => {
+                    if(!response.success) {
+                      // Show validation error message from server
+                      this.presentErrorToast(response.message);
+                      console.log('Validation failed!');
 
-    this._user.validateCheckout(this.userDetails.org_id, this.userDetails.branch_id, selectedChairIds)
-    .subscribe(
-      (response: any) => {
-        
-        if(!response.success) {
-          // Show validation error message from server
-          this.presentErrorToast(response.message);
-          console.log('Validation failed!');
+                      return;
+                    }
 
-          validationSuccess = false;
-          return;
-        }
-
-        // If validation passes (empty string response), continue with checkout process
-        console.log('Validation successful, proceeding with checkout');
-        
-        this._user.getOrderStatuses(this.userDetails.org_id, this.userDetails.branch_id, selectedChairIds)
-        .subscribe(
-          (response: any) => {
-            
-            if (response.length === 1 && response.includes('SIGNED')) {
-              if (this.cartList.length) {
-                this._nav.navigateForward('checkout');
-              }
-
-              return;
+                    //Validation successful, proceed to checkout
+                    this._nav.navigateForward('checkout');
+                  },
+                  (error: any) => {
+                    console.error('validateCheckout error', error);
+                    this.presentErrorToast('Error validating checkout. Cannot proceed to checkout.');
+                  }
+                );
             }
 
-            this.presentErrorToast(`All order(s) must be signed by the Cashier before checkout`);
-          },
-          (error: any) => {
-            console.error('getOrderStatus error', error);
-            this.presentErrorToast('Error checking order status. Cannot checkout.');
+            return;
           }
-        );
-      }, (error: any) => {
-        console.error('validateCheckout error', error);
-        this.presentErrorToast('Error validating checkout. Cannot proceed to checkout.');
-      });
+
+          this.presentErrorToast(`All order(s) must be signed by the Cashier before checkout`);
+        },
+        (error: any) => {
+          console.error('getOrderStatus error', error);
+          this.presentErrorToast('Error checking order status. Cannot checkout.');
+        }
+      );
+
+    
   }
 
   ionViewWillLeave() {
