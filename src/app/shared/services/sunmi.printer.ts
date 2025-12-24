@@ -116,6 +116,8 @@ export class SunmiPrinterService implements OnDestroy {
           await Sunmi.text({text: this.formatLines(`Subtotal: ${this.decimalPipe.transform(data.paymentData.totalAmount)} frs`, 'right')});
           await Sunmi.text({text: this.formatLines(`Discount: -${this.decimalPipe.transform(data.paymentData.discount)} frs`, 'right')})
           await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.paymentData.totalAmount - data.paymentData.discount)} frs`, 'right')})
+          await Sunmi.text({text: this.formatLines(`Amount Paid: ${this.decimalPipe.transform(data.paymentData.amountPaid)} frs`, 'right')})
+          await Sunmi.text({text: this.formatLines(`Change Returned: ${this.decimalPipe.transform(data.paymentData.changeReturned)} frs`, 'right')})
         }   else {
           await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.cartSummary.totalAmount)} frs`, 'right')});
         }

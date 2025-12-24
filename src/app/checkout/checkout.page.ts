@@ -30,6 +30,8 @@ export class CheckoutPage implements OnInit {
   public subtotalAmount: any = 0;
   public totalAmount: any = 0;
   public modeOfPayment: any = null;
+  public amountPaid: any = 0;
+  public changeReturned: any = 0;
 
   public statusMaxCycle: any = 3;
   public statusCycle: any = 0;
@@ -99,6 +101,8 @@ export class CheckoutPage implements OnInit {
           this.discount = response.discount;
           this.totalAmount = response.total;
           this.modeOfPayment = response.modeOfPayment;
+          this.amountPaid = response.amountPaid;
+          this.changeReturned = response.changeReturned;
         },
         (error: any) => {
           this._toastr.error("Payment details cannot be retrieved");
@@ -161,6 +165,8 @@ export class CheckoutPage implements OnInit {
     paymentData.discount = this.discount;
     paymentData.totalAmount = this.totalAmount;
     paymentData.modeOfPayment = this.modeOfPayment;
+    paymentData.amountPaid = this.amountPaid;
+    paymentData.changeReturned = this.changeReturned;
 
     this._global.setPaymentData(paymentData);
     this._nav.navigateForward('receipt/0');
