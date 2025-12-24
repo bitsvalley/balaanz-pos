@@ -24,7 +24,7 @@ export const environment = {
   paymentUser: 'bitsvalley',
   paymentPass: 'b@lanz4lifE202!',
   org: 100,
-
+  enableCartPrinting: false,
   currency: 'FRS',
   restauMode: 1,
   momoCurrency: 'XAF',

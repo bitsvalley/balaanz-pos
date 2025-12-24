@@ -28,6 +28,7 @@ export class CartPage implements OnInit {
   public restauMode: number = environment.restauMode;
   public currentDate: any = moment().format('DD/MMM/YYYY HH:mm:ss');
   public isMultiChairSelected: boolean = false;
+  public enableCartPrinting: boolean = environment.enableCartPrinting;
 
   constructor(
     private _nav: NavController,
