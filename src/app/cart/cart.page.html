@@ -71,48 +71,53 @@
           <div class="no-item" *ngIf="!cartList?.length">
             No Products in Cart
           </div>
-          <div class="cart-product-item" *ngFor="let product of cartList">
-            <div
-              class="order-status"
-              *ngIf="product.orderStatus !=  'PLACED'"
-              [ngClass]="{'orange': product.orderStatus !=  'PLACED'}"
-              title="{{ product.orderStatus }}"
-            >
-              <span
-                class="material-symbols-outlined"
-                *ngIf="product.orderStatus ==  'PLACED'"
-              >
-                dining
-              </span>
-              <span
-                class="material-symbols-outlined"
-                *ngIf="product.orderStatus !=  'PLACED'"
-              >
-                skillet
-              </span>
+          <div class="cart-product-item-notes" *ngFor="let product of cartList">
+            <div class="cart-product-item">
+              <div class="cart-product-img">
+                <img
+                  [src]="product.image1 || 'assets/images/default-product.png'"
+                  alt="{{ product.name }}"
+                />
+              </div>
+              <div class="cart-product-content">
+                <h6>{{ product?.name }}</h6>
+                <div class="price">
+                  <strong>{{ product?.unitPrice | number }}</strong>frs
+                </div>
+              </div>
+              <div class="cart-product-right">
+                <div class="cart-product-minus" (click)="remove(product)" *ngIf="!isMultiChairSelected">
+                  <span class="material-symbols-outlined">remove</span>
+                </div>
+                
+                <div class="cart-product-qty">{{product?.quantity}}</div>
+                
+                <div class="cart-product-plus" (click)="add(product)" *ngIf="!isMultiChairSelected">
+                  <span class="material-symbols-outlined">add</span>
+                </div>
+              </div>
             </div>
-            <div class="cart-product-img">
-              <img
-                [src]="product.image1 || 'assets/images/default-product.png'"
-                alt="{{ product.name }}"
+
+            <div class="cart-product-notes-row" *ngIf="!isMultiChairSelected">
+              <input 
+                #notesInput 
+                type="text"
+                class="form-field" 
+                placeholder="Special Notes..."
+                (input)="onNotesInput(product)"
+                value="{{product.notes}}"
               />
-            </div>
-            <div class="cart-product-content">
-              <h6>{{ product?.name }}</h6>
-              <div class="price">
-                <strong>{{ product?.unitPrice | number }}</strong>frs
-              </div>
-            </div>
-            <div class="cart-product-right">
-              <div class="cart-product-minus" (click)="remove(product)">
-                <span class="material-symbols-outlined">remove</span>
-              </div>
-              <div class="cart-product-qty">{{product?.quantity}}</div>
-              <div class="cart-product-plus" (click)="add(product)">
-                <span class="material-symbols-outlined">add</span>
-              </div>
+              
+              <span 
+                  class="material-symbols-outlined"
+                  [ngClass]="notesUnderEditSet.has(product.id) ? 'cart-product-notes-save' : 'cart-product-notes-save-gray'"
+                  (click)="saveNotes(product, notesInput.value)"
+                >
+                  save
+                </span>
             </div>
           </div>
+          
         </div>
       </div>
       <div class="cart-checkout">

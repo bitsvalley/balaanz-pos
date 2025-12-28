@@ -57,8 +57,10 @@ export class SunmiPrinterService implements OnDestroy {
       return new Promise((resolve, reject) => {
         data.cartList.forEach((itm) => {
           Sunmi.text({text: this.formatLines(`${itm.name} X ${itm.quantity}`)});
-          // Sunmi.text({text: this.formatLines(`X ${itm.quantity}`)});
+
           Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)}`, 'right')});
+
+          Sunmi.line({ text: `${itm.notes}\n`, wrap: true });
         });
         resolve(true);
       });

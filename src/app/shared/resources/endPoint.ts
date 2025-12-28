@@ -37,6 +37,7 @@ export const endpoints = {
   paymentStatus: 'api/v1/payment/status/',
   getTables: 'warmload/getTSU/',
   saveOrder: 'api/v1/activeOrders/createOrUpdate',
+  saveNotes: 'api/v1/activeOrders/saveNotes?',
   getOrder: 'api/v1/activeOrders/activeOrder?',
   sendToCashier: 'api/v1/activeOrders/sendToCashier?',
   getAllActiveOrderProductDtos: 'api/v1/activeOrders/allActiveOrderProductDtos?',

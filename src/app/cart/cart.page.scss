@@ -112,6 +112,38 @@
     }
 }
 
+.cart-product-notes-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cart-product-notes-row .form-field {
+  flex: 1 1 auto;
+}
+
+.cart-product-notes-save {
+  margin-left: auto;
+  cursor: pointer;
+  color: $color-primary;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cart-product-notes-save-gray {
+  margin-left: auto;
+  cursor: pointer;
+  color: gray;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .cart-checkout {
     position: fixed;
     bottom: 0;

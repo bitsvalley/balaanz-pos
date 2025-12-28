@@ -244,6 +244,12 @@ export class UserService {
     const url = `${environment.restApiHost}${endpoints.saveOrder}`;
     return this._http.post(url, payload);
   }
+  
+  saveNotes(tableChairUserId: any, productId: any, notesValue: string) {
+
+    const url = `${environment.restApiHost}${endpoints.saveNotes}tableChairUserId=${tableChairUserId}&shopProductId=${productId}&notes=${notesValue}`;
+    return this._http.post(url, '');
+  }
 
   getOrder(orgId, branchId, chairId, productId) {
     const url = `${environment.restApiHost}${endpoints.getOrder}orgId=${orgId}&branchId=${branchId}&tableChairUserId=${chairId}&shopProductId=${productId}`;

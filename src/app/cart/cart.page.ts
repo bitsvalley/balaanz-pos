@@ -29,6 +29,7 @@ export class CartPage implements OnInit {
   public currentDate: any = moment().format('DD/MMM/YYYY HH:mm:ss');
   public isMultiChairSelected: boolean = false;
   public enableCartPrinting: boolean = environment.enableCartPrinting;
+  public notesUnderEditSet: Set<string> = new Set<string>();
 
   constructor(
     private _nav: NavController,
@@ -57,6 +58,8 @@ export class CartPage implements OnInit {
       const selectedChair =
         JSON.parse(localStorage.getItem('selectedChair')) || {};
       if (billChair.length > 1 && this.restauMode === 1) {
+        this.isMultiChairSelected = true;
+
         this.cartList = this._global.mergeCart(
           billChair || [selectedChair],
           this.userDetails.id
@@ -248,8 +251,25 @@ export class CartPage implements OnInit {
           this.presentErrorToast('Error checking order status. Cannot checkout.');
         }
       );
+  }
 
-    
+  onNotesInput(product: any) {
+    this.notesUnderEditSet.add(product.id);
+  }
+
+  saveNotes(product: any, notesValue: string) {
+    this._user.saveNotes(this.selectedChair.id, product.id, notesValue)
+      .subscribe(
+        (response: any) => {
+          this._global.updateLocalNotes(this.userDetails.id, this.selectedTable.uuid, this.selectedChair.uuid, product.id, notesValue);
+          this.presentSuccessToast('Notes saved successfully');
+          this.notesUnderEditSet.delete(product.id);
+        },
+        (error: any) => {
+          this.presentErrorToast('Error saving notes');
+          console.log('saveNotes error', error);
+        }
+      );
   }
 
   ionViewWillLeave() {

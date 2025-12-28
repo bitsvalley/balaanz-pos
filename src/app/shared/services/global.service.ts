@@ -114,6 +114,7 @@ export class GlobalService {
     selectedChair.forEach((chair: any) => {
       if (this.cartData[userId]?.[this.selectedTable?.uuid]?.[chair.uuid]) {
         Object.keys(this.cartData[userId][this.selectedTable.uuid][chair.uuid]).forEach((key: any) => {
+
           cartList.push(this.cartData[userId][this.selectedTable.uuid][chair.uuid][key]);
         });
       }
@@ -128,6 +129,7 @@ export class GlobalService {
     if (this.restauMode === 1 && this.selectedTable?.uuid) { 
       if (this.cartData?.[userId]?.[this.selectedTable.uuid]?.[this.selectedChair.uuid]) {
         Object.keys(this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid]).forEach((key: any) => {
+
           this.cartList.push(this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid][key]);
         });
       }
@@ -191,6 +193,14 @@ export class GlobalService {
     });
 
     this.storeCart(userId);
+  }
+
+  updateLocalNotes(userId: any, tableUuid: any, chairUuid: any, productId: any, notesValue: string) {
+    if (this.cartData?.[userId]?.[tableUuid]?.[chairUuid]?.[productId]) {
+      this.cartData[userId][tableUuid][chairUuid][productId].notes = notesValue;
+      
+      this.storeCart(userId);
+    }
   }
 
   addToCart(product: any, userDetails: any) {
