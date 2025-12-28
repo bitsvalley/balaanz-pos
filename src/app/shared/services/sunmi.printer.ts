@@ -75,33 +75,18 @@ export class SunmiPrinterService implements OnDestroy {
         await Sunmi.align({ direction: "LEFT" });
         await Sunmi.fontSize({size: 1});
 
-        // Title and Addressawait         
-        // await Sunmi.text({text: this.formatLines("======== BALAANZ POS ========")});
-      
-       
-
-        //owerInfo
-        // await Sunmi.fontSize({size: 2});
-        
-        // await Sunmi.bold();
-        // await Sunmi.text({text: this.formatLines(data.ownerInfo.Name)});
-        // await Sunmi.normal();
         await Sunmi.align({ direction: "LEFT"});
         await Sunmi.line({ text: `${data.ownerInfo.Slogan}`, wrap: true });
         await Sunmi.line({ text: `${data.ownerInfo.Location}`, wrap: true });
         await Sunmi.line({ text: `Tel: ${data.ownerInfo.Tel}`, wrap: true });
-        // await Sunmi.text({text: this.formatLines(data.ownerInfo.Slogan)});
-        // await Sunmi.text({text: this.formatLines(data.ownerInfo.Location)});
-        // await Sunmi.text({text: this.formatLines(`Tel: ${data.ownerInfo.Tel}`)});
+        
         await Sunmi.text({text: this.dashedBorder()});
-        // Show Customer Name
+        // Show Waiter Name
         await Sunmi.line({ text: `Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`, wrap: true });
         await Sunmi.line({ text: `Order Type: SALE`, wrap: true });
-        // await Sunmi.text({text: this.formatLines(`Agent: ${data.userDetails.first_name} ${data.userDetails.last_name}`)});
-        // await Sunmi.text({text: this.formatLines("Order Type: SALE")});
+        
         if (data?.paymentData) {
           await Sunmi.line({ text: `Payment Method: ${data.paymentData.modeOfPayment}`, wrap: true });
-          // await Sunmi.text({text: this.formatLines(`Payment Method: ${data.paymentData.modeOfPayment}`)});
         }
       
         // Show Customer Name
