@@ -368,9 +368,30 @@ export class CartPage implements OnInit {
       Tel: telProp?.property_value || '',
       Slogan: this.runTimeProps[2].property_value,
     };
+
+    // Create a map (ordered): Map<tableUserName, Map<tableChairUserName, product[]>>
+    const tableChairProductMap: Map<string, Map<string, any[]>> = new Map();
+
+    for (const item of this.cartList) {
+      const tableUserName = item.tableUserName;
+      const tableChairUserName = item.tableChairUserName;
+
+      if (!tableChairProductMap.has(tableUserName)) {
+        tableChairProductMap.set(tableUserName, new Map());
+      }
+
+      const chairMap = tableChairProductMap.get(tableUserName)!;
+
+      if (!chairMap.has(tableChairUserName)) {
+        chairMap.set(tableChairUserName, []);
+      }
+
+      chairMap.get(tableChairUserName)!.push(item);
+    }
+    
     this._sunmi.print({
       ownerInfo: ownerInfo,
-      cartList: this.cartList,
+      tableChairProductMap: tableChairProductMap,
       cartSummary: this.cartSummary,
       currentDate: this.currentDate,
       userDetails: this.userDetails,

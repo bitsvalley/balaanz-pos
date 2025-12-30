@@ -55,14 +55,21 @@ export class SunmiPrinterService implements OnDestroy {
 
     printProducts(data) {
       return new Promise((resolve, reject) => {
-        data.cartList.forEach((itm) => {
-          Sunmi.text({text: this.formatLines(`${itm.name} X ${itm.quantity}`)});
+        // Group products by table and chair
+        data.tableChairProductMap.forEach((chairMap, tableUserName) => {
 
-          Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)}`, 'right')});
+          chairMap.forEach((itemsArray, tableChairUserName) => {
+            Sunmi.line({ text: `${tableUserName} - ${tableChairUserName}`, wrap: true });
 
-            if (itm.notes && itm.notes.length > 0) {
-              Sunmi.line({ text: `${itm.notes}\n`, wrap: true });
-            }
+            itemsArray.forEach((item) => {
+              Sunmi.text({text: this.formatLines(`${item.name} X ${item.quantity}`)});
+              Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(item.unitPrice)}`, 'right')});
+
+              if (item.notes && item.notes.length > 0) {
+                Sunmi.line({ text: `${item.notes}\n`, wrap: true });
+              }
+            });
+          });
         });
         resolve(true);
       });
