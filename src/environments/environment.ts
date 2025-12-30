@@ -34,19 +34,35 @@
 // Test
 export const environment = {
   production: true,
-  host: 'https://nkwen22.balaanz.com/',
-  restApiHost: 'https://test.balaanz.com/',
+  host: 'http://localhost:3000/',
+  restApiHost: 'http://localhost:8081/',
   captchKey: '6LeNMmYpAAAAAAPdFoxZ-A0hFuhdJOHJENo6N0uP',
   paymentUser: 'bitsvalley',
   paymentPass: 'b@lanz4lifE202!',
-  org: 100,
-
+  org: 10,
+  enableCartPrinting: true,
   currency: 'FRS',
   restauMode: 1,
   momoCurrency: 'XAF',
-  apiBaseUrl: 'https://nkwen22.balaanz.com/',
+  apiBaseUrl: 'http://localhost:3000/',
 };
 
+
+/* export const environment = {
+  production: false,
+  host: 'http://10.0.2.2:3000/',  // Changed to emulator's special IP
+  restApiHost: 'http://10.0.2.2:8081/',  // Changed to emulator's special IP
+  captchKey: '6LeNMmYpAAAAAAPdFoxZ-A0hFuhdJOHJENo6N0uP',
+  paymentUser: 'bitsvalley',
+  paymentPass: 'b@lanz4lifE202!',
+  org: 10,
+  enableCartPrinting: true,
+  currency: 'FRS',
+  restauMode: 1,
+  momoCurrency: 'XAF',
+  apiBaseUrl: 'http://10.0.2.2:3000/',  // Changed to emulator's special IP
+};
+ */
 // Logins Details
 // Balaanz POS Test logins
 // Org ID: 100

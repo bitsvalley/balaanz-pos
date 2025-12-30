@@ -60,16 +60,15 @@ export class SunmiPrinterService implements OnDestroy {
 
           Sunmi.text({text: this.formatLines(`${this.decimalPipe.transform(itm.unitPrice)}`, 'right')});
 
-          Sunmi.line({ text: `${itm.notes}\n`, wrap: true });
+            if (itm.notes && itm.notes.length > 0) {
+              Sunmi.line({ text: `${itm.notes}\n`, wrap: true });
+            }
         });
         resolve(true);
       });
     }
 
     async print(data: any) {     
-      const thankNote = `Thank you for shopping with`;
-      const thankNote2 = `us`;
-
         // Default Settings
         await Sunmi.start();
         await Sunmi.align({ direction: "LEFT" });
@@ -109,10 +108,8 @@ export class SunmiPrinterService implements OnDestroy {
           await Sunmi.text({text: this.formatLines(`Total: ${this.decimalPipe.transform(data.cartSummary.totalAmount)} frs`, 'right')});
         }
         await Sunmi.text({text: this.addEmptyLine()});
-        await Sunmi.text({text: this.formatLines(`${thankNote}`)});
-        await Sunmi.text({text: this.formatLines(`${thankNote2}`)});
+        await Sunmi.text({text: this.formatLines(`Thank you for shopping with us`)});
         await Sunmi.text({text: this.addEmptyLine()});
-        await Sunmi.text({text: this.formatLines("www.balaanz.com")});
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.formatLines(`${data.currentDate}`)});
 
