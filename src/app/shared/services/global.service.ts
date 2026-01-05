@@ -154,12 +154,10 @@ export class GlobalService {
             this.cartData[userId][this.selectedTable.uuid][chair.uuid] = {};  
           });
           localStorage.removeItem('billChair');
-          localStorage.removeItem('tables');
           localStorage.removeItem('selectedTable');
           localStorage.removeItem('selectedChair');
         } else {
           this.cartData[userId][this.selectedTable.uuid][this.selectedChair.uuid] = {};
-          localStorage.removeItem('tables');
           localStorage.removeItem('selectedTable');
           localStorage.removeItem('selectedChair');
         }

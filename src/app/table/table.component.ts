@@ -92,11 +92,9 @@ export class TableComponent implements OnInit, OnDestroy {
       this.runTimeProps = response;
       if (this.runTimeProps.length > 0) {
         const bid: any = this.runTimeProps.find(item => item.property_name === 'bid');
-        const tableD = JSON.parse(localStorage.getItem('tables') || 'null');
-        if (bid && !tableD) {
+
+        if (bid) {
           this.getTablesFromServer(bid.property_value);
-        } else {
-          this.tableData = tableD;
           this._global.debounce(this.calculateChairTableTotal(), 500);
         }
       }
@@ -113,7 +111,6 @@ export class TableComponent implements OnInit, OnDestroy {
         table.chairs.forEach((chair: any) => (chair.status = 'open', chair.total = 0));
       });
       this.tableData = response;
-      localStorage.setItem('tables', JSON.stringify(this.tableData));
       this._global.debounce(this.calculateChairTableTotal(), 500);
       setTimeout(() => {
         this.loadTable = false;
@@ -140,26 +137,6 @@ export class TableComponent implements OnInit, OnDestroy {
       });
     });
   }
-  // loadTableDataFromLocalStorage() {
-  //   const storedTables = localStorage.getItem('tables');
-  //   if (storedTables) {
-  //     this.tables = JSON.parse(storedTables);
-  //   } else {
-  //     this.resetToOpenStatus();
-  //   }
-  // }
-
-  resetToOpenStatus() {
-    this.tableData.forEach((table) => {
-      table.status = 'open';
-      table.chairs.forEach((chair) => (chair.status = 'open'));
-    });
-    this.saveTableDataToLocalStorage();
-  }
-
-  saveTableDataToLocalStorage() {
-    localStorage.setItem('tables', JSON.stringify(this.tableData));
-  }
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -178,20 +155,6 @@ export class TableComponent implements OnInit, OnDestroy {
     return table.chairs.some((chair) => chair.status === 'open');
   }
 
-  toggleChairStatus(chair: Chair, table: Table) {
-    chair.status = chair.status === 'open' ? 'reserved' : 'open';
-
-    if (this.checkIfAllChairsReserved(table)) {
-      // All chairs reserved, setting table to reserved
-      table.status = 'reserved';
-    } else {
-      // Some chairs are still open, table stays open
-      table.status = 'open';
-    }
-
-    this.saveTableDataToLocalStorage();
-  }
-
   getChairColor(status: string): string {
     return status === 'reserved' ? 'danger' : 'success';
   }
@@ -208,7 +171,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   selectChairAndNavigate(chair: Chair, table: Table) {
     chair.status = 'reserved';
-    this.saveTableDataToLocalStorage();
+    
     localStorage.setItem('selectedTable', JSON.stringify(table));
     localStorage.setItem('selectedChair', JSON.stringify(chair));
     this.router.navigateByUrl('/dashboard').then(() => {

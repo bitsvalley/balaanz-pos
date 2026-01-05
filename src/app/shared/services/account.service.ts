@@ -71,7 +71,6 @@ export class AccountService implements OnDestroy {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
 
-    localStorage.removeItem('tables');
     localStorage.removeItem('selectedTable');
     localStorage.removeItem('restauMode');
     localStorage.removeItem('cart');
