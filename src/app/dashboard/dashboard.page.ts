@@ -240,7 +240,7 @@ export class DashboardPage implements OnDestroy {
 
   changeSearch() {
     if (this.searchProductField && this.searchProductField.trim() !== '') {
-      const searchTerm = this.searchProductField.toLowerCase(); 
+      const searchTerm = this.searchProductField.toLowerCase().trim(); 
   
       if (this.selelctedCategory) {
         this.productList = this.productData.products[this.selelctedCategory?.id].filter((product) =>
