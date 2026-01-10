@@ -134,6 +134,15 @@
                     padding-right: 5px;
                 }
             }
+            .product-name-wrap {
+              white-space: normal;
+              word-break: break-word;
+              overflow-wrap: break-word;
+              width: 100%;
+              max-width: none;
+              display: block;
+              font-size: 1.1em;
+            }
         }
     }
 }
