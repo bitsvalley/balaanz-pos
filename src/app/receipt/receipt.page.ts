@@ -98,6 +98,7 @@ export class ReceiptPage implements OnInit {
     
       this._account.runTimePropObservable.subscribe((response: any) => {
         console.log("Runtime Props Received:", response);
+
         this.runTimeProps = response;
       });
 
@@ -118,8 +119,8 @@ export class ReceiptPage implements OnInit {
       Name: this.runTimeProps[0].property_value,
       Location : this.runTimeProps[3].property_value,
       Tel : this.telephone,
-      Slogan : this.runTimeProps[2].property_value
-
+      Slogan : this.runTimeProps[2].property_value,
+      Website: this.runTimeProps[19].property_value
     }
     this._sunmi.print({ownerInfo:ownerInfo,cartList: this.receiptCartList, cartSummary: this.receiptCartSummary, currentDate: this.currentDate, userDetails: this.userDetails, paymentData: this.paymentData});
     this._nav.navigateBack('dashboard');

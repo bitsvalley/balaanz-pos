@@ -112,11 +112,11 @@ export class SunmiPrinterService implements OnDestroy {
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.formatLines(`${thankNote}`)});
         await Sunmi.text({text: this.formatLines(`${thankNote2}`)});
-        await Sunmi.text({text: this.formatLines(`$www.balaanz.com`)});
+        await Sunmi.text({text: this.formatLines(data.ownerInfo.Website)});
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.addEmptyLine()});
         await Sunmi.text({text: this.addEmptyLine()});
-        await Sunmi.text({text: this.formatLines("www.balaanz.com")});
+        await Sunmi.text({text: this.formatLines(data.ownerInfo.Website)});
 
         // Print 
         await Sunmi.print();

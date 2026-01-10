@@ -106,11 +106,6 @@ export class CheckoutPage implements OnInit {
     
   }
 
-  // updateDiscount() {
-  //   this.paymentForm.get('discount').setValue(this.discount || 0);
-  // }
-
-
   async updateDiscount() {
     if (this.discount < 0) {
       this.discount = 0; // Reset to zero
@@ -127,15 +122,6 @@ export class CheckoutPage implements OnInit {
   
     this.paymentForm.get('discount').setValue(this.discount);
   }
-  
-
-
-  // updateDiscount() {
-  //   if (this.discount < 0) {
-  //     this.discount = 0; // Prevent negative values
-  //   }
-  //   this.paymentForm.get('discount').setValue(this.discount);
-  // }
   
 
   ionViewWillEnter() {
@@ -237,21 +223,4 @@ export class CheckoutPage implements OnInit {
     
     
   }
-
-  
-
-  // retryPayment() {
-  //   this.isPaymentTimeout = false;
-  //   this.statusCycle = 0;
-  //   this._global.setLoader(true);
-  //   this.checkStatus(this.paymentRequest);
-  //   this.paymentRequest = null;
-  // }
-
-  // closePayment() {
-  //   this.isPaymentTimeout = false;
-  //   this.statusCycle = 0;
-  //   this.paymentRequest = null;
-  // }
-
 }
