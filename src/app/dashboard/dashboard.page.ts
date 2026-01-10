@@ -1,4 +1,5 @@
-import { Component, Optional, OnDestroy } from '@angular/core';
+import { Component, Optional, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+  
 import { NavController } from '@ionic/angular';
 import { UserService } from 'src/app/shared/services/user.service';
 import { GlobalService } from 'src/app/shared/services/global.service';
@@ -76,6 +77,16 @@ export class DashboardPage implements OnDestroy {
   ionViewDidEnter() {
     // Refresh product list when returning to this page
     this.getProductList();
+  }
+
+  @ViewChild('searchInput') searchInputRef: ElementRef;
+  clearSearch(input: HTMLInputElement) {
+    this.searchProductField = '';
+    this.changeSearch();
+    
+    setTimeout(() => {
+      input.focus();
+    }, 0);
   }
 
   toggleNav() {

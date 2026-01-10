@@ -1,3 +1,36 @@
+// Search input with icons
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input-wrapper .form-field {
+    padding-left: 36px;
+    padding-right: 36px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-input-wrapper .seach-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.search-input-wrapper .clear-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: pointer;
+    z-index: 2;
+}
 @import "./../../assets/style/config";
 
 .no-item {

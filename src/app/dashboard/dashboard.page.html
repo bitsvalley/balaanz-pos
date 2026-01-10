@@ -5,19 +5,20 @@
     <div class="product-header-container">
       <div class="product-search">
         <div class="product-search-form">
-          <form>
-            <input type="text"  (input)="changeSearch()" [(ngModel)]="searchProductField" class="form-field" />
-            <div class="seach-icon">
+          <form class="search-input-wrapper">
+            <span class="seach-icon">
               <span class="material-symbols-outlined">
                 search
               </span>
-            </div>
-          </form> 
-          <div class="product-filter">
-            <span class="material-symbols-outlined">
-              tune
             </span>
-          </div>
+            <input type="text" (input)="changeSearch()" [(ngModel)]="searchProductField" class="form-field" #searchInput />
+            <span class="clear-icon" *ngIf="searchProductField">
+              <span class="material-symbols-outlined" style="cursor:pointer;" (click)="clearSearch(searchInput)">
+                clear
+              </span>
+            </span>
+          </form>
+          <!-- Removed 'tune' icon and filter -->
         </div>
       </div>
       <div class="category-title">
