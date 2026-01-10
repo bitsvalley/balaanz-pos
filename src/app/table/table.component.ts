@@ -95,7 +95,6 @@ export class TableComponent implements OnInit, OnDestroy {
 
         if (bid) {
           this.getTablesFromServer(bid.property_value);
-          this._global.debounce(this.calculateChairTableTotal(), 500);
         }
       }
     });
@@ -110,7 +109,9 @@ export class TableComponent implements OnInit, OnDestroy {
         table.total = 0;
         table.chairs.forEach((chair: any) => (chair.status = 'open', chair.total = 0));
       });
+
       this.tableData = response;
+
       this._global.debounce(this.calculateChairTableTotal(), 500);
       setTimeout(() => {
         this.loadTable = false;
